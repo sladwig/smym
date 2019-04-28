@@ -7,7 +7,12 @@ interface IProps {
 }
 
 function User({ user }: IProps) {
-    return <>{user.name}</>;
+    return (
+        <div>
+            {user.name} {user.dmChannel}
+            <br />
+        </div>
+    );
 }
 
 export default observer(User);

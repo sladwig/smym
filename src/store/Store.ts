@@ -14,6 +14,13 @@ export const Store = types
         get usersList(): IUser[] {
             return Array.from(self.users.values());
         },
+        get usersByName() {
+            const users: { [index: string]: IUser } = {};
+            this.usersList.forEach(user => {
+                if (user.name) users[user.name] = user;
+            });
+            return users;
+        },
     }));
 
 export const store = Store.create({});
