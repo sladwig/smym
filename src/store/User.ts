@@ -13,6 +13,17 @@ export const User = types
         setDmChannel(channelId: string) {
             self.dmChannel = channelId;
         },
+        addTransaction(value: number, description: string) {
+            self.transactions.push({ value, description });
+        },
+        resetTransactions() {
+            self.transactions.clear();
+        },
+    }))
+    .views(self => ({
+        get balance() {
+            return self.transactions.reduce((sum, current) => sum + current.value, 0);
+        },
     }));
 
 // export type IUser = typeof User.Type;

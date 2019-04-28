@@ -3,7 +3,7 @@
 exports[`can be created 1`] = `
 Object {
   "date": 1556447289344,
-  "desprcitpion": "",
+  "description": "",
   "value": 0,
 }
 `;
