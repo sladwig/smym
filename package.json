@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@slack/web-api": "^5.0.1",
     "@types/jest": "24.0.11",
     "@types/node": "11.13.6",
     "@types/react": "16.8.14",
@@ -10,7 +11,9 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "2.1.8",
-    "typescript": "3.4.4"
+    "typescript": "3.4.4",
+    "mobx": "^5.9.4",
+    "mobx-state-tree": "^3.14.0"
   },
   "scripts": {
     "start": "react-scripts start",
