@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`can be created 1`] = `
+Object {
+  "users": Object {},
+}
+`;
+
+exports[`has a userList 1`] = `
+Array [
+  Object {
+    "dmChannel": undefined,
+    "id": "def",
+    "name": "mark",
+    "real_name": undefined,
+    "transactions": Array [],
+  },
+]
+`;

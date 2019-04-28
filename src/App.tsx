@@ -1,46 +1,27 @@
 import React from 'react';
 import './App.css';
 import { useFormInput, useLocalStoreBackedFormInput } from './hooks/useFormInput';
+import { slack } from './services/slack';
+import { store } from './store/Store';
+import UserList from './components/UserList';
+import { observer } from 'mobx-react-lite';
+import { useUpdatedUserList } from './hooks/useUpdatedUserList';
 
 function App() {
     const [inputValue, setValue, FormInput] = useFormInput('');
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
 
-    if (apiToken) {
-        const { WebClient } = require('@slack/web-api');
+    useUpdatedUserList(apiToken);
 
-        // Read a token from the environment variables
-        const token = apiToken;
-
-        // Initialize
-        const web = new WebClient(token);
-        (async () => {
-            // Post a message to the channel, and await the result.
-            // Find more arguments and details of the response: https://api.slack.com/methods/chat.postMessage
-            // const result = await web.chat.postMessage({
-            //     text: 'great :D',
-            //     channel: 'DJA3BA079',
-            // });
-            // me "UJ28UC5EZ"  DJ4590BGF    ""DJA3BA079""
-            // victorial UJ4F1LUP9"  "DJ2LT0SJU"    "DHWRLF0HY"
-            // georgiap "UJ4M661PZ" "DHRCC8GSF"    DJ7MPHQQ4
-            //  const result = await web.users.list({});
-            //  const result = await web.conversations.open({
-            //      users: 'UJ28UC5EZ',
-            //  });
-            // The result contains an identifier for the message, `ts`.
-            // console.log(`Successfully send message ${result.ts} in conversation`);
-            // console.log(result);
-        })();
-    }
     return (
         <>
             <div className="App">
                 <ApiInput />
                 <FormInput />
+                <UserList users={store.usersList} />
             </div>
         </>
     );
 }
 
-export default App;
+export default observer(App);
