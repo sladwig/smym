@@ -20,6 +20,10 @@ export const User = types
         resetTransactions() {
             self.transactions.clear();
         },
+        update(user: any) {
+            self.name = user.name;
+            self.real_name = user.real_name;
+        },
     }))
     .views(self => ({
         get balance() {
@@ -27,5 +31,4 @@ export const User = types
         },
     }));
 
-// export type IUser = typeof User.Type;
 export type IUser = Instance<typeof User>;

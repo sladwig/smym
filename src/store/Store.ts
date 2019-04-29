@@ -1,5 +1,6 @@
-import { types, SnapshotOrInstance } from 'mobx-state-tree';
+import { types, SnapshotOrInstance, Instance } from 'mobx-state-tree';
 import { User, IUser } from './User';
+import { createPersistenStore } from './createPersistenStore';
 
 export const Store = types
     .model('Store', {
@@ -7,7 +8,11 @@ export const Store = types
     })
     .actions(self => ({
         addUser(user: SnapshotOrInstance<typeof User>) {
-            self.users.put(user);
+            if (self.users.has(user.id)) {
+                self.users.get(user.id)!.update(user);
+            } else {
+                self.users.put(user);
+            }
         },
     }))
     .views(self => ({
@@ -28,4 +33,6 @@ export const Store = types
         },
     }));
 
-export const store = Store.create({});
+export type IStore = Instance<typeof Store>;
+
+export const store = createPersistenStore(Store, {}, 'stored');
