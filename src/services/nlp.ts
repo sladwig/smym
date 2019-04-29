@@ -19,12 +19,13 @@ interface SplitChecker {
     resulting: (splits: string[]) => AnalyzeResult;
 }
 export const analyze = (str: string): AnalyzeResult => {
-    const splits = str.split(' ');
+    const splits = str.trim().split(' ');
     const checkedSplits = checkSplits(splits);
 
     const testCases: SplitChecker[] = [
         normalTransaction,
         paidMinusTransaction,
+        paidWithDescriptionTransaction,
         paidTransaction,
         paidSomeValueTransaction,
         unComplete,
@@ -87,6 +88,20 @@ const paidTransaction: SplitChecker = {
     }),
 };
 
+const paidWithDescriptionTransaction: SplitChecker = {
+    check: (sa: SplitAnalysis) => {
+        return sa.hasName && sa.hasPaid && !sa.hasValue && sa.hasDescription;
+    },
+    resulting: (splits: string[]) => ({
+        isComplete: true,
+        value: {
+            name: extractName(splits),
+            value: 'reset',
+            description: extractDescription(splits),
+        },
+    }),
+};
+
 const paidSomeValueTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return sa.hasName && sa.hasPaid && sa.hasValue && !sa.hasDescription;
@@ -142,7 +157,9 @@ const extractValue = (splits: string[]) => {
 };
 
 const extractDescription = (splits: string[]) => {
-    const possibleDecription = splits.filter(split => !isName(split) && !isNumber(split));
+    const possibleDecription = splits
+        .filter(split => !isName(split) && !isNumber(split))
+        .filter(str => str !== '');
 
     return possibleDecription.length > 0 ? possibleDecription.join(' ') : undefined;
 };

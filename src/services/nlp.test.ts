@@ -208,6 +208,17 @@ describe('valid', () => {
         });
         expect(result.isComplete).toBe(true);
     });
+
+    test('paid @stefanl for it', () => {
+        const result = analyze('paid @stefanl for it');
+        expect(result.value).toEqual({
+            name: 'stefanl',
+            description: 'paid for it',
+            value: 'reset',
+        });
+        expect(result.isComplete).toBe(true);
+    });
+
     test('@stefanl -3.50', () => {
         const result = analyze('@stefanl -3.50');
         expect(result.value).toEqual({
