@@ -13,7 +13,8 @@ export const User = types
         setDmChannel(channelId: string) {
             self.dmChannel = channelId;
         },
-        addTransaction(value: number, description: string) {
+        addTransaction(value: number | 'reset', description: string) {
+            if (value === 'reset') return this.resetTransactions();
             self.transactions.push({ value, description });
         },
         resetTransactions() {

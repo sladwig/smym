@@ -9,7 +9,7 @@ interface IProps {
 function User({ user }: IProps) {
     return (
         <div>
-            {user.name} {user.dmChannel}
+            {user.name} {user.dmChannel} {user.balance.toFixed(2)}
             <br />
         </div>
     );

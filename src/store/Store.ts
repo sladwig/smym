@@ -21,6 +21,11 @@ export const Store = types
             });
             return users;
         },
+    }))
+    .actions(self => ({
+        hasUser(userName: string): boolean {
+            return !!self.usersByName[userName];
+        },
     }));
 
 export const store = Store.create({});
