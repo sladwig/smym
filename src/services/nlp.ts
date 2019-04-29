@@ -14,7 +14,7 @@ interface AnalyzeResult {
     isComplete: boolean;
     value: ValueObject;
 }
-interface Checker {
+interface SplitChecker {
     check: (sa: SplitAnalysis) => boolean;
     resulting: (splits: string[]) => AnalyzeResult;
 }
@@ -22,7 +22,7 @@ export const analyze = (str: string): AnalyzeResult => {
     const splits = str.split(' ');
     const checkedSplits = checkSplits(splits);
 
-    const testCases: Checker[] = [
+    const testCases: SplitChecker[] = [
         normalTransaction,
         paidMinusTransaction,
         paidTransaction,
@@ -34,7 +34,7 @@ export const analyze = (str: string): AnalyzeResult => {
         return checker.check(checkedSplits);
     });
 
-    return (theCase as Checker).resulting(splits);
+    return (theCase as SplitChecker).resulting(splits);
 };
 
 export const isName = (str: string) => str.startsWith('@');
@@ -60,100 +60,89 @@ export const checkSplits = (splits: string[]): SplitAnalysis => {
     };
 };
 
-const normalTransaction: Checker = {
+const normalTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return sa.hasName && !sa.hasPaid && sa.hasValue && sa.hasDescription;
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
         value: {
-            name: checkForName(splits).result(),
-            value: checkForValue(splits).result(),
-            description: checkForDescription(splits).result(),
+            name: extractName(splits),
+            value: extractValue(splits),
+            description: extractDescription(splits),
         },
     }),
 };
-const paidTransaction: Checker = {
+const paidTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return sa.hasName && sa.hasPaid && !sa.hasValue && !sa.hasDescription;
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
         value: {
-            name: checkForName(splits).result(),
+            name: extractName(splits),
             value: 'reset',
             description: 'paid',
         },
     }),
 };
 
-const paidSomeValueTransaction: Checker = {
+const paidSomeValueTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return sa.hasName && sa.hasPaid && sa.hasValue && !sa.hasDescription;
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
         value: {
-            name: checkForName(splits).result(),
-            value: (checkForValue(splits).result() || 0) * -1,
+            name: extractName(splits),
+            value: (extractValue(splits) || 0) * -1,
             description: 'paid',
         },
     }),
 };
 
-const paidMinusTransaction: Checker = {
+const paidMinusTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return sa.hasName && sa.hasValue && sa.hasMinusValue && !sa.hasDescription;
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
         value: {
-            name: checkForName(splits).result(),
-            value: checkForValue(splits).result(),
+            name: extractName(splits),
+            value: extractValue(splits),
             description: 'paid',
         },
     }),
 };
 
-const unComplete: Checker = {
+const unComplete: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return true;
     },
     resulting: (splits: string[]) => ({
         isComplete: false,
         value: {
-            name: checkForName(splits).result(),
-            value: checkForValue(splits).result(),
-            description: checkForDescription(splits).result(),
+            name: extractName(splits),
+            value: extractValue(splits),
+            description: extractDescription(splits),
         },
     }),
 };
 
-const checkForName = (splits: string[]) => {
+const extractName = (splits: string[]) => {
     const possibleName = splits.find(isName);
 
-    return {
-        result: () => {
-            return possibleName ? possibleName.slice(1) : undefined;
-        },
-    };
+    return possibleName ? possibleName.slice(1) : undefined;
 };
 
-const checkForValue = (splits: string[]) => {
+const extractValue = (splits: string[]) => {
     let possibleNumber = splits.find(isNumber);
 
-    return {
-        result: () => {
-            return possibleNumber ? asNumber(possibleNumber) : undefined;
-        },
-    };
+    return possibleNumber ? asNumber(possibleNumber) : undefined;
 };
 
-const checkForDescription = (splits: string[]) => {
+const extractDescription = (splits: string[]) => {
     const possibleDecription = splits.filter(split => !isName(split) && !isNumber(split));
-    return {
-        result: () => {
-            return possibleDecription.length > 0 ? possibleDecription.join(' ') : undefined;
-        },
-    };
+
+    return possibleDecription.length > 0 ? possibleDecription.join(' ') : undefined;
 };
