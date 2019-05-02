@@ -7,6 +7,9 @@ interface MemberResponse {
     is_bot: boolean;
     name: string;
     real_name: string;
+    profile: {
+        image_48: string;
+    };
 }
 
 export function useUpdatedUserList(apiToken: string) {
@@ -24,6 +27,7 @@ export function useUpdatedUserList(apiToken: string) {
                             id: each.id,
                             name: each.name,
                             real_name: each.real_name,
+                            avatar: each.profile.image_48,
                         });
                     });
             });

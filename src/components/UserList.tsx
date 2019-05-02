@@ -7,8 +7,14 @@ interface IProps {
     users: IUser[];
 }
 function UserList({ users }: IProps) {
-    const userList = users.map(user => <User user={user} />);
-    return <>{userList}</>;
+    const userList = users.map(user => <User key={user.id} user={user} />);
+
+    return <div style={style}>{userList}</div>;
 }
 
 export default observer(UserList);
+
+const style: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row',
+};

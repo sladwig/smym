@@ -8,6 +8,7 @@ export const User = types
         real_name: types.maybe(types.string),
         dmChannel: types.maybe(types.string),
         transactions: types.array(Transaction),
+        avatar: types.maybe(types.string),
     })
     .actions(self => ({
         setDmChannel(channelId: string) {
@@ -23,6 +24,7 @@ export const User = types
         update(user: any) {
             self.name = user.name;
             self.real_name = user.real_name;
+            self.avatar = user.avatar;
         },
     }))
     .views(self => ({
