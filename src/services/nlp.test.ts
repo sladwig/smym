@@ -150,6 +150,30 @@ describe('checkSplits', () => {
             hasDescription: true,
         });
     });
+
+    test('@stefanl paid 30 jiji', () => {
+        const splits = '@stefanl paid 30 jiji'.split(' ');
+        const result = checkSplits(splits);
+        expect(result).toEqual({
+            hasName: true,
+            hasPaid: true,
+            hasValue: true,
+            hasMinusValue: false,
+            hasDescription: true,
+        });
+    });
+
+    test('@stefanl paid -30 jiji', () => {
+        const splits = '@stefanl paid -30 jiji'.split(' ');
+        const result = checkSplits(splits);
+        expect(result).toEqual({
+            hasName: true,
+            hasPaid: true,
+            hasValue: true,
+            hasMinusValue: true,
+            hasDescription: true,
+        });
+    });
 });
 
 describe('valid', () => {
@@ -234,6 +258,27 @@ describe('valid', () => {
             name: 'stefanl',
             description: 'other reason',
             value: -3.5,
+        });
+        expect(result.isComplete).toBe(true);
+    });
+
+    test('@stefanl paid 30 jiji', () => {
+        const result = analyze('@stefanl paid 30 jiji');
+        expect(result.value).toEqual({
+            name: 'stefanl',
+            description: 'paid jiji',
+            value: -30,
+        });
+        expect(result.isComplete).toBe(true);
+    });
+
+    // double minus should still be minus
+    test('@stefanl paid -30 jiji', () => {
+        const result = analyze('@stefanl paid -30 jiji');
+        expect(result.value).toEqual({
+            name: 'stefanl',
+            description: 'paid jiji',
+            value: -30,
         });
         expect(result.isComplete).toBe(true);
     });

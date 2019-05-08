@@ -27,6 +27,7 @@ export const analyze = (str: string): AnalyzeResult => {
         paidMinusTransaction,
         paidWithDescriptionTransaction,
         paidTransaction,
+        paidSomeValueDoubleMinusTransaction,
         paidSomeValueTransaction,
         unComplete,
     ];
@@ -104,14 +105,28 @@ const paidWithDescriptionTransaction: SplitChecker = {
 
 const paidSomeValueTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
-        return sa.hasName && sa.hasPaid && sa.hasValue && !sa.hasDescription;
+        return sa.hasName && sa.hasPaid && sa.hasValue;
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
         value: {
             name: extractName(splits),
             value: (extractValue(splits) || 0) * -1,
-            description: 'paid',
+            description: extractDescription(splits),
+        },
+    }),
+};
+
+const paidSomeValueDoubleMinusTransaction: SplitChecker = {
+    check: (sa: SplitAnalysis) => {
+        return sa.hasName && sa.hasPaid && sa.hasValue && sa.hasMinusValue;
+    },
+    resulting: (splits: string[]) => ({
+        isComplete: true,
+        value: {
+            name: extractName(splits),
+            value: extractValue(splits) || 0,
+            description: extractDescription(splits),
         },
     }),
 };
