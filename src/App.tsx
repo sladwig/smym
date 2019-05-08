@@ -12,7 +12,7 @@ import TransactionInput from './components/TransactionInput';
 function App() {
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
     useUpdatedUserList(apiToken);
-
+    const [shouldSlack, setShouldSlack] = useState(false);
     const [value, setValue] = useState('');
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +29,7 @@ function App() {
 
         const user = store.usersByName[result.value.name];
         user.addTransaction(result.value.value as number, result.value.description as string);
-        inform(apiToken, user);
+        inform(apiToken, user, shouldSlack);
         setValue('');
     };
     return (
@@ -42,6 +42,9 @@ function App() {
                 <div>has User: {JSON.stringify(hasUser)}</div>
                 <input disabled={!(result.isComplete && hasUser)} type="submit" value="Go" />
             </form>
+            <div onClick={() => setShouldSlack(!shouldSlack)}>
+                should slack {JSON.stringify(shouldSlack)}
+            </div>
         </div>
     );
 }
