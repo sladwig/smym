@@ -9,7 +9,7 @@ export const inform = (apiToken: string, user: IUser, shouldSlack: boolean) => {
             2
         )} - New total: ${user.balance.toFixed(2)}`;
     } else {
-        message = `Your balance is ${user.balance.toFixed(2)}`;
+        message = `Paid up! - Your balance is ${user.balance.toFixed(2)}`;
     }
     console.log(message);
     if (shouldSlack) slack(apiToken).sendUserMessage(user.id, message);
