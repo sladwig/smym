@@ -9,6 +9,7 @@ Object {
 exports[`has a userList 1`] = `
 Array [
   Object {
+    "avatar": undefined,
     "dmChannel": undefined,
     "id": "def",
     "name": "mark",
