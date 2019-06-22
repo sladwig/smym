@@ -3,6 +3,13 @@ interface ValueObject {
     value: number | 'reset' | undefined;
     description: string | undefined;
 }
+export enum Split {
+    name = 'name',
+    value = 'value',
+    minusValue = 'minusValue',
+    description = 'description',
+    paid = 'paid',
+}
 interface SplitAnalysis {
     hasValue: boolean;
     hasMinusValue: boolean;
@@ -10,9 +17,10 @@ interface SplitAnalysis {
     hasName: boolean;
     hasPaid: boolean;
 }
-interface AnalyzeResult {
+export interface AnalyzeResult {
     isComplete: boolean;
     value: ValueObject;
+    tokens: Split[];
 }
 interface SplitChecker {
     check: (sa: SplitAnalysis) => boolean;
@@ -61,19 +69,33 @@ export const checkSplits = (splits: string[]): SplitAnalysis => {
         hasDescription: splits.some(isDescription),
     };
 };
+const tokenize = (splits: string[]) => {
+    return splits.map(split => {
+        if (isName(split)) return Split.name;
+        if (isMinusNumber(split)) return Split.minusValue;
+        if (isNumber(split)) return Split.value;
+        if (isPaid(split)) return Split.paid;
+        return Split.description;
+    });
+};
 
 const normalTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
         return sa.hasName && !sa.hasPaid && sa.hasValue && sa.hasDescription;
     },
-    resulting: (splits: string[]) => ({
-        isComplete: true,
-        value: {
-            name: extractName(splits),
-            value: extractValue(splits),
-            description: extractDescription(splits),
-        },
-    }),
+    resulting: (splits: string[]) => {
+        const tokens = tokenize(splits);
+
+        return {
+            isComplete: true,
+            tokens,
+            value: {
+                name: extractName(splits),
+                value: extractValue(splits),
+                description: extractDescription(splits),
+            },
+        };
+    },
 };
 const paidTransaction: SplitChecker = {
     check: (sa: SplitAnalysis) => {
@@ -81,6 +103,7 @@ const paidTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
+        tokens: tokenize(splits),
         value: {
             name: extractName(splits),
             value: 'reset',
@@ -95,6 +118,7 @@ const paidWithDescriptionTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
+        tokens: tokenize(splits),
         value: {
             name: extractName(splits),
             value: 'reset',
@@ -109,6 +133,7 @@ const paidSomeValueTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
+        tokens: tokenize(splits),
         value: {
             name: extractName(splits),
             value: (extractValue(splits) || 0) * -1,
@@ -123,6 +148,7 @@ const paidSomeValueDoubleMinusTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
+        tokens: tokenize(splits),
         value: {
             name: extractName(splits),
             value: extractValue(splits) || 0,
@@ -137,6 +163,7 @@ const paidMinusTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
+        tokens: tokenize(splits),
         value: {
             name: extractName(splits),
             value: extractValue(splits),
@@ -151,6 +178,7 @@ const unComplete: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: false,
+        tokens: tokenize(splits),
         value: {
             name: extractName(splits),
             value: extractValue(splits),
@@ -162,13 +190,13 @@ const unComplete: SplitChecker = {
 const extractName = (splits: string[]) => {
     const possibleName = splits.find(isName);
 
-    return possibleName ? possibleName.slice(1) : undefined;
+    return possibleName ? possibleName.slice(1) : '';
 };
 
 const extractValue = (splits: string[]) => {
     let possibleNumber = splits.find(isNumber);
 
-    return possibleNumber ? asNumber(possibleNumber) : undefined;
+    return possibleNumber ? asNumber(possibleNumber) : 0;
 };
 
 const extractDescription = (splits: string[]) => {
@@ -176,5 +204,5 @@ const extractDescription = (splits: string[]) => {
         .filter(split => !isName(split) && !isNumber(split))
         .filter(str => str !== '');
 
-    return possibleDecription.length > 0 ? possibleDecription.join(' ') : undefined;
+    return possibleDecription.length > 0 ? possibleDecription.join(' ') : '';
 };

@@ -8,6 +8,8 @@ import {
     isMinusNumber,
     checkSplits,
     replaceComma,
+    Split,
+    AnalyzeResult,
 } from './nlp';
 
 describe('helpers', () => {
@@ -65,10 +67,11 @@ describe('helpers', () => {
         expect(isDescription('@abc')).toBe(false);
     });
 });
+const splitTest = (toBeAnalysed: string, testFunction: (splits: string[]) => any) =>
+    test(toBeAnalysed, () => testFunction(toBeAnalysed.split(' ')));
 
 describe('checkSplits', () => {
-    test('@stefanl marw 3.99', () => {
-        const splits = '@stefanl marw 3.99'.split(' ');
+    splitTest('@stefanl marw 3.99', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -79,8 +82,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('marw @stefanl 3,99 deluxe', () => {
-        const splits = 'marw @stefanl 3,99 deluxe'.split(' ');
+    splitTest('marw @stefanl 3,99 deluxe', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -91,8 +93,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('@stefanl paid', () => {
-        const splits = '@stefanl paid'.split(' ');
+    splitTest('@stefanl paid', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -103,8 +104,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('paid @stefanl', () => {
-        const splits = 'paid @stefanl'.split(' ');
+    splitTest('paid @stefanl', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -115,8 +115,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('paid @stefanl 7', () => {
-        const splits = 'paid @stefanl 7'.split(' ');
+    splitTest('paid @stefanl 7', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -127,8 +126,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('@stefanl -3.50', () => {
-        const splits = '@stefanl -3.50'.split(' ');
+    splitTest('@stefanl -3.50', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -139,8 +137,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('@stefanl -3.50 other reason', () => {
-        const splits = '@stefanl -3.50 other reason'.split(' ');
+    splitTest('@stefanl -3.50 other reason', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -151,8 +148,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('@stefanl paid 30 jiji', () => {
-        const splits = '@stefanl paid 30 jiji'.split(' ');
+    splitTest('@stefanl paid 30 jiji', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -163,8 +159,7 @@ describe('checkSplits', () => {
         });
     });
 
-    test('@stefanl paid -30 jiji', () => {
-        const splits = '@stefanl paid -30 jiji'.split(' ');
+    splitTest('@stefanl paid -30 jiji', splits => {
         const result = checkSplits(splits);
         expect(result).toEqual({
             hasName: true,
@@ -176,161 +171,216 @@ describe('checkSplits', () => {
     });
 });
 
+const analyzeTest = (toBeAnalysed: string, testFunction: (splits: AnalyzeResult) => any) =>
+    test(toBeAnalysed, () => testFunction(analyze(toBeAnalysed)));
+
 describe('valid', () => {
-    test('@stefanl marw 3.99', () => {
-        const result = analyze('@stefanl marw 3.99');
+    analyzeTest('@stefanl marw 3.99', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'marw',
             value: 3.99,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.name, Split.description, Split.value]);
     });
-    test('marw @stefanl 3,99 deluxe', () => {
-        const result = analyze('marw @stefanl 3,99 deluxe');
+    analyzeTest('marw @stefanl 3,99 deluxe', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'marw deluxe',
             value: 3.99,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([
+            Split.description,
+            Split.name,
+            Split.value,
+            Split.description,
+        ]);
     });
-    test('marw 3 @stefanl', () => {
-        const result = analyze('marw 3 @stefanl');
+    analyzeTest('marw 3 @stefanl', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'marw',
             value: 3,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.description, Split.value, Split.name]);
     });
-    test('@stefanl paid', () => {
-        const result = analyze('@stefanl paid');
+    analyzeTest('@stefanl paid', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid',
             value: 'reset',
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.name, Split.paid]);
     });
-    test('paid @stefanl', () => {
-        const result = analyze('paid @stefanl');
+    analyzeTest('paid @stefanl', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid',
             value: 'reset',
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.paid, Split.name]);
     });
 
-    test('paid @stefanl 7', () => {
-        const result = analyze('paid @stefanl 7');
+    analyzeTest('paid @stefanl 7', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid',
             value: -7,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.paid, Split.name, Split.value]);
     });
 
-    test('paid @stefanl for it', () => {
-        const result = analyze('paid @stefanl for it');
+    analyzeTest('paid @stefanl for it', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid for it',
             value: 'reset',
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([
+            Split.paid,
+            Split.name,
+            Split.description,
+            Split.description,
+        ]);
     });
 
-    test('@stefanl -3.50', () => {
-        const result = analyze('@stefanl -3.50');
+    analyzeTest('paid 3.99 @stefanl for it', result => {
+        expect(result.value).toEqual({
+            name: 'stefanl',
+            description: 'paid for it',
+            value: -3.99,
+        });
+        expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([
+            Split.paid,
+            Split.value,
+            Split.name,
+            Split.description,
+            Split.description,
+        ]);
+    });
+
+    analyzeTest('@stefanl paid -3.99 for it', result => {
+        expect(result.value).toEqual({
+            name: 'stefanl',
+            description: 'paid for it',
+            value: -3.99,
+        });
+        expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([
+            Split.name,
+            Split.paid,
+            Split.minusValue,
+            Split.description,
+            Split.description,
+        ]);
+    });
+
+    analyzeTest('@stefanl -3.50', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid',
             value: -3.5,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.name, Split.minusValue]);
     });
-    test('@stefanl -3.50 other reason', () => {
-        const result = analyze('@stefanl -3.50 other reason');
+    analyzeTest('@stefanl -3.50 other reason', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'other reason',
             value: -3.5,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([
+            Split.name,
+            Split.minusValue,
+            Split.description,
+            Split.description,
+        ]);
     });
 
-    test('@stefanl paid 30 jiji', () => {
-        const result = analyze('@stefanl paid 30 jiji');
+    analyzeTest('@stefanl paid 30 jiji', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid jiji',
             value: -30,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([Split.name, Split.paid, Split.value, Split.description]);
     });
 
     // double minus should still be minus
-    test('@stefanl paid -30 jiji', () => {
-        const result = analyze('@stefanl paid -30 jiji');
+    analyzeTest('@stefanl paid -30 jiji', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'paid jiji',
             value: -30,
         });
         expect(result.isComplete).toBe(true);
+        expect(result.tokens).toEqual([
+            Split.name,
+            Split.paid,
+            Split.minusValue,
+            Split.description,
+        ]);
     });
 });
 
 describe('partial invalid', () => {
-    test('@stefanl', () => {
-        const result = analyze('@stefanl');
+    analyzeTest('@stefanl', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
-            description: undefined,
-            value: undefined,
+            description: '',
+            value: 0,
         });
         expect(result.isComplete).toBe(false);
+        expect(result.tokens).toEqual([Split.name]);
     });
 
-    test('3.99', () => {
-        const result = analyze('3.99');
+    analyzeTest('3.99', result => {
         expect(result.value).toEqual({
-            name: undefined,
-            description: undefined,
+            name: '',
+            description: '',
             value: 3.99,
         });
         expect(result.isComplete).toBe(false);
+        expect(result.tokens).toEqual([Split.value]);
     });
 
-    test('some reason', () => {
-        const result = analyze('some reason');
+    analyzeTest('some reason', result => {
         expect(result.value).toEqual({
-            name: undefined,
+            name: '',
             description: 'some reason',
-            value: undefined,
+            value: 0,
         });
         expect(result.isComplete).toBe(false);
+        expect(result.tokens).toEqual([Split.description, Split.description]);
     });
 
-    test('-3.50 other reason', () => {
-        const result = analyze('-3.50 other reason');
+    analyzeTest('-3.50 other reason', result => {
         expect(result.value).toEqual({
-            name: undefined,
+            name: '',
             description: 'other reason',
             value: -3.5,
         });
         expect(result.isComplete).toBe(false);
+        expect(result.tokens).toEqual([Split.minusValue, Split.description, Split.description]);
     });
-    test('@stefanl other reason', () => {
-        const result = analyze('@stefanl other reason');
+    analyzeTest('@stefanl other reason', result => {
         expect(result.value).toEqual({
             name: 'stefanl',
             description: 'other reason',
-            value: undefined,
+            value: 0,
         });
         expect(result.isComplete).toBe(false);
+        expect(result.tokens).toEqual([Split.name, Split.description, Split.description]);
     });
 });
