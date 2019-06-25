@@ -10,6 +10,7 @@ import { inform } from './services/inform';
 import TransactionInput from './components/TransactionInput';
 import fuzzysearch from 'fuzzysearch';
 import { TransactionForm } from './components/TransactionForm';
+import DevDetails from './components/DevDetails';
 
 const inputStyle = {
     height: 90,
@@ -57,11 +58,7 @@ function App() {
             <TransactionForm {...result.value} />
             <UserList users={filteredUserList} />
             {!apiToken && <ApiInput />}
-            {JSON.stringify(result)}
-            <div>has User: {JSON.stringify(hasUser)}</div>
-            <div onClick={() => setShouldSlack(!shouldSlack)}>
-                should slack {JSON.stringify(shouldSlack)}
-            </div>
+            <DevDetails {...{ shouldSlack, setShouldSlack, hasUser, result }} />
         </div>
     );
 }
