@@ -12,10 +12,11 @@ function User({ user, expand }: IProps) {
     const transactions = user.transactions.map((transaction, index) => {
         return <Transaction key={index} transaction={transaction} />;
     });
+    const height = (expand ? transactions.length * 25 : 0) + 90;
     return (
         <div>
             <div style={style}>
-                <div style={userStyle}>
+                <div style={{ ...userStyle, height }}>
                     <img style={avatarStyle} src={user.avatar} />
                     {user.name} | {user.real_name} {user.balance.toFixed(2)}
                 </div>
@@ -38,6 +39,7 @@ const style = {
     alignItems: 'center',
 };
 const userStyle = {
+    transition: 'height 200ms ease-out',
     display: 'flex',
     flexDirection: 'row' as 'row',
 };
