@@ -4,15 +4,15 @@
 }
 .user-enter-active {
   opacity: 1;
-  height: 90px;
-  transition: all 200ms ease-out;
+  height: 50px;
+  transition: height 100ms ease-out, opacity 200ms ease-out;
 }
 .user-exit {
   opacity: 1;
-  height: 90px;
+  height: 50px;
 }
 .user-exit-active {
   opacity: 0;
   height: 0;
-  transition: all 200ms ease-out;
+  transition: height 100ms ease-out, opacity 200ms ease-out;
 }

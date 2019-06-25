@@ -11,7 +11,7 @@ function UserList({ users }: IProps) {
     const onlyOne = users.length === 1;
     const userList = users.map(user => (
         <CSSTransition key={user.id} timeout={200} classNames="user">
-            <User key={user.id} user={user} expand={onlyOne} />
+            <User user={user} expand={onlyOne} />
         </CSSTransition>
     ));
 
@@ -27,4 +27,6 @@ export default observer(UserList);
 const style: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
 };
