@@ -5,17 +5,23 @@ import Transaction from './Transaction';
 
 interface IProps {
     user: IUser;
+    expand: boolean;
 }
 
-function User({ user }: IProps) {
+function User({ user, expand }: IProps) {
     const transactions = user.transactions.map((transaction, index) => {
         return <Transaction key={index} transaction={transaction} />;
     });
     return (
-        <div style={style}>
-            {user.name} {user.balance.toFixed(2)}
-            {transactions}
-            <img src={user.avatar} />
+        <div>
+            <div style={style}>
+                <div style={userStyle}>
+                    <img style={avatarStyle} src={user.avatar} />
+                    {user.name} | {user.real_name} {user.balance.toFixed(2)}
+                </div>
+
+                {expand && <div>{transactions}</div>}
+            </div>
         </div>
     );
 }
@@ -23,8 +29,21 @@ function User({ user }: IProps) {
 export default observer(User);
 
 const style = {
-    width: 150,
-    height: 150,
+    width: '100%',
+    height: 90,
     border: '1px solid grey',
     borderRadius: 4,
+    display: 'flex',
+    flexDirection: 'column' as 'column',
+    alignItems: 'center',
+};
+const userStyle = {
+    display: 'flex',
+    flexDirection: 'row' as 'row',
+};
+
+const avatarStyle = {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
 };

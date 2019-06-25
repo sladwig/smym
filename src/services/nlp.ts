@@ -1,4 +1,4 @@
-interface ValueObject {
+export interface ValueObject {
     name: string | undefined;
     value: number | 'reset' | undefined;
     description: string | undefined;

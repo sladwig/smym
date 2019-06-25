@@ -8,6 +8,16 @@ import { useUpdatedUserList } from './hooks/useUpdatedUserList';
 import { analyze } from './services/nlp';
 import { inform } from './services/inform';
 import TransactionInput from './components/TransactionInput';
+import fuzzysearch from 'fuzzysearch';
+import { TransactionForm } from './components/TransactionForm';
+
+const inputStyle = {
+    height: 90,
+    width: '100%',
+    backgroundColor: 'green',
+    justifyContent: 'center',
+    alignItems: 'center',
+};
 
 function App() {
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
@@ -20,7 +30,11 @@ function App() {
     };
 
     const result = analyze(value);
-    const hasUser = store.hasUser(result.value.name || '');
+    const hasUser = store.hasUser(result.value.name);
+
+    const filteredUserList = [...store.usersList].filter(u =>
+        fuzzysearch(result.value.name, `${u.name} ${u.real_name}`),
+    );
 
     const createTransaction = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -35,13 +49,16 @@ function App() {
     return (
         <div className="App">
             <form onSubmit={createTransaction}>
-                {!apiToken && <ApiInput />}
-                <TransactionInput onChange={onChange} value={value} />
-                <UserList users={store.usersList} />
-                {JSON.stringify(result)}
-                <div>has User: {JSON.stringify(hasUser)}</div>
-                <input disabled={!(result.isComplete && hasUser)} type="submit" value="Go" />
+                <div style={inputStyle}>
+                    <TransactionInput onChange={onChange} value={value} />
+                    <input disabled={!(result.isComplete && hasUser)} type="submit" value="Go" />
+                </div>
             </form>
+            <TransactionForm {...result.value} />
+            <UserList users={filteredUserList} />
+            {!apiToken && <ApiInput />}
+            {JSON.stringify(result)}
+            <div>has User: {JSON.stringify(hasUser)}</div>
             <div onClick={() => setShouldSlack(!shouldSlack)}>
                 should slack {JSON.stringify(shouldSlack)}
             </div>

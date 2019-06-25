@@ -9,11 +9,17 @@ interface IProps {
 function Transaction({ transaction }: IProps) {
     return (
         <div style={style}>
-            {transaction.description} {transaction.value.toFixed(2)}
+            <span>{transaction.date.toDateString()}</span>
+            <span>{transaction.description}</span>
+            <span style={{ flexGrow: 1 }} />
+            <span style={{ fontWeight: 'bold' }}>{transaction.value.toFixed(2)}</span>
         </div>
     );
 }
 
 export default observer(Transaction);
 
-const style = {};
+const style = {
+    display: 'flex',
+    flexDirection: 'row' as 'row',
+};
