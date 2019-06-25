@@ -16,6 +16,8 @@ const inputStyle = {
     height: 90,
     width: '100%',
     backgroundColor: 'green',
+    display: 'flex',
+    flexDirection: 'row' as 'row',
     justifyContent: 'center',
     alignItems: 'center',
 };
