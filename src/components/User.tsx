@@ -30,7 +30,7 @@ export default observer(User);
 
 const style = {
     width: '100%',
-    height: 90,
+    minHeight: 90,
     border: '1px solid grey',
     borderRadius: 4,
     display: 'flex',
