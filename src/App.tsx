@@ -12,16 +12,6 @@ import fuzzysearch from 'fuzzysearch';
 import { TransactionForm } from './components/TransactionForm';
 import DevDetails from './components/DevDetails';
 
-const inputStyle = {
-    height: 90,
-    width: '100%',
-    backgroundColor: 'green',
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-};
-
 function App() {
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
     useUpdatedUserList(apiToken);
@@ -54,15 +44,27 @@ function App() {
             <form onSubmit={createTransaction}>
                 <div style={inputStyle}>
                     <TransactionInput onChange={onChange} value={value} />
-                    <input disabled={!(result.isComplete && hasUser)} type="submit" value="Go" />
+                    {/* <input disabled={!(result.isComplete && hasUser)} type="submit" value="Go" /> */}
                 </div>
             </form>
-            <TransactionForm {...result.value} />
+            {/* <TransactionForm {...result.value} /> */}
             <UserList users={filteredUserList} />
             {!apiToken && <ApiInput />}
             <DevDetails {...{ shouldSlack, setShouldSlack, hasUser, result }} />
         </div>
     );
 }
+
+const inputStyle = {
+    height: 104,
+    width: '100%',
+    // backgroundColor: 'green',
+    display: 'flex',
+    flexDirection: 'row' as 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    boxShadow: '0 0.5px 0 0 rgba(0, 0, 0, 0.17)',
+    backgroundColor: '#ffffff',
+};
 
 export default observer(App);

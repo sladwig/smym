@@ -12,6 +12,6 @@ function TransactionInput({ onChange, value }: IProp) {
 export default observer(TransactionInput);
 
 const style = {
-    width: 700,
+    width: 1116,
     fontSize: 36,
 };

@@ -29,4 +29,5 @@ const style: React.CSSProperties = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 25,
 };
