@@ -2,6 +2,8 @@ import React from 'react';
 import { IUser } from '../store/User';
 import { observer } from 'mobx-react-lite';
 import Transaction from './Transaction';
+import { Color } from '../style/colors';
+import './user.css';
 
 interface IProps {
     user: IUser;
@@ -12,12 +14,14 @@ function User({ user, expand }: IProps) {
     const transactions = user.transactions.map((transaction, index) => {
         return <Transaction key={index} transaction={transaction} />;
     });
-    const height = expand ? transactions.length * 88 + 125 : 56;
+    const height = expand ? transactions.length * 88 + 108 : 56;
     return (
-        <div style={{ ...style }}>
+        <div className="mainUserArea">
             <div style={{ ...userAreaStyle, height }}>
                 <div style={{ ...userStyle }}>
-                    <img style={avatarStyle} src={user.avatar} />
+                    <div style={avatarAreaStyle}>
+                        <img style={avatarStyle} src={user.avatar} />
+                    </div>
                     <div style={descriptionStyle}>
                         <b style={{ marginRight: 12 }}>{user.name}</b> |{' '}
                         <span style={{ marginLeft: 12 }}>{user.real_name}</span>
@@ -36,20 +40,6 @@ function User({ user, expand }: IProps) {
 
 export default observer(User);
 
-const style = {
-    display: 'flex',
-    flexDirection: 'column' as 'column',
-    transition: 'height 200ms ease-out',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 19,
-
-    width: 1116,
-    borderRadius: 6,
-    boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.08)',
-    backgroundColor: '#ffffff',
-    marginBottom: 18,
-};
 const userAreaStyle = {
     display: 'flex',
     flexDirection: 'column' as 'column',
@@ -78,9 +68,21 @@ export const balanceStyle = {
     color: '#282b2f',
 };
 
+const avatarAreaStyle = {
+    position: 'relative' as 'relative',
+    // left: -5,
+    // top: -5,
+    width: 66,
+    height: 66,
+    borderRadius: 33,
+    backgroundColor: 'white',
+    marginRight: 26,
+};
 const avatarStyle = {
+    position: 'absolute' as 'absolute',
+    left: 5,
+    top: 5,
     width: 56,
     height: 56,
     borderRadius: 28,
-    marginRight: 25,
 };

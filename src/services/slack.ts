@@ -25,7 +25,7 @@ export const slack = (apiToken: string) => ({
                 const user: IUser | undefined = store.users.get(userId);
                 if (!user) return;
 
-                user.setDmChannel((response as ConversationsOpenResponse).channel.id);
+                user.setDmChannel(((response as unknown) as ConversationsOpenResponse).channel.id);
             });
     },
 

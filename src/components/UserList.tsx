@@ -2,7 +2,7 @@ import React from 'react';
 import { IUser } from '../store/User';
 import User from './User';
 import { observer } from 'mobx-react-lite';
-import './user-list.css';
+import './userList.css';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 interface IProps {
     users: IUser[];
@@ -17,7 +17,7 @@ function UserList({ users }: IProps) {
 
     return (
         <div style={style}>
-            <TransitionGroup>{userList}</TransitionGroup>
+            <TransitionGroup component={null}>{userList}</TransitionGroup>
         </div>
     );
 }
@@ -28,6 +28,6 @@ const style: React.CSSProperties = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
     marginTop: 25,
 };

@@ -1,0 +1,16 @@
+.mainUserArea {
+    display: flex;
+    flex-Direction: column;
+    transition: height 200ms ease-out;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 19px;
+    border-radius: 15px;
+    /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08); */
+    background-color: var(--pale-grey);
+    margin: 0 62px 18px 62px;
+    transition: background-color 200ms ease-out;
+}
+.mainUserArea:hover, .mainUserArea.expanded {
+    background-color: #f6f7fb;
+}

@@ -58,7 +58,6 @@ function App() {
 const inputStyle = {
     height: 104,
     width: '100%',
-    // backgroundColor: 'green',
     display: 'flex',
     flexDirection: 'row' as 'row',
     justifyContent: 'center',
