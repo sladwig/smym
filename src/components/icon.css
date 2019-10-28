@@ -1,0 +1,35 @@
+.svg-wrapper {
+    width: 32px;
+    height: 32px;
+
+    border-radius: 16px;
+    background-color: rgba(110, 134, 255, 0.09);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon {
+    width: 14px;
+    height: 14px;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: inline-block;
+
+    transition: transform 100ms ease-out ;
+}
+.no-background {
+    background-color: transparent;
+}
+.turn-180 {
+    transform: rotate(180deg);
+}
+.small-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+}
+.tiny-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+}
