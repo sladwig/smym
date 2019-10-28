@@ -8,6 +8,9 @@
     align-items: center;
     justify-content: center;
 }
+.pointer:hover {
+    cursor: pointer;
+}
 .icon-wrapper:not(.no-hover):hover {
     background-color: var(--really-light-blue);
 }

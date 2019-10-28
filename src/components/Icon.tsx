@@ -25,11 +25,22 @@ interface IProps {
     turn?: boolean;
     size?: 'small' | 'tiny';
     noHover?: boolean;
+    pointer?: boolean;
     onClick?: (event?: MouseEvent) => void;
     style?: CSSProperties;
 }
 
-export const Icon = ({ name, transparent, turn, size, onClick, fill, style, noHover }: IProps) => {
+export const Icon = ({
+    name,
+    transparent,
+    turn,
+    size,
+    onClick,
+    fill,
+    style,
+    noHover,
+    pointer,
+}: IProps) => {
     const SvgIcon = svgs[name];
     return (
         <div
@@ -38,6 +49,7 @@ export const Icon = ({ name, transparent, turn, size, onClick, fill, style, noHo
                 'tiny-icon': size === 'tiny',
                 'small-icon': size === 'small',
                 'no-hover': noHover,
+                pointer,
             })}
             style={style}
         >

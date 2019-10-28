@@ -36,6 +36,7 @@ export const User = observer(({ user, expand }: IProps) => {
                         transparent={true}
                         turn={showMore}
                         noHover={true}
+                        pointer={true}
                         style={{ marginLeft: 15 }}
                         onClick={() => setShowMore(() => !showMore)}
                     />
