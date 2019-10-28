@@ -1,7 +1,10 @@
+import { tokenize, split, reduce } from './parser';
+import { Token } from './tokens';
+
 export interface ValueObject {
-    name: string | undefined;
-    value: number | 'reset' | undefined;
-    description: string | undefined;
+    name: string;
+    value: number | 'reset';
+    description: string;
 }
 export enum Split {
     name = 'name',
@@ -20,31 +23,33 @@ interface SplitAnalysis {
 export interface AnalyzeResult {
     isComplete: boolean;
     value: ValueObject;
-    tokens: Split[];
+    tokens: Token[];
 }
 interface SplitChecker {
     check: (sa: SplitAnalysis) => boolean;
     resulting: (splits: string[]) => AnalyzeResult;
 }
 export const analyze = (str: string): AnalyzeResult => {
-    const splits = str.trim().split(' ');
-    const checkedSplits = checkSplits(splits);
+    // const splits = str.trim().split(' ');
+    // const checkedSplits = checkSplits(splits);
 
-    const testCases: SplitChecker[] = [
-        normalTransaction,
-        paidMinusTransaction,
-        paidWithDescriptionTransaction,
-        paidTransaction,
-        paidSomeValueDoubleMinusTransaction,
-        paidSomeValueTransaction,
-        unComplete,
-    ];
+    // const testCases: SplitChecker[] = [
+    //     normalTransaction,
+    //     paidMinusTransaction,
+    //     paidWithDescriptionTransaction,
+    //     paidTransaction,
+    //     paidSomeValueDoubleMinusTransaction,
+    //     paidSomeValueTransaction,
+    //     unComplete,
+    // ];
 
-    const theCase = testCases.find(checker => {
-        return checker.check(checkedSplits);
-    });
+    // const theCase = testCases.find(checker => {
+    //     return checker.check(checkedSplits);
+    // });
 
-    return (theCase as SplitChecker).resulting(splits);
+    // return (theCase as SplitChecker).resulting(splits);
+    const tokens = split(str.trim()).map(tokenize);
+    return reduce(tokens);
 };
 
 export const isName = (str: string) => str.startsWith('@');
@@ -59,6 +64,7 @@ export const isPaid = (str: string) => str === 'paid';
 export const replaceComma = (str: string) => str.replace(',', '.');
 export const isDescription = (str: string) => !isName(str) && !isNumber(str) && !isPaid(str);
 export const asNumber = (str: string) => parseFloat(replaceComma(str));
+export const asName = (_: string) => _.slice(1);
 
 export const checkSplits = (splits: string[]): SplitAnalysis => {
     return {
@@ -69,14 +75,8 @@ export const checkSplits = (splits: string[]): SplitAnalysis => {
         hasDescription: splits.some(isDescription),
     };
 };
-const tokenize = (splits: string[]) => {
-    return splits.map(split => {
-        if (isName(split)) return Split.name;
-        if (isMinusNumber(split)) return Split.minusValue;
-        if (isNumber(split)) return Split.value;
-        if (isPaid(split)) return Split.paid;
-        return Split.description;
-    });
+const asTokens = (splits: string[]) => {
+    return splits.map(tokenize);
 };
 
 const normalTransaction: SplitChecker = {
@@ -84,7 +84,7 @@ const normalTransaction: SplitChecker = {
         return sa.hasName && !sa.hasPaid && sa.hasValue && sa.hasDescription;
     },
     resulting: (splits: string[]) => {
-        const tokens = tokenize(splits);
+        const tokens = asTokens(splits);
 
         return {
             isComplete: true,
@@ -103,7 +103,7 @@ const paidTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
-        tokens: tokenize(splits),
+        tokens: asTokens(splits),
         value: {
             name: extractName(splits),
             value: 'reset',
@@ -118,7 +118,7 @@ const paidWithDescriptionTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
-        tokens: tokenize(splits),
+        tokens: asTokens(splits),
         value: {
             name: extractName(splits),
             value: 'reset',
@@ -133,7 +133,7 @@ const paidSomeValueTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
-        tokens: tokenize(splits),
+        tokens: asTokens(splits),
         value: {
             name: extractName(splits),
             value: (extractValue(splits) || 0) * -1,
@@ -148,7 +148,7 @@ const paidSomeValueDoubleMinusTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
-        tokens: tokenize(splits),
+        tokens: asTokens(splits),
         value: {
             name: extractName(splits),
             value: extractValue(splits) || 0,
@@ -163,7 +163,7 @@ const paidMinusTransaction: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: true,
-        tokens: tokenize(splits),
+        tokens: asTokens(splits),
         value: {
             name: extractName(splits),
             value: extractValue(splits),
@@ -178,7 +178,7 @@ const unComplete: SplitChecker = {
     },
     resulting: (splits: string[]) => ({
         isComplete: false,
-        tokens: tokenize(splits),
+        tokens: asTokens(splits),
         value: {
             name: extractName(splits),
             value: extractValue(splits),

@@ -11,6 +11,7 @@ import {
     Split,
     AnalyzeResult,
 } from './nlp';
+import { Name, Desc, Value, Paid, Minus } from './tokens';
 
 describe('helpers', () => {
     test('isName', () => {
@@ -182,7 +183,7 @@ describe('valid', () => {
             value: 3.99,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.name, Split.description, Split.value]);
+        expect(result.tokens).toEqual([Name('stefanl'), Desc('marw'), Value(3.99)]);
     });
     analyzeTest('marw @stefanl 3,99 deluxe', result => {
         expect(result.value).toEqual({
@@ -191,12 +192,7 @@ describe('valid', () => {
             value: 3.99,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([
-            Split.description,
-            Split.name,
-            Split.value,
-            Split.description,
-        ]);
+        expect(result.tokens).toEqual([Desc('marw'), Name('stefanl'), Value(3.99), Desc('deluxe')]);
     });
     analyzeTest('marw 3 @stefanl', result => {
         expect(result.value).toEqual({
@@ -205,7 +201,7 @@ describe('valid', () => {
             value: 3,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.description, Split.value, Split.name]);
+        expect(result.tokens).toEqual([Desc('marw'), Value(3), Name('stefanl')]);
     });
     analyzeTest('@stefanl paid', result => {
         expect(result.value).toEqual({
@@ -214,7 +210,7 @@ describe('valid', () => {
             value: 'reset',
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.name, Split.paid]);
+        expect(result.tokens).toEqual([Name('stefanl'), Paid()]);
     });
     analyzeTest('paid @stefanl', result => {
         expect(result.value).toEqual({
@@ -223,7 +219,7 @@ describe('valid', () => {
             value: 'reset',
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.paid, Split.name]);
+        expect(result.tokens).toEqual([Paid(), Name('stefanl')]);
     });
 
     analyzeTest('paid @stefanl 7', result => {
@@ -233,7 +229,7 @@ describe('valid', () => {
             value: -7,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.paid, Split.name, Split.value]);
+        expect(result.tokens).toEqual([Paid(), Name('stefanl'), Value(7)]);
     });
 
     analyzeTest('paid @stefanl for it', result => {
@@ -243,12 +239,7 @@ describe('valid', () => {
             value: 'reset',
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([
-            Split.paid,
-            Split.name,
-            Split.description,
-            Split.description,
-        ]);
+        expect(result.tokens).toEqual([Paid(), Name('stefanl'), Desc('for'), Desc('it')]);
     });
 
     analyzeTest('paid 3.99 @stefanl for it', result => {
@@ -259,11 +250,11 @@ describe('valid', () => {
         });
         expect(result.isComplete).toBe(true);
         expect(result.tokens).toEqual([
-            Split.paid,
-            Split.value,
-            Split.name,
-            Split.description,
-            Split.description,
+            Paid(),
+            Value(3.99),
+            Name('stefanl'),
+            Desc('for'),
+            Desc('it'),
         ]);
     });
 
@@ -275,11 +266,11 @@ describe('valid', () => {
         });
         expect(result.isComplete).toBe(true);
         expect(result.tokens).toEqual([
-            Split.name,
-            Split.paid,
-            Split.minusValue,
-            Split.description,
-            Split.description,
+            Name('stefanl'),
+            Paid(),
+            Minus(-3.99),
+            Desc('for'),
+            Desc('it'),
         ]);
     });
 
@@ -290,7 +281,7 @@ describe('valid', () => {
             value: -3.5,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.name, Split.minusValue]);
+        expect(result.tokens).toEqual([Name('stefanl'), Minus(-3.5)]);
     });
     analyzeTest('@stefanl -3.50 other reason', result => {
         expect(result.value).toEqual({
@@ -300,10 +291,10 @@ describe('valid', () => {
         });
         expect(result.isComplete).toBe(true);
         expect(result.tokens).toEqual([
-            Split.name,
-            Split.minusValue,
-            Split.description,
-            Split.description,
+            Name('stefanl'),
+            Minus(-3.5),
+            Desc('other'),
+            Desc('reason'),
         ]);
     });
 
@@ -314,7 +305,7 @@ describe('valid', () => {
             value: -30,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([Split.name, Split.paid, Split.value, Split.description]);
+        expect(result.tokens).toEqual([Name('stefanl'), Paid(), Value(30), Desc('jiji')]);
     });
 
     // double minus should still be minus
@@ -325,12 +316,7 @@ describe('valid', () => {
             value: -30,
         });
         expect(result.isComplete).toBe(true);
-        expect(result.tokens).toEqual([
-            Split.name,
-            Split.paid,
-            Split.minusValue,
-            Split.description,
-        ]);
+        expect(result.tokens).toEqual([Name('stefanl'), Paid(), Minus(-30), Desc('jiji')]);
     });
 });
 
@@ -342,7 +328,7 @@ describe('partial invalid', () => {
             value: 0,
         });
         expect(result.isComplete).toBe(false);
-        expect(result.tokens).toEqual([Split.name]);
+        expect(result.tokens).toEqual([Name('stefanl')]);
     });
 
     analyzeTest('3.99', result => {
@@ -352,7 +338,7 @@ describe('partial invalid', () => {
             value: 3.99,
         });
         expect(result.isComplete).toBe(false);
-        expect(result.tokens).toEqual([Split.value]);
+        expect(result.tokens).toEqual([Value(3.99)]);
     });
 
     analyzeTest('some reason', result => {
@@ -362,7 +348,7 @@ describe('partial invalid', () => {
             value: 0,
         });
         expect(result.isComplete).toBe(false);
-        expect(result.tokens).toEqual([Split.description, Split.description]);
+        expect(result.tokens).toEqual([Desc('some'), Desc('reason')]);
     });
 
     analyzeTest('-3.50 other reason', result => {
@@ -372,7 +358,7 @@ describe('partial invalid', () => {
             value: -3.5,
         });
         expect(result.isComplete).toBe(false);
-        expect(result.tokens).toEqual([Split.minusValue, Split.description, Split.description]);
+        expect(result.tokens).toEqual([Minus(-3.5), Desc('other'), Desc('reason')]);
     });
     analyzeTest('@stefanl other reason', result => {
         expect(result.value).toEqual({
@@ -381,6 +367,6 @@ describe('partial invalid', () => {
             value: 0,
         });
         expect(result.isComplete).toBe(false);
-        expect(result.tokens).toEqual([Split.name, Split.description, Split.description]);
+        expect(result.tokens).toEqual([Name('stefanl'), Desc('other'), Desc('reason')]);
     });
 });
