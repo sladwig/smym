@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useState, CSSProperties } from 'react';
 import './icon.css';
 import classnames from 'classnames';
 
@@ -23,38 +23,31 @@ interface IProps {
     transparent?: boolean;
     fill?: string;
     turn?: boolean;
-    deg?: number;
     size?: 'small' | 'tiny';
+    noHover?: boolean;
     onClick?: (event?: MouseEvent) => void;
+    style?: CSSProperties;
 }
 
-export const Icon = ({ name, transparent, turn, size, onClick, fill, deg }: IProps) => {
+export const Icon = ({ name, transparent, turn, size, onClick, fill, style, noHover }: IProps) => {
     const SvgIcon = svgs[name];
-    const transform = deg ? `rotate(${deg}deg)` : undefined;
     return (
         <div
-            className={classnames('svg-wrapper', {
-                'no-background': transparent,
+            className={classnames('icon-wrapper', {
+                'no-background': transparent && !size,
                 'tiny-icon': size === 'tiny',
                 'small-icon': size === 'small',
+                'no-hover': noHover,
             })}
+            style={style}
         >
             <SvgIcon
                 onClick={onClick}
                 className={classnames('icon', {
                     'turn-180': turn,
                 })}
-                style={{ fill, stroke: fill, transform }}
+                style={{ fill, stroke: fill }}
             />
         </div>
     );
-};
-
-export const TurningIcon = ({ onClick, ...props }: IProps) => {
-    const [counter, setCounter] = useState(0);
-    const enhancedOnClick = (event?: MouseEvent) => {
-        setCounter(() => counter + 1);
-        if (onClick) onClick(event);
-    };
-    return <Icon {...props} onClick={enhancedOnClick} deg={counter * 180} />;
 };

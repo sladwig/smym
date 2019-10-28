@@ -11,7 +11,7 @@ interface IProps {
 function Transaction({ transaction }: IProps) {
     return (
         <div className="transaction">
-            <Icon name="calendar" />
+            <Icon name="calendar" noHover={true} />
             <span className="transaction-date">
                 {transaction.date.getDay()} {months[transaction.date.getMonth()]}
             </span>

@@ -34,7 +34,8 @@ export const Button: FunctionComponent<IProps> = ({
 
 export const PaidButton: Button = (props: any) => (
     <Button bg="cornflower" color="white" {...props}>
-        <Icon name="check" size="tiny" /> <span style={{ color: 'white' }}>&nbsp;Paid</span>
+        <Icon name="check" size="tiny" noHover={true} />{' '}
+        <span style={{ color: 'white' }}>&nbsp;Paid</span>
     </Button>
 );
 export const UnpaidButton: Button = (props: any) => <Button text="Mark Paid" {...props} />;
