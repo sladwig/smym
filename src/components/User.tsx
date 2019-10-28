@@ -18,14 +18,15 @@ export const User = observer(({ user, expand }: IProps) => {
 
     const height = showMore ? (user.transactions.length || 1) * transactionHeight + 91 : 56;
 
+    const toggleShowMore = () => setShowMore(() => !showMore);
     return (
         <div className="user-wrapper">
             <div className="user-area" style={{ height }}>
                 <div className="user">
-                    <div className="avatar-area">
+                    <div className="avatar-area" onClick={toggleShowMore}>
                         <img className="avatar" src={user.avatar} />
                     </div>
-                    <div className="description">
+                    <div className="description" onClick={toggleShowMore}>
                         <b style={{ marginRight: 12 }}>{user.name}</b> |{' '}
                         <span style={{ marginLeft: 12 }}>{user.real_name}</span>
                     </div>
@@ -40,7 +41,7 @@ export const User = observer(({ user, expand }: IProps) => {
                         noHover={true}
                         pointer={true}
                         style={{ marginLeft: 15 }}
-                        onClick={() => setShowMore(() => !showMore)}
+                        onClick={toggleShowMore}
                     />
                 </div>
                 {showMore && <TransactionList transactions={user.transactions} />}

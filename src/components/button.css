@@ -17,7 +17,7 @@
     justify-content: center;
     align-items: center;
     border: solid 1px white;
-    transition: background-color border color 100ms ease-out;
+    transition: background-color 100ms ease-out, border 100ms ease-out, color 100ms ease-out;
 }
 .button:not(.no-hover):hover {
     border: solid 1px var(--cornflower);
@@ -28,10 +28,14 @@
     border: solid 1px var(--cornflower);
     background-color: rgba(110, 134, 255, 0.15);
     cursor: pointer;
+}
+.button.no-hover {
+    cursor: default !important;
 }
 
 .bg-cornflower, .button:not(.no-hover):active, .bg-cornflower:not(.no-hover):hover {
     border: solid 1px #7b91ff;
     background-color: #7b91ff;
-    color: white;
+    color: var(--really-light-blue);
+    fill: var(--really-light-blue);
 }

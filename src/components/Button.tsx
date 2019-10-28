@@ -8,8 +8,8 @@ interface IProps {
     text?: string;
     className?: string;
     bg?: 'cornflower';
+    noHover?: boolean;
     children?: ReactNode;
-    color?: string;
 }
 type Button = FunctionComponent<IProps>;
 
@@ -19,12 +19,14 @@ export const Button: FunctionComponent<IProps> = ({
     className = '',
     bg,
     children,
-    color,
+    noHover,
     ...rest
 }: IProps) => (
     <div
-        className={classnames('button', { 'bg-cornflower': bg === 'cornflower' })}
-        style={{ color, fill: color }}
+        className={classnames('button', {
+            'bg-cornflower': bg === 'cornflower',
+            'no-hover': noHover,
+        })}
         onClick={onClick}
         {...rest}
     >
@@ -33,9 +35,8 @@ export const Button: FunctionComponent<IProps> = ({
 );
 
 export const PaidButton: Button = (props: any) => (
-    <Button bg="cornflower" color="white" {...props}>
-        <Icon name="check" size="tiny" noHover={true} />{' '}
-        <span style={{ color: 'white' }}>&nbsp;Paid</span>
+    <Button bg="cornflower" noHover={true} {...props}>
+        <Icon name="check" size="tiny" noHover={true} /> <span>&nbsp;Paid</span>
     </Button>
 );
 export const UnpaidButton: Button = (props: any) => <Button text="Mark Paid" {...props} />;
