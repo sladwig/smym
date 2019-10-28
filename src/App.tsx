@@ -15,7 +15,7 @@ function App() {
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
     useUpdatedUserList(apiToken);
     const [shouldSlack, setShouldSlack] = useState(false);
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState('@stefanl');
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setValue(event.target.value);
