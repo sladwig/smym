@@ -5,7 +5,7 @@ if (time > 12) {
     greeting = 'Good afternoon!';
 }
 
-module.exports = function (plop) {
+module.exports = function(plop) {
     plop.setWelcomeMessage(greeting);
     plop.setGenerator('component', {
         description: 'add a component',
@@ -29,10 +29,16 @@ module.exports = function (plop) {
                 templateFile: 'generators/component.test.hbs',
                 skipIfExists: true,
             },
+            {
+                type: 'add',
+                path: 'src/components/{{properCase name}}.css',
+                templateFile: 'generators/component.css.hbs',
+                skipIfExists: true,
+            },
         ],
     });
 
-    plop.setGenerator('hooks', {
+    plop.setGenerator('hook', {
         description: 'add a hook',
         prompts: [
             {
@@ -56,5 +62,4 @@ module.exports = function (plop) {
             },
         ],
     });
-
 };
