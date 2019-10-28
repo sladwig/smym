@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600&display=swap');
 
+@font-face {
+    font-family: 'Gotham Pro Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Gotham Pro Bold'), url('/fonts/GothaProBol.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'CircularStd Book';
+    font-style: normal;
+    font-weight: normal;
+    src: local('CircularStd Book'), url('/fonts/CircularStd-Book.woff') format('woff');
+}
+
+
 .App {
   text-align: center;
 }
