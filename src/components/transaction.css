@@ -1,0 +1,40 @@
+.transaction {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 16px;
+    padding: 23px;
+    align-items: center;
+    background-color: white;
+}
+
+.transaction-date {
+    width: 93px;
+    text-align: left;
+    margin-left: 13px;
+}
+
+.transaction-description {
+    opacity: 0.9;
+    font-size: 14px;
+    color: #ffffff;
+    padding: 8px 13px;
+
+    text-align: left;
+    border-radius: 18px;
+    border: solid 1px #909090;
+    background-color: #757575;
+
+
+      height: 11px;
+  font-family: 'Gotham Pro Bold';
+  font-size: 12px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+
+}
