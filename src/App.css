@@ -149,10 +149,3 @@ body {
   text-align: center;
   color: rgba(38, 44, 94, 0.5);
 }
-
-
-.icon {
-  width: 24px;
-  height: 24px;
-  object-fit: contain;
-}
