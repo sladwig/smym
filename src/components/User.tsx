@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IUser } from '../store/User';
 import { observer } from 'mobx-react-lite';
 import './user.css';
@@ -14,6 +14,8 @@ const transactionHeight = 102;
 
 export const User = observer(({ user, expand }: IProps) => {
     const [showMore, setShowMore] = useState(expand);
+    useEffect(() => setShowMore(expand), [expand]);
+
     const height = showMore ? (user.transactions.length || 1) * transactionHeight + 91 : 56;
 
     return (
