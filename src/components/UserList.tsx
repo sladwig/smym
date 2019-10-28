@@ -7,7 +7,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 interface IProps {
     users: IUser[];
 }
-function UserList({ users }: IProps) {
+export const UserList = observer(({ users }: IProps) => {
     const onlyOne = users.length === 1;
     const userList = users.map(user => (
         <CSSTransition key={user.id} timeout={200} classNames="user">
@@ -16,18 +16,8 @@ function UserList({ users }: IProps) {
     ));
 
     return (
-        <div style={style}>
+        <div className="user-list">
             <TransitionGroup component={null}>{userList}</TransitionGroup>
         </div>
     );
-}
-
-export default observer(UserList);
-
-const style: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    marginTop: 25,
-};
+});

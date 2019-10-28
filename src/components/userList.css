@@ -16,3 +16,10 @@
   height: 0;
   transition: height 100ms ease-out, opacity 200ms ease-out;
 }
+.user-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin-top: 34px;
+}
