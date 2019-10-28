@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, CSSProperties } from 'react';
+import React, { MouseEvent, CSSProperties } from 'react';
 import './icon.css';
 import classnames from 'classnames';
 

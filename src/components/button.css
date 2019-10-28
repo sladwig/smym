@@ -16,12 +16,22 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    transition: background-color 100ms ease-out;
+    border: solid 1px white;
+    transition: background-color border color 100ms ease-out;
 }
-.bg-cornflower {
-    background-color: #7b91ff;
-}
-.bg-cornflower:hover {
-    background-color: var(--cornflower);
+.button:not(.no-hover):hover {
+    border: solid 1px var(--cornflower);
+    background-color: rgba(110, 134, 255, 0.15);
     cursor: pointer;
+}
+.button:not(.no-hover):hover {
+    border: solid 1px var(--cornflower);
+    background-color: rgba(110, 134, 255, 0.15);
+    cursor: pointer;
+}
+
+.bg-cornflower, .button:not(.no-hover):active, .bg-cornflower:not(.no-hover):hover {
+    border: solid 1px #7b91ff;
+    background-color: #7b91ff;
+    color: white;
 }
