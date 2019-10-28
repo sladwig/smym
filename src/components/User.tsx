@@ -1,88 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IUser } from '../store/User';
 import { observer } from 'mobx-react-lite';
-import Transaction from './Transaction';
-import { Color } from '../style/colors';
 import './user.css';
+import { TransactionList } from './TranactionList';
+import { Icon } from './Icon';
+import { PaidButton, UnpaidButton } from './Button';
 
 interface IProps {
     user: IUser;
     expand: boolean;
 }
+const transactionHeight = 96;
 
-function User({ user, expand }: IProps) {
-    const transactions = user.transactions.map((transaction, index) => {
-        return <Transaction key={index} transaction={transaction} />;
-    });
-    const height = expand ? transactions.length * 88 + 108 : 56;
+export const User = observer(({ user, expand }: IProps) => {
+    const [showMore, setShowMore] = useState(expand);
+    const height = showMore ? user.transactions.length * transactionHeight + 100 : 56;
+
     return (
-        <div className="mainUserArea">
-            <div style={{ ...userAreaStyle, height }}>
-                <div style={{ ...userStyle }}>
-                    <div style={avatarAreaStyle}>
-                        <img style={avatarStyle} src={user.avatar} />
+        <div className="user-wrapper">
+            <div className="user-area" style={{ height }}>
+                <div className="user">
+                    <div className="avatar-area">
+                        <img className="avatar" src={user.avatar} />
                     </div>
-                    <div style={descriptionStyle}>
+                    <div className="description">
                         <b style={{ marginRight: 12 }}>{user.name}</b> |{' '}
                         <span style={{ marginLeft: 12 }}>{user.real_name}</span>
                     </div>
-                    <div style={balanceStyle}>{user.balance.toFixed(2)}</div>
-                </div>
-                {expand && (
-                    <div style={{ marginTop: 36 }}>
-                        {transactions.length ? transactions : 'no transactions'}
+                    <div className="balance" style={{ marginRight: 26 }}>
+                        {user.balance.toFixed(2)}
                     </div>
-                )}
+                    {user.balance === 0 ? <PaidButton /> : <UnpaidButton />}
+                    <Icon
+                        name="open"
+                        transparent={true}
+                        turn={showMore}
+                        onClick={() => setShowMore(() => !showMore)}
+                    />
+                </div>
+                {showMore && <TransactionList transactions={user.transactions} />}
             </div>
         </div>
     );
-}
-
-export default observer(User);
-
-const userAreaStyle = {
-    display: 'flex',
-    flexDirection: 'column' as 'column',
-    width: '100%',
-};
-const userStyle = {
-    height: 56,
-    flexShrink: 0,
-    width: '100%',
-    // height: 47,
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    alignItems: 'center',
-};
-const descriptionStyle = {
-    flexGrow: 1,
-    textAlign: 'left' as 'left',
-    verticalAlign: 'middle' as 'middle',
-};
-export const balanceStyle = {
-    flexGrow: 0,
-    fontSize: 28,
-    fontWeight: 'bold' as 'bold',
-    letterSpacing: -0.7,
-    textAlign: 'right' as 'right',
-    color: '#282b2f',
-};
-
-const avatarAreaStyle = {
-    position: 'relative' as 'relative',
-    // left: -5,
-    // top: -5,
-    width: 66,
-    height: 66,
-    borderRadius: 33,
-    backgroundColor: 'white',
-    marginRight: 26,
-};
-const avatarStyle = {
-    position: 'absolute' as 'absolute',
-    left: 5,
-    top: 5,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-};
+});

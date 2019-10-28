@@ -1,6 +1,6 @@
 import React from 'react';
 import { IUser } from '../store/User';
-import User from './User';
+import { User } from './User';
 import { observer } from 'mobx-react-lite';
 import './userList.css';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';

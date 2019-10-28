@@ -2,6 +2,7 @@
 
 exports[`can be created 1`] = `
 Object {
+  "avatar": undefined,
   "dmChannel": undefined,
   "id": "abc",
   "name": undefined,
