@@ -38,3 +38,13 @@
   color: #ffffff;
 
 }
+
+.no-transactions {
+    background-color:white;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    height: 102px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

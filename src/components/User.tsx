@@ -10,11 +10,11 @@ interface IProps {
     user: IUser;
     expand: boolean;
 }
-const transactionHeight = 96;
+const transactionHeight = 102;
 
 export const User = observer(({ user, expand }: IProps) => {
     const [showMore, setShowMore] = useState(expand);
-    const height = showMore ? user.transactions.length * transactionHeight + 100 : 56;
+    const height = showMore ? (user.transactions.length || 1) * transactionHeight + 91 : 56;
 
     return (
         <div className="user-wrapper">

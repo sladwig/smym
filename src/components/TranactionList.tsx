@@ -11,10 +11,15 @@ export const TransactionList = observer(({ transactions }: IProps) => {
     const allTransactions = transactions.map((transaction, index) => {
         return <Transaction key={index} transaction={transaction} />;
     });
+    const noTransactions = (
+        <div className="no-transactions" style={{ textAlign: 'center' }}>
+            no transactions
+        </div>
+    );
 
     return (
         <div style={{ marginTop: 36 }}>
-            {transactions.length ? allTransactions : 'no transactions'}
+            {transactions.length ? allTransactions : noTransactions}
         </div>
     );
 });
