@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite';
 import { ITransaction } from '../store/Transaction';
 import React from 'react';
 import './transaction.css';
@@ -9,9 +8,8 @@ interface IProps {
     transaction: ITransaction;
 }
 
-function Transaction({ transaction }: IProps) {
-    const hues = ['melon', 'light-salmon', 'really-light-blue', 'bright-cyan'];
-    const backgroundColor = randomcolor({ hue: hues[Math.ceil(Math.random() * 4)] });
+export const Transaction = ({ transaction }: IProps) => {
+    const backgroundColor = randomcolor({ hue: hues[Math.ceil(Math.random() * hues.length)] });
     return (
         <div className="transaction">
             <Icon name="calendar" noHover={true} />
@@ -27,8 +25,7 @@ function Transaction({ transaction }: IProps) {
             <span className="balance">{transaction.value.toFixed(2)}</span>
         </div>
     );
-}
-
-export default observer(Transaction);
+};
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+const hues = ['melon', 'light-salmon', 'really-light-blue', 'bright-cyan'];

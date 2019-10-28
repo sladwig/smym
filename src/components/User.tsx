@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { IUser } from '../store/User';
-import { observer } from 'mobx-react-lite';
 import './user.css';
 import { TransactionList } from './TranactionList';
 import { Icon } from './Icon';
@@ -12,7 +11,7 @@ interface IProps {
 }
 const transactionHeight = 102;
 
-export const User = observer(({ user, expand }: IProps) => {
+export const User = ({ user, expand }: IProps) => {
     const [showMore, setShowMore] = useState(expand);
     useEffect(() => setShowMore(expand), [expand]);
 
@@ -48,4 +47,4 @@ export const User = observer(({ user, expand }: IProps) => {
             </div>
         </div>
     );
-});
+};

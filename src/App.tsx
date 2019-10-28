@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useUpdatedUserList } from './hooks/useUpdatedUserList';
 import { analyze } from './services/nlp';
 import { inform } from './services/inform';
-import TransactionInput from './components/TransactionInput';
+import { TransactionInput } from './components/TransactionInput';
 import fuzzysearch from 'fuzzysearch';
 import DevDetails from './components/DevDetails';
 

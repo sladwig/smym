@@ -5,11 +5,9 @@ interface IProp {
     value: string;
     onChange: (event: ChangeEvent<HTMLInputElement>) => any;
 }
-function TransactionInput({ onChange, value }: IProp) {
+export const TransactionInput = ({ onChange, value }: IProp) => {
     return <input style={style} type="text" value={value} onChange={onChange} />;
-}
-
-export default observer(TransactionInput);
+};
 
 const style = {
     width: 1116,
