@@ -76,6 +76,18 @@ export const Texter = types
                 {} as { [_: string]: number },
             );
         },
+        get isFirst() {
+            return self.caret === 0;
+        },
+        get isLast() {
+            return self.caret === this.maxCaret;
+        },
+        get isStart() {
+            return this.position === 0;
+        },
+        get isEnd() {
+            return this.position === this.maxPosition;
+        },
     }))
     .actions(self => ({
         at([focus, caret]: Coords) {

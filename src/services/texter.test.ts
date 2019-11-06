@@ -31,7 +31,7 @@ describe('Texter', () => {
         });
         test('maxPosition', () => {
             const str = 'abcdefhij aa';
-            const t = text('abcdefhij aa');
+            const t = text(str);
             expect(t.maxPosition).toEqual(str.length);
         });
 
@@ -62,6 +62,48 @@ describe('Texter', () => {
             const t = text('a db hij klms');
             t.at([2, 1]);
             expect(t.position).toEqual(6);
+        });
+        test('isLast', () => {
+            const t = text('a db hij klms');
+            expect(t.isLast).toBe(true);
+
+            t.moveTo(1);
+            expect(t.isLast).toBe(true);
+            t.moveTo(3);
+            expect(t.isLast).toBe(false);
+        });
+        test('isFirst', () => {
+            const t = text('a db hij klms');
+            expect(t.isFirst).toBe(false);
+
+            t.moveTo(0);
+            expect(t.isFirst).toBe(true);
+            t.moveTo(2);
+            expect(t.isFirst).toBe(true);
+        });
+        test('isStart', () => {
+            const t = text('a db hij klms');
+            expect(t.isStart).toBe(false);
+
+            t.moveTo(1);
+            expect(t.isStart).toBe(false);
+            t.moveTo(3);
+            expect(t.isStart).toBe(false);
+            t.moveTo(0);
+            expect(t.isStart).toBe(true);
+        });
+
+        test('isEnd', () => {
+            const t = text('a db hij klms');
+            expect(t.isEnd).toBe(true);
+
+            t.moveTo(1);
+            expect(t.isEnd).toBe(false);
+            t.moveTo(3);
+            expect(t.isEnd).toBe(false);
+
+            t.moveTo(0);
+            expect(t.isEnd).toBe(false);
         });
     });
 
