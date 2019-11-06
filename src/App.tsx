@@ -28,8 +28,8 @@ function App() {
         fuzzysearch(result.value.name, `${u.name} ${u.real_name}`),
     );
 
-    const createTransaction = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const createTransaction = (event?: React.FormEvent<HTMLFormElement>) => {
+        if (event) event.preventDefault();
 
         if (result.value.name === undefined) return;
 
@@ -40,29 +40,17 @@ function App() {
     };
     return (
         <div className="App">
-            <form onSubmit={createTransaction}>
-                <div style={inputStyle}>
-                    <TransactionInput onChange={onChange} value={value} />
-                    {/* <input disabled={!(result.isComplete && hasUser)} type="submit" value="Go" /> */}
-                </div>
-            </form>
-            {/* <TransactionForm {...result.value} /> */}
+            <TransactionInput
+                onChange={onChange}
+                value={value}
+                onSubmit={createTransaction}
+                setValue={setValue}
+            />
             <UserList users={filteredUserList} />
             {!apiToken && <ApiInput />}
             <DevDetails {...{ shouldSlack, setShouldSlack, hasUser, result }} />
         </div>
     );
 }
-
-const inputStyle = {
-    height: 104,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row' as 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxShadow: '0 0.5px 0 0 rgba(0, 0, 0, 0.17)',
-    backgroundColor: '#ffffff',
-};
 
 export default observer(App);

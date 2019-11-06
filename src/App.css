@@ -13,7 +13,9 @@
     font-weight: normal;
     src: local('CircularStd Book'), url('/fonts/CircularStd-Book.woff') format('woff');
 }
-
+* {
+    box-sizing: border-box;
+}
 
 .App {
   text-align: center;
@@ -32,6 +34,7 @@
   --light-salmon: #f79a9a;
   --melon: #ff7f56;
   --off-white: #fdf3e4;
+  --whiteish: #f6f7fb;
 }
 
 body {

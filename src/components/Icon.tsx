@@ -26,6 +26,7 @@ interface IProps {
     size?: 'small' | 'tiny';
     noHover?: boolean;
     pointer?: boolean;
+    rectangle?: boolean;
     onClick?: (event?: MouseEvent) => void;
     style?: CSSProperties;
 }
@@ -40,6 +41,7 @@ export const Icon = ({
     style,
     noHover,
     pointer,
+    rectangle,
 }: IProps) => {
     const SvgIcon = svgs[name];
     return (
@@ -50,6 +52,7 @@ export const Icon = ({
                 'small-icon': size === 'small',
                 'no-hover': noHover,
                 pointer,
+                rectangle,
             })}
             style={style}
         >
