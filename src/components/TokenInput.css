@@ -1,0 +1,29 @@
+.token-input {
+    border: 1px solid gold;
+    display: flex;
+    flex-direction: row;
+}
+.display {
+    border: 1px solid blue;
+
+}
+.post-display {
+    flex-grow: 1;
+}
+.input-field {
+    border: 1px solid red;
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    text-align: left;
+    margin-right: .3em;
+}
+.input-field:focus {
+    outline: 0px solid transparent;
+}
+
+.display {
+    border-right: 1px solid transparent;
+    border-left: 1px solid transparent;
+    margin-right: .3em;
+
+}
