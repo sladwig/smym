@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClickPositionEmitter renders 1`] = `<div />`;
+
+exports[`ClickPositionEmitter renders with value 1`] = `
+<div>
+  <span
+    class="click-position-emitter"
+  >
+    <span
+      class="position-emitter"
+    >
+      a
+      <span
+        class="position-area-overlay"
+      >
+        <span
+          class="position-area"
+        />
+        <span
+          class="position-area"
+        />
+      </span>
+    </span>
+    <span
+      class="position-emitter"
+    >
+      b
+      <span
+        class="position-area-overlay"
+      >
+        <span
+          class="position-area"
+        />
+        <span
+          class="position-area"
+        />
+      </span>
+    </span>
+    <span
+      class="position-emitter"
+    >
+      c
+      <span
+        class="position-area-overlay"
+      >
+        <span
+          class="position-area"
+        />
+        <span
+          class="position-area"
+        />
+      </span>
+    </span>
+  </span>
+</div>
+`;
+
+exports[`PositionEmitter renders 1`] = `
+<div>
+  <span
+    class="position-emitter"
+  >
+    a
+    <span
+      class="position-area-overlay"
+    >
+      <span
+        class="position-area"
+      />
+      <span
+        class="position-area"
+      />
+    </span>
+  </span>
+</div>
+`;
