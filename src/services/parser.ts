@@ -44,18 +44,19 @@ export const detokenize = (token: Token): string => {
     return '';
 };
 
-const by = (type: TokenType) => (_: any) => _.type === type;
+const is = (type: TokenType) => (_: any) => _.type === type;
+const get = (type: string) => (_: any) => _[type];
 
 const analyseName = (tokens: Token[]): string => {
-    const possibleName: any = tokens.find(by(TokenType.name));
+    const possibleName: any = tokens.find(is(TokenType.name));
     return possibleName ? possibleName.name : '';
 };
 const analyseDesc = (tokens: Token[]): string => {
     const possibleDescription = tokens
-        .filter((_: any) => _.description)
-        .map((_: any) => _.description)
+        .filter(get('description'))
+        .map(get('description'))
         .join(' ');
-    const optionalDescription = tokens.find(by(TokenType.minus)) ? 'paid' : '';
+    const optionalDescription = tokens.find(is(TokenType.minus)) ? 'paid' : '';
     return possibleDescription || optionalDescription;
 };
 const analyseValue = (tokens: Token[]): number | 'reset' => {
@@ -81,7 +82,7 @@ export const reduce = (tokens: Token[]): AnalyzeResult => {
 };
 
 export const findOrAdd = (tokens: Token[], token: Token): Token[] => {
-    const isAt = tokens.findIndex(by(token.type));
+    const isAt = tokens.findIndex(is(token.type));
     const hasToken = -1 < isAt;
     const tokensCopy = tokens.slice(0);
     console.log(
@@ -102,25 +103,25 @@ export const findOrAdd = (tokens: Token[], token: Token): Token[] => {
     // return [...tokens.slice(0, isAt - 1), token, ...tokens.slice(isAt + 1)];
 };
 
-const zipUp = (tokens: Token[], newTokens: Token[]): Token[] => {
-    const filtered: any[] = [];
-    tokens.forEach((token: any, index) => {
-        if (token.description) filtered.push([token, index]);
-    });
-    console.log('filtered', filtered);
-    const result = tokens.slice(0);
-    newTokens.forEach((token, index) => {
-        const tokenIndexPair = filtered[index];
-        console.log('token index', token, index);
-        if (!token) return;
-        if (tokenIndexPair) {
-            result[tokenIndexPair[1]] = token;
-        } else {
-            result.push(token);
-        }
-    });
-    return result;
-};
+// const zipUp = (tokens: Token[], newTokens: Token[]): Token[] => {
+//     const filtered: any[] = [];
+//     tokens.forEach((token: any, index) => {
+//         if (token.description) filtered.push([token, index]);
+//     });
+//     console.log('filtered', filtered);
+//     const result = tokens.slice(0);
+//     newTokens.forEach((token, index) => {
+//         const tokenIndexPair = filtered[index];
+//         console.log('token index', token, index);
+//         if (!token) return;
+//         if (tokenIndexPair) {
+//             result[tokenIndexPair[1]] = token;
+//         } else {
+//             result.push(token);
+//         }
+//     });
+//     return result;
+// };
 
 const popFrom = (token: Token): string => {
     if (token.type === TokenType.name) return 'name';

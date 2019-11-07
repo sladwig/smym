@@ -71,106 +71,106 @@ describe('helpers', () => {
 const splitTest = (toBeAnalysed: string, testFunction: (splits: string[]) => any) =>
     test(toBeAnalysed, () => testFunction(toBeAnalysed.split(' ')));
 
-describe('checkSplits', () => {
-    splitTest('@stefanl marw 3.99', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: false,
-            hasValue: true,
-            hasMinusValue: false,
-            hasDescription: true,
-        });
-    });
+// describe('checkSplits', () => {
+//     splitTest('@stefanl marw 3.99', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: false,
+//             hasValue: true,
+//             hasMinusValue: false,
+//             hasDescription: true,
+//         });
+//     });
 
-    splitTest('marw @stefanl 3,99 deluxe', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: false,
-            hasValue: true,
-            hasMinusValue: false,
-            hasDescription: true,
-        });
-    });
+//     splitTest('marw @stefanl 3,99 deluxe', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: false,
+//             hasValue: true,
+//             hasMinusValue: false,
+//             hasDescription: true,
+//         });
+//     });
 
-    splitTest('@stefanl paid', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: true,
-            hasValue: false,
-            hasMinusValue: false,
-            hasDescription: false,
-        });
-    });
+//     splitTest('@stefanl paid', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: true,
+//             hasValue: false,
+//             hasMinusValue: false,
+//             hasDescription: false,
+//         });
+//     });
 
-    splitTest('paid @stefanl', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: true,
-            hasValue: false,
-            hasMinusValue: false,
-            hasDescription: false,
-        });
-    });
+//     splitTest('paid @stefanl', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: true,
+//             hasValue: false,
+//             hasMinusValue: false,
+//             hasDescription: false,
+//         });
+//     });
 
-    splitTest('paid @stefanl 7', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: true,
-            hasValue: true,
-            hasMinusValue: false,
-            hasDescription: false,
-        });
-    });
+//     splitTest('paid @stefanl 7', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: true,
+//             hasValue: true,
+//             hasMinusValue: false,
+//             hasDescription: false,
+//         });
+//     });
 
-    splitTest('@stefanl -3.50', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: false,
-            hasValue: true,
-            hasMinusValue: true,
-            hasDescription: false,
-        });
-    });
+//     splitTest('@stefanl -3.50', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: false,
+//             hasValue: true,
+//             hasMinusValue: true,
+//             hasDescription: false,
+//         });
+//     });
 
-    splitTest('@stefanl -3.50 other reason', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: false,
-            hasValue: true,
-            hasMinusValue: true,
-            hasDescription: true,
-        });
-    });
+//     splitTest('@stefanl -3.50 other reason', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: false,
+//             hasValue: true,
+//             hasMinusValue: true,
+//             hasDescription: true,
+//         });
+//     });
 
-    splitTest('@stefanl paid 30 jiji', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: true,
-            hasValue: true,
-            hasMinusValue: false,
-            hasDescription: true,
-        });
-    });
+//     splitTest('@stefanl paid 30 jiji', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: true,
+//             hasValue: true,
+//             hasMinusValue: false,
+//             hasDescription: true,
+//         });
+//     });
 
-    splitTest('@stefanl paid -30 jiji', splits => {
-        const result = checkSplits(splits);
-        expect(result).toEqual({
-            hasName: true,
-            hasPaid: true,
-            hasValue: true,
-            hasMinusValue: true,
-            hasDescription: true,
-        });
-    });
-});
+//     splitTest('@stefanl paid -30 jiji', splits => {
+//         const result = checkSplits(splits);
+//         expect(result).toEqual({
+//             hasName: true,
+//             hasPaid: true,
+//             hasValue: true,
+//             hasMinusValue: true,
+//             hasDescription: true,
+//         });
+//     });
+// });
 
 const analyzeTest = (toBeAnalysed: string, testFunction: (splits: AnalyzeResult) => any) =>
     test(toBeAnalysed, () => testFunction(analyze(toBeAnalysed)));
