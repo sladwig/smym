@@ -5,9 +5,11 @@ import { text } from '../services/texter';
 import { observer } from 'mobx-react-lite';
 import * as key from 'keyboardjs';
 import { w } from '../testUtils';
+import { ClickPositionEmitter } from './ClickPositionEmitter';
+import { randomBytes } from 'crypto';
 
 const alphabet = w(
-    'a b c d e f g h i j k l m n o p q r s t u v w x i z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z space 0 1 2 3 4 5 6 7 8 9 @ ~ ! @ # $ % ^ & * ( ) , + { } | : backslash < > ? , . / ` [ apostrophe ] ; - =',
+    'a b c d e f g h i j k l m n o p q r s t u v w x i z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z space 0 1 2 3 4 5 6 7 8 9 @ ~ ! @ # $ £ € % ^ & * ( ) , + { } | : backslash < > ? , . / ` [ apostrophe ] ; - =',
 );
 
 type Transformer<T> = (_: T) => any;
@@ -35,7 +37,6 @@ export const TokenInput = observer(
 
         useEffect(
             withCurrent(focusedRef, (current: HTMLDivElement) => {
-                // if (!current)
                 if (!current.childNodes.length) {
                     current.focus();
                     return;
@@ -73,6 +74,15 @@ export const TokenInput = observer(
                 console.log('error in get Pos:', e);
             }
         });
+        const isSelection = withCurrent(focusedRef, (current: HTMLDivElement) => {
+            if (!document) return;
+            const sel = document.getSelection();
+            if (!sel) return;
+            let _range = sel.getRangeAt(0);
+            let range = _range.cloneRange();
+            console.log('range', range, range.startOffset === range.endOffset);
+            return range.startOffset === range.endOffset;
+        });
 
         const onUpdatePosition = (event?: key.KeyEvent) => {
             if (event && event.preventRepeat) event.preventRepeat();
@@ -88,35 +98,33 @@ export const TokenInput = observer(
             }
         };
 
-        const onChange = withCurrent(focusedRef, (current: HTMLDivElement) => {
+        const updateContent = withCurrent(focusedRef, (current: HTMLDivElement) => {
             const content = current.innerHTML.replace('&nbsp;', ' ');
             cm.update(content);
         });
-        const onArrowLeft = () => {
-            cm.move(-1);
-        };
-        const onArrowRight = () => {
-            cm.move(+1);
-        };
-        const onBackspace = () => {
-            cm.delete();
-        };
+        const moveLeft = () => cm.move(-1);
+        const moveRight = () => cm.move(+1);
+        const onBackspace = () => cm.delete();
+
         const nothing = () => null;
         useEffect(() => {
             key.withContext('input', () => {
-                key.bind(alphabet, nothing, onChange);
-                key.bind('left', nothing, onArrowLeft);
-                key.bind('right', nothing, onArrowRight);
+                key.bind(alphabet, nothing, updateContent);
+                key.bind('left', nothing, moveLeft);
+                key.bind('right', nothing, moveRight);
                 key.bind('backspace', nothing, onBackspace);
 
-                key.bind(['alt+left', 'alt+right'], onUpdatePosition, onUpdatePosition);
+                key.bind(
+                    ['alt+left', 'alt+right', 'alt+shift+left', 'alt+shift+right'],
+                    onUpdatePosition,
+                    onUpdatePosition,
+                );
+                key.bind(['shift+left', 'shift+right'], isSelection, isSelection);
             });
         }, []);
 
         const inputs = splited.map((eachValue, index) => {
             if (index === focus) {
-                // const thisRef = refs[index];
-
                 return (
                     <div
                         key={`input-field-${index}`}
@@ -135,19 +143,14 @@ export const TokenInput = observer(
                     <div
                         className="display"
                         key={`display-${index}`}
-                        onClick={() => cm.setFocus(index)}
+                        onClick={() => cm.set({ focus: index, caret: cm.maxCaretAt(cm.focus) })}
                     >
-                        {eachValue}
+                        <ClickPositionEmitter
+                            value={eachValue}
+                            onClick={position => cm.set({ focus: index, caret: position })}
+                        />
                     </div>
                 );
-            }
-        });
-
-        useEffect(() => {
-            const readPosition = getPos();
-            if (cm.position !== readPosition) {
-                console.log('reset  positio', readPosition);
-                cm.setCaret(readPosition);
             }
         });
 

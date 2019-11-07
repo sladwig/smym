@@ -162,4 +162,5 @@ describe('TokenInput', () => {
         expect(inputField.innerHTML).toEqual('ab');
     });
     test.todo('tab index');
+    test.todo('jumps words with alt');
 });

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TokenInput renders 1`] = `
+<div>
+  <div
+    class="token-input"
+  >
+    <div
+      class="display pre-display"
+    />
+    <div
+      class="input-field"
+      contenteditable="true"
+      spellcheck="false"
+      tabindex="0"
+    />
+    <div
+      class="display post-display"
+    />
+  </div>
+</div>
+`;

@@ -2,28 +2,29 @@
     border: 1px solid gold;
     display: flex;
     flex-direction: row;
+    height: 20px;
 }
 .display {
     border: 1px solid blue;
-
+cursor: text;
 }
 .post-display {
     flex-grow: 1;
 }
 .input-field {
     border: 1px solid red;
-    border-right: 1px solid transparent;
-    border-left: 1px solid transparent;
+    border-right: 0px solid transparent;
+    border-left: 0px solid transparent;
     text-align: left;
-    margin-right: .3em;
+    padding: 0 .125em;
 }
 .input-field:focus {
     outline: 0px solid transparent;
 }
 
 .display {
-    border-right: 1px solid transparent;
-    border-left: 1px solid transparent;
-    margin-right: .3em;
+    border-right: 0px solid transparent;
+    border-left: 0px solid transparent;
+    padding: 0 .125em;
 
 }
