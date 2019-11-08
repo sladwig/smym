@@ -7,30 +7,31 @@ import applyDevTools from 'prosemirror-dev-tools';
 import { schema } from './richSchema';
 import { plugins } from './richPlugins';
 import { nodeViews } from './nodes/nodes';
+import { useUpdateState } from '../../hooks/useUpdateState';
+import { useEditorState } from '../../hooks/useDispatchTransaction';
 
-interface IProps {}
-
-export const RichInput = ({  }: IProps) => {
+export const RichInput = () => {
     const editorRef = useRef<HTMLDivElement>(null);
     const [editorView, setEditorView] = useState<EditorView>();
-    const [editorState] = useState<EditorState>(
-        EditorState.create({
-            schema,
-            plugins: plugins(),
-        }),
+
+    const { state, dispatchTransaction, stateRef } = useEditorState(
+        EditorState.create({ schema, plugins: plugins() }),
     );
+
     useEffect(() => {
         if (!editorRef.current) return;
+
         const view = new EditorView(editorRef.current, {
             nodeViews,
-            state: editorState,
+            state: stateRef.current,
+            dispatchTransaction,
         });
         setEditorView(view);
         applyDevTools(view);
-        return () => {
-            if (view) view.destroy();
-        };
-    }, []);
+        return () => view.destroy();
+    }, [dispatchTransaction, stateRef]);
+
+    useUpdateState(editorView, state);
 
     return <div className="rich-input" ref={editorRef} />;
 };
