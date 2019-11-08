@@ -9,9 +9,7 @@ export const schema = new Schema({
             group: 'block',
             content: 'inline*',
             parseDOM: [{ tag: 'p' }],
-            toDOM() {
-                return ['p', 0];
-            },
+            toDOM: () => ['p', 0],
         },
         text: {
             group: 'inline',

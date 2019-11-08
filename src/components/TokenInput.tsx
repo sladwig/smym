@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite';
 import * as key from 'keyboardjs';
 import { w } from '../testUtils';
 import { ClickPositionEmitter } from './ClickPositionEmitter';
-import { randomBytes } from 'crypto';
 
 const alphabet = w(
     'a b c d e f g h i j k l m n o p q r s t u v w x i z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z space 0 1 2 3 4 5 6 7 8 9 @ ~ ! @ # $ £ € % ^ & * ( ) , + { } | : backslash < > ? , . / ` [ apostrophe ] ; - =',
@@ -33,7 +32,7 @@ export const TokenInput = observer(
         const { splited, focus, caret } = cm;
 
         console.log('render', splited, focus, caret);
-        const focusedRef = useRef(null);
+        const focusedRef = useRef<HTMLDivElement>(null);
 
         useEffect(
             withCurrent(focusedRef, (current: HTMLDivElement) => {
@@ -74,7 +73,7 @@ export const TokenInput = observer(
                 console.log('error in get Pos:', e);
             }
         });
-        const isSelection = withCurrent(focusedRef, (current: HTMLDivElement) => {
+        const isSelection = withCurrent(focusedRef, current => {
             if (!document) return;
             const sel = document.getSelection();
             if (!sel) return;
@@ -168,12 +167,11 @@ export const TokenInput = observer(
     },
 );
 
-const withCurrent = (
-    ref: RefObject<HTMLDivElement>,
-    currenCall: (current: HTMLDivElement) => any,
-) => () => {
-    if (ref.current) return currenCall(ref.current);
-};
+export function withCurrent<T>(ref: RefObject<T>, currenCall: (current: T) => any) {
+    return () => {
+        if (ref && ref.current) return currenCall(ref.current);
+    };
+}
 
 function withTransformer<T>(transformer: Transformer<T>[], values: T[]): any[] {
     return values.map(value =>

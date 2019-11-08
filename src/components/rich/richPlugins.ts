@@ -6,6 +6,9 @@ import { baseKeymap } from 'prosemirror-commands';
 
 import { createNewUnderline } from './richActions';
 
+delete baseKeymap['Enter'];
+console.log(baseKeymap);
+
 export const plugins = () => {
     const plugins: Plugin[] = [];
 
