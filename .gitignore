@@ -25,3 +25,6 @@ yarn-error.log*
 
 # make
 .make.*
+
+# meta
+.meta
