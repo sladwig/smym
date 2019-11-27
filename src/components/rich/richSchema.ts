@@ -3,15 +3,17 @@ import { Schema } from 'prosemirror-model';
 export const schema = new Schema({
     nodes: {
         doc: {
-            content: 'block+',
+            content: '(text | token)+',
         },
         underline: {
-            group: 'block',
-            content: 'inline*',
-            parseDOM: [{ tag: 'p' }],
-            toDOM: () => ['p', 0],
+            group: 'token',
+            content: 'text*',
+            inline: true,
+            parseDOM: [{ tag: 'span' }],
+            toDOM: () => ['span', 0],
         },
         text: {
+            inline: true,
             group: 'inline',
         },
     },

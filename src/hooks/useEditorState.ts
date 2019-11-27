@@ -2,7 +2,7 @@ import { useStateRef } from './useStateRef';
 import { useState, useCallback } from 'react';
 import { EditorState } from 'prosemirror-state';
 
-export function useEditorState(init: EditorState) {
+export const useEditorState = (init: EditorState) => {
     const [state, setEditorState] = useState<EditorState>(init);
     const stateRef = useStateRef(state);
     const dispatchTransaction = useCallback(
@@ -10,4 +10,4 @@ export function useEditorState(init: EditorState) {
         [setEditorState, stateRef],
     );
     return { state, setEditorState, dispatchTransaction, stateRef };
-}
+};

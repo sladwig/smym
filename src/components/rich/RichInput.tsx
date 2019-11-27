@@ -8,7 +8,7 @@ import { schema } from './richSchema';
 import { plugins } from './richPlugins';
 import { nodeViews } from './nodes/nodes';
 import { useUpdateState } from '../../hooks/useUpdateState';
-import { useEditorState } from '../../hooks/useDispatchTransaction';
+import { useEditorState } from '../../hooks/useEditorState';
 
 export const RichInput = () => {
     const editorRef = useRef<HTMLDivElement>(null);

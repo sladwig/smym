@@ -5,8 +5,11 @@ import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 
 import { createNewUnderline } from './richActions';
+import { inputRules } from 'prosemirror-inputrules';
+import { buildInputRules } from './richInputRules';
+import { schema } from './richSchema';
 
-delete baseKeymap['Enter'];
+// delete baseKeymap['Enter'];
 console.log(baseKeymap);
 
 export const plugins = () => {
@@ -19,6 +22,7 @@ export const plugins = () => {
             'Ctrl-n': createNewUnderline,
         }),
     );
+    plugins.push(buildInputRules(schema));
 
     return plugins;
 };

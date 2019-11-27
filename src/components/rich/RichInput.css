@@ -1,3 +1,7 @@
 .rich-input {
     border: 1px solid black;
+    padding: 5px;
+}
+.rich-input *:focus {
+    outline: none;
 }

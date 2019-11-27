@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RichInput renders 1`] = `
+<div>
+  <div
+    class="rich-input"
+  >
+    <div
+      class="ProseMirror"
+      contenteditable="true"
+    >
+      <span
+        class="node__dom"
+      >
+        <span
+          style="text-decoration: underline;"
+        >
+          <span
+            class="node__content-dom"
+          />
+        </span>
+      </span>
+      <br />
+    </div>
+  </div>
+</div>
+`;

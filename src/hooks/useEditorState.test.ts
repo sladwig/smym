@@ -1,10 +1,10 @@
 import React from 'react';
 import { renderHook, act } from '@testing-library/react-hooks'
-import { useDispatchTransaction } from './useDispatchTransaction';
+import { useEditorState } from './useEditorState';
 
-describe('useDispatchTransaction', () => {
+describe('useEditorState', () => {
     test('testing the truth', () => {
-        const { result } = renderHook(() => useDispatchTransaction())
+        const { result } = renderHook(() => useEditorState())
 
         act(() => {
             // result.current.increment()

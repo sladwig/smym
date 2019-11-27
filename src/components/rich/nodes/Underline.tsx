@@ -6,8 +6,8 @@ import { EditorView, NodeView, Decoration } from 'prosemirror-view';
 interface IProps {
     usingRef: RefObject<HTMLParagraphElement>;
 }
-const Underlined = ({ usingRef }: IProps) => {
-    return <p ref={usingRef} style={{ textDecoration: 'underline' }}></p>;
+export const Underlined = ({ usingRef }: IProps) => {
+    return <span ref={usingRef} style={{ textDecoration: 'underline' }}></span>;
 };
 
 export class Underline implements NodeView {
