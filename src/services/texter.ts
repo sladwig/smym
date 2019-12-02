@@ -5,6 +5,7 @@ interface Caret {
     focus: number;
     caret: number;
     value: string;
+    position: number | null;
 }
 type Coords = [number, number];
 
@@ -96,10 +97,11 @@ export const Texter = types
         afterCreate() {
             this.at(self.endCoords);
         },
-        set({ focus, caret, value }: Partial<Caret>) {
+        set({ focus, caret, value, position }: Partial<Caret>) {
             this.setFocus(focus);
             this.setCaret(caret);
             this.setValue(value);
+            if (position !== undefined && position !== null) this.moveTo(position);
             return this;
         },
         setFocus(focus?: number) {
