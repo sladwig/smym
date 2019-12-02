@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TokenDisplay emits event input/focus onClick 1`] = `
+<div>
+  <div />
+</div>
+`;
+
+exports[`TokenDisplay renders 1`] = `<div />`;

@@ -1,15 +1,12 @@
-import React, { useRef, useState, RefObject, CSSProperties, useEffect, useMemo } from 'react';
+import React, { useRef, useState, CSSProperties, useEffect, useMemo } from 'react';
 import './TokenInput.css';
 import classnames from 'classnames';
 import { text } from '../services/texter';
 import { observer } from 'mobx-react-lite';
-import * as key from 'keyboardjs';
-import { w } from '../testUtils';
-import { ClickPositionEmitter } from './ClickPositionEmitter';
-
-const alphabet = w(
-    'a b c d e f g h i j k l m n o p q r s t u v w x i z A B C D E F G H I J K L M N O P Q R S T U V W X Y Z space 0 1 2 3 4 5 6 7 8 9 @ ~ ! @ # $ £ € % ^ & * ( ) , + { } | : backslash < > ? , . / ` [ apostrophe ] ; - =',
-);
+import { WithDecorations } from './WithDecorations';
+import { useEmit, useOn } from '../hooks/useEvents';
+import { withCurrent } from '../helper';
+import { TokenDisplay } from './TokenDisplay';
 
 type Transformer<T> = (_: T) => any;
 
@@ -23,158 +20,74 @@ interface IProps {
 }
 export const TokenInput = observer(
     ({ value, placeholder, style = {}, className, autofocus, transformer = [] }: IProps) => {
+        const mainRef = useRef<HTMLDivElement>(null);
+
+        const cm = useMemo(() => text(value), [value]);
+        const { splited, focus, caret, value: valueString, position } = cm;
+
+        const emit = useEmit();
+        useOn('foo', bar => console.log('foo', bar));
+
+        console.log('render', splited, focus, caret, position, valueString);
+        const focusedRef = useRef<HTMLInputElement>(null);
+        const focusInput = withCurrent(focusedRef, current => current.focus());
+
         const [hasFocus, setHasFocus] = useState(false);
         const focusing = () => setHasFocus(true);
         const blurring = () => setHasFocus(false);
 
-        const cm = useMemo(() => text(value), [value]);
-
-        const { splited, focus, caret } = cm;
-
-        console.log('render', splited, focus, caret);
-        const focusedRef = useRef<HTMLDivElement>(null);
-
-        useEffect(
-            withCurrent(focusedRef, (current: HTMLDivElement) => {
-                if (!current.childNodes.length) {
-                    current.focus();
-                    return;
-                }
-                var range = document.createRange();
-                var sel = window.getSelection();
-                console.log(current.childNodes.length);
-                range.setStart(current.childNodes[0], caret);
-                range.collapse(true);
-                if (!sel) return;
-                sel.removeAllRanges();
-                sel.addRange(range);
-            }),
-            [focus, caret],
-        );
-
-        const focusInput = withCurrent(focusedRef, current => current.focus());
-
         useEffect(() => {
-            if (hasFocus) key.setContext('input');
-            if (!hasFocus) key.setContext('global');
+            if (hasFocus) {
+                focusedRef.current!.setSelectionRange(position, position);
+            }
         }, [hasFocus]);
 
-        const getPos = withCurrent(focusedRef, (current: HTMLDivElement) => {
-            try {
-                if (!document) return;
-                const sel = document.getSelection();
-                if (!sel) return;
-                let _range = sel.getRangeAt(0);
-                let range = _range.cloneRange();
-                range.selectNodeContents(current);
-                range.setEnd(_range.endContainer, _range.endOffset);
-                return range.toString().length;
-            } catch (e) {
-                console.log('error in get Pos:', e);
-            }
-        });
-        const isSelection = withCurrent(focusedRef, current => {
-            if (!document) return;
-            const sel = document.getSelection();
-            if (!sel) return;
-            let _range = sel.getRangeAt(0);
-            let range = _range.cloneRange();
-            console.log('range', range, range.startOffset === range.endOffset);
-            return range.startOffset === range.endOffset;
-        });
-
-        const onUpdatePosition = (event?: key.KeyEvent) => {
-            if (event && event.preventRepeat) event.preventRepeat();
-
-            const readPosition = getPos();
-            if (cm.caret !== readPosition) {
-                cm.setCaret(readPosition);
-            } else {
-                if (event && event.type !== 'keyup') return;
-
-                if (cm.isFirst) return cm.jump(-1);
-                if (cm.isLast) return cm.jump(1);
-            }
-        };
-
-        const updateContent = withCurrent(focusedRef, (current: HTMLDivElement) => {
-            const content = current.innerHTML.replace('&nbsp;', ' ');
-            cm.update(content);
-        });
-        const moveLeft = () => cm.move(-1);
-        const moveRight = () => cm.move(+1);
-        const onBackspace = () => cm.delete();
-
-        const nothing = () => null;
-        useEffect(() => {
-            key.withContext('input', () => {
-                key.bind(alphabet, nothing, updateContent);
-                key.bind('left', nothing, moveLeft);
-                key.bind('right', nothing, moveRight);
-                key.bind('backspace', nothing, onBackspace);
-
-                key.bind(
-                    ['alt+left', 'alt+right', 'alt+shift+left', 'alt+shift+right'],
-                    onUpdatePosition,
-                    onUpdatePosition,
-                );
-                key.bind(['shift+left', 'shift+right'], isSelection, isSelection);
-            });
-        }, []);
-
-        const inputs = splited.map((eachValue, index) => {
-            if (index === focus) {
-                return (
-                    <div
-                        key={`input-field-${index}`}
-                        ref={focusedRef}
-                        tabIndex={0}
-                        className="input-field"
-                        contentEditable={true}
-                        onFocus={focusing}
-                        onBlur={blurring}
-                        spellCheck={false}
-                        dangerouslySetInnerHTML={{ __html: eachValue }}
-                    />
-                );
-            } else {
-                return (
-                    <div
-                        className="display"
-                        key={`display-${index}`}
-                        onClick={() => cm.set({ focus: index, caret: cm.maxCaretAt(cm.focus) })}
-                    >
-                        <ClickPositionEmitter
-                            value={eachValue}
-                            onClick={position => cm.set({ focus: index, caret: position })}
-                        />
-                    </div>
-                );
-            }
-        });
-
         return (
-            <div
-                {...{
-                    onClick: focusInput,
-                    style,
-                    className: classnames('token-input', className),
-                }}
-            >
-                {inputs}
-            </div>
+            <>
+                <TokenDisplay />
+                <div
+                    {...{
+                        onClick: focusInput,
+                        style,
+                        ref: mainRef,
+                        className: classnames('token-input', className),
+                    }}
+                >
+                    <WithDecorations
+                        value={valueString}
+                        caretPosition={position}
+                        onPositionUpdate={position => {
+                            cm.moveTo(position);
+                            focusInput();
+                        }}
+                        hasFocus={hasFocus}
+                    />
+                </div>
+                <input
+                    type="text"
+                    value={value}
+                    key={`input-field`}
+                    ref={focusedRef}
+                    className="input-field"
+                    onFocus={focusing}
+                    onBlur={blurring}
+                    onKeyPress={event => {
+                        const pos = focusedRef.current!.selectionStart;
+                        const posEnd = focusedRef.current!.selectionEnd;
+                        console.log('onkeypress current pos', pos, posEnd);
+
+                        cm.set({ value: focusedRef.current!.value, position: pos });
+                        // if (pos !== undefined && pos !== null) cm.moveTo(pos);
+                    }}
+                    onChange={event => {
+                        const pos = focusedRef.current!.selectionStart;
+                        const posEnd = focusedRef.current!.selectionEnd;
+                        console.log('onchange current pos', pos, posEnd);
+                        cm.set({ value: event.target.value, position: pos });
+                        // if (pos !== undefined && pos !== null) cm.moveTo(pos);
+                    }}
+                />
+            </>
         );
     },
 );
-
-export function withCurrent<T>(ref: RefObject<T>, currenCall: (current: T) => any) {
-    return () => {
-        if (ref && ref.current) return currenCall(ref.current);
-    };
-}
-
-function withTransformer<T>(transformer: Transformer<T>[], values: T[]): any[] {
-    return values.map(value =>
-        transformer.reduce((result, transformer) => transformer(result), value),
-    );
-}

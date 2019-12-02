@@ -4,6 +4,9 @@
     flex-direction: row;
     height: 20px;
 }
+.token-input, .token-input input {
+    font-size: 20px;
+}
 .display {
     border: 1px solid blue;
 cursor: text;
@@ -28,3 +31,13 @@ cursor: text;
     padding: 0 .125em;
 
 }
+
+
+.caret {
+  display: inline-block;
+  position: absolute;
+  width: 1px;
+  height: 20px;
+  background: #000;
+}
+.caret.hidden, .caret[hidden]  { display: none }
