@@ -63,9 +63,9 @@ const analyseValue = (tokens: Token[]): number | 'reset' => {
     let numericValue = tokens
         .filter((_: any) => _.numValue)
         .reduce((sum: number, each: any) => sum + each.numValue, 0);
-    const impiedValue = tokens.find((_: any) => _.impliedValue) ? 'reset' : 0;
-    numericValue = impiedValue ? -Math.abs(numericValue) : numericValue;
-    return numericValue || impiedValue;
+    const impliedValue = tokens.find((_: any) => _.impliedValue) ? 'reset' : 0;
+    numericValue = impliedValue ? -Math.abs(numericValue) : numericValue;
+    return numericValue || impliedValue;
 };
 // reduce and deduce
 export const reduce = (tokens: Token[]): AnalyzeResult => {
@@ -85,43 +85,14 @@ export const findOrAdd = (tokens: Token[], token: Token): Token[] => {
     const isAt = tokens.findIndex(is(token.type));
     const hasToken = -1 < isAt;
     const tokensCopy = tokens.slice(0);
-    console.log(
-        'isAt',
-        hasToken,
-        isAt,
-        tokens.slice(0),
-        '---',
-        tokens.slice(0).splice(isAt, 1, token),
-    );
+
     if (hasToken) {
         tokensCopy[isAt] = token;
     } else {
         tokensCopy.push(token);
     }
     return tokensCopy;
-    // return hasToken ? tokensCopy : tokensCopy.push(token);
-    // return [...tokens.slice(0, isAt - 1), token, ...tokens.slice(isAt + 1)];
 };
-
-// const zipUp = (tokens: Token[], newTokens: Token[]): Token[] => {
-//     const filtered: any[] = [];
-//     tokens.forEach((token: any, index) => {
-//         if (token.description) filtered.push([token, index]);
-//     });
-//     console.log('filtered', filtered);
-//     const result = tokens.slice(0);
-//     newTokens.forEach((token, index) => {
-//         const tokenIndexPair = filtered[index];
-//         console.log('token index', token, index);
-//         if (!token) return;
-//         if (tokenIndexPair) {
-//             result[tokenIndexPair[1]] = token;
-//         } else {
-//             result.push(token);
-//         }
-//     });
-//     return result;
-// };
 
 const popFrom = (token: Token): string => {
     if (token.type === TokenType.name) return 'name';
@@ -148,12 +119,5 @@ export const deduce = (values: ValueObject, tokens: Token[]) => {
         newTokens.push(...stack[stackName]);
     });
 
-    // let newTokens = findOrAdd(tokens, Name(values.name));
-    // newTokens = split(values.description).reduce(
-    //     (newTokens: Token[], split: string) => findOrAdd(newTokens, Desc(split)),
-    //     newTokens,
-    // );
-    // newTokens = zipUp(newTokens, tokens.filter((_: any) => _.description));
-    // newTokens = findOrAdd(newTokens, tokenize(`${values.value}`));
     return newTokens;
 };
