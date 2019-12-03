@@ -4,49 +4,41 @@ import { ClickPositionEmitter } from './ClickPositionEmitter';
 import { useInterval } from '../hooks/useInterval';
 import classnames from 'classnames';
 import { ActionDecorator } from './ActionDecorator';
+import { useTokenInputHasFocus, usePosition, useValue } from '../listeners';
 
-interface IProps {
-    value: string;
-    caretPosition?: number;
-    onPositionUpdate?: (position: number) => any;
-    hasFocus: boolean;
-}
+interface IProps {}
 
-export const WithDecorations = ({
-    value,
-    caretPosition,
-    onPositionUpdate = () => null,
-    hasFocus,
-}: IProps) => {
-    let characters = addCaretAtPosition(asChars(value), caretPosition);
+export const WithDecorations = ({}: IProps) => {
+    const hasFocus = useTokenInputHasFocus();
+    const value = useValue();
+    const position = usePosition();
+
+    const characters = addCaretAtPosition(asChars(value), position);
     const isEmpty = !value.length;
 
-    let words = asWords(characters);
+    const words = asWords(characters);
 
     const result = words.map((word: any) => {
         return (
-            <span>
-                <ActionDecorator>
-                    {word.characters.map((char: any) => {
+            <ActionDecorator>
+                {word.characters
+                    .map((char: any) => {
                         if (char.type === 'char') {
                             return (
                                 <ClickPositionEmitter
                                     value={char.value}
                                     startPosition={char.position}
-                                    onClick={position => onPositionUpdate(position)}
+                                    onClick={position => console.log(position)}
                                 />
                             );
                         }
                         if (char.type === 'caret' && hasFocus) {
                             return <Caret />;
                         }
-                        if (char.type === 'white') {
-                            return <span>&nbsp;</span>;
-                        }
                         return null;
-                    })}
-                </ActionDecorator>
-            </span>
+                    })
+                    .join(<span>&nbsp;</span>)}
+            </ActionDecorator>
         );
     });
     return result;
@@ -61,13 +53,20 @@ export const asChars = (aString: string) => {
 export const asWords = (chars: any[]) => {
     return chars.reduce(
         (result, char, index) => {
-            const lastWord = result[result.length - 1];
-            if (char.type === 'char') {
-                lastWord.value += char.value;
-            }
-            lastWord.characters.push(char);
-            if (char.type === 'white') {
-                result.push({ type: 'word', value: '', characters: [], position: result.length });
+            switch (char.type) {
+                case 'char':
+                    const currentWord = result[result.length - 1];
+                    currentWord.value += char.value;
+                    currentWord.characters.push(char);
+                    break;
+                case 'white':
+                    result.push({
+                        type: 'word',
+                        value: '',
+                        characters: [],
+                        position: result.length,
+                    });
+                    break;
             }
             return result;
         },

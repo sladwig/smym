@@ -45,7 +45,7 @@ export const Icon = ({
 }: IProps) => {
     const SvgIcon = svgs[name];
     return (
-        <div
+        <span
             className={classnames('icon-wrapper', {
                 'no-background': transparent && !size,
                 'tiny-icon': size === 'tiny',
@@ -63,6 +63,6 @@ export const Icon = ({
                 })}
                 style={{ fill, stroke: fill }}
             />
-        </div>
+        </span>
     );
 };

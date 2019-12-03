@@ -1,9 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TokenDisplay emits event input/focus onClick 1`] = `
+exports[`TokenDisplay reacts on value/update event 1`] = `"<span><span class=\\"action-decorator\\"><span class=\\"click-position-emitter\\"><span class=\\"position-emitter\\">o<span class=\\"position-area-overlay\\"><span class=\\"position-area\\"></span><span class=\\"position-area\\"></span></span></span></span><span class=\\"click-position-emitter\\"><span class=\\"position-emitter\\">h<span class=\\"position-area-overlay\\"><span class=\\"position-area\\"></span><span class=\\"position-area\\"></span></span></span></span><svg>cross-icon.svg</svg></span></span>"`;
+
+exports[`TokenDisplay renders 1`] = `
 <div>
-  <div />
+  <div
+    class="token-input"
+  />
 </div>
 `;
 
-exports[`TokenDisplay renders 1`] = `<div />`;
+exports[`TokenDisplay should render caret on focus when value is empty 1`] = `""`;

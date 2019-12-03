@@ -41,6 +41,7 @@ export const PositionEmitter = ({
     const sendPosition = (pos: number) => (event: React.MouseEvent) => {
         if (event && event.preventDefault) event.preventDefault();
         if (event && event.stopPropagation) event.stopPropagation();
+        console.log('sel offset', position, window.getSelection()!.focusOffset);
         onClick(pos);
     };
     return (

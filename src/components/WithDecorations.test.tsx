@@ -4,7 +4,7 @@ import { WithDecorations, asChars, asWords, addCaretAtPosition } from './WithDec
 
 describe('WithDecorations', () => {
     test('renders', () => {
-        const { container } = render(<WithDecorations value="abc" />);
+        const { container } = render(<WithDecorations />);
         expect(container).toMatchSnapshot();
     });
 });
@@ -29,7 +29,6 @@ describe('asWords', () => {
                 characters: [
                     { type: 'char', value: 'a', position: 0 },
                     { type: 'char', value: 'b', position: 1 },
-                    { type: 'white', value: ' ', position: 2 },
                 ],
                 position: 0,
             },

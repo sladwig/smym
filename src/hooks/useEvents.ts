@@ -1,13 +1,10 @@
 import NanoEvents from 'nanoevents';
 import { useEffect, useMemo } from 'react';
+import { EP } from '../actions';
 
-export type Events = {
-    foo: string;
-    bar: [string, string];
-    'focus/input': null;
-};
-
-export const emitter = new NanoEvents<Events>();
+export const emitter = new NanoEvents<EP>();
+export const on = emitter.on.bind(emitter);
+export const emit = emitter.emit.bind(emitter);
 
 export const useEventEmitter = (): {
     on: typeof emitter.on;
@@ -24,9 +21,9 @@ export const useEventEmitter = (): {
     );
 };
 
-export function useOn<EventName extends keyof Events>(
+export function useOn<EventName extends keyof EP>(
     eventName: EventName,
-    cb: (args: Events[EventName]) => any,
+    cb: (args: EP[EventName]) => any,
 ) {
     const { on } = useEventEmitter();
     useEffect(() => on(eventName, cb), [eventName, cb, on]);
