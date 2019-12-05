@@ -2,7 +2,7 @@ import React from 'react';
 import './TokenDisplay.css';
 import { WithDecorations } from './WithDecorations';
 import classnames from 'classnames';
-import { tokenInputFocus } from '../actions';
+import { setState } from './TokenInput';
 
 interface IProps {}
 export const TokenDisplay = ({}: IProps) => {
@@ -12,3 +12,5 @@ export const TokenDisplay = ({}: IProps) => {
         </div>
     );
 };
+
+const tokenInputFocus = () => setState({ hasFocus: true });
