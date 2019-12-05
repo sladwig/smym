@@ -1,9 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { TokenDisplay } from './TokenDisplay';
-import { emitter } from '../hooks/useEvents';
 import unbindAll from 'nanoevents/unbind-all';
-import { valueUpdate, EP, Do } from '../actions';
 
 const mockOn = (eventName: keyof EP) => {
     const callbackMock = jest.fn();
