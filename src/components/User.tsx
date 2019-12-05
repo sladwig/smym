@@ -4,6 +4,7 @@ import './user.css';
 import { TransactionList } from './TranactionList';
 import { Icon } from './Icon';
 import { PaidButton, UnpaidButton } from './Button';
+import classnames from 'classnames';
 
 interface IProps {
     user: IUser;
@@ -22,9 +23,7 @@ export const User = ({ user, expand }: IProps) => {
         <div className="user-wrapper">
             <div className="user-area" style={{ height }}>
                 <div className="user">
-                    <div className="avatar-area" onClick={toggleShowMore}>
-                        <img className="avatar" src={user.avatar} />
-                    </div>
+                    <Avatar onClick={toggleShowMore} src={user.avatar} />
                     <div className="description" onClick={toggleShowMore}>
                         <b style={{ marginRight: 12 }}>{user.name}</b> |{' '}
                         <span style={{ marginLeft: 12 }}>{user.real_name}</span>
@@ -48,3 +47,13 @@ export const User = ({ user, expand }: IProps) => {
         </div>
     );
 };
+interface AvatarProps {
+    src?: string;
+    onClick?: () => any;
+    smaller?: boolean;
+}
+export const Avatar = ({ src, onClick, smaller = false }: AvatarProps) => (
+    <div className={classnames('avatar-area', { smaller })} onClick={onClick}>
+        <img className="avatar" src={src} />
+    </div>
+);
