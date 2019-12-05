@@ -131,21 +131,29 @@ export const TransactionInput = ({ onChange, onSubmit, value, setValue }: IProp)
     );
 };
 
-const Logo = () => (
-    <div className="logo">
+export const Logo = ({
+    onClick,
+}: {
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
+}) => (
+    <div className="logo" {...{ onClick }}>
         <LogoSvg />
     </div>
 );
-const SearchIcon = ({ onClick }: { onClick: (event: React.MouseEvent<HTMLDivElement>) => any }) => (
+export const SearchIcon = ({
+    onClick,
+}: {
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
+}) => (
     <div className="rectangle-icon-wrapper" {...{ onClick }}>
         <SearchIconSvg />
     </div>
 );
-const CancelIcon = ({
+export const CancelIcon = ({
     onClick,
     style,
 }: {
-    onClick: (event: React.MouseEvent<HTMLDivElement>) => any;
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
     style: CSSProperties;
 }) => (
     <div className="rectangle-icon-wrapper" {...{ onClick, style }}>

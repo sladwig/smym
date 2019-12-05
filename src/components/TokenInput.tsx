@@ -1,14 +1,16 @@
-import React, { useRef, CSSProperties, useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import './TokenInput.css';
 import { observer } from 'mobx-react-lite';
-import { TokenDisplay } from './TokenDisplay';
+import { TokenDisplay, tokenInputFocus } from './TokenDisplay';
 import create from 'zustand';
+import classnames from 'classnames';
+import { Logo, SearchIcon, CancelIcon } from './TransactionInput';
+import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
 
+const initialValue = { value: '', position: 0, hasFocus: false, external: false };
 const [useInputStore, inputStore] = create(set => ({
-    value: '',
-    position: 0,
-    hasFocus: false,
-    external: false,
+    ...initialValue,
+    reset: () => set(initialValue),
 }));
 
 const { setState } = inputStore;
@@ -36,8 +38,7 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
     useEffect(() => {
         const updatePosition = () => {
             const position = inputRef.current!.selectionStart;
-            // console.log('keypresseeeeee', position);
-            if (position) setState({ position, external });
+            if (position !== undefined) setState({ position, external });
         };
         document.addEventListener('keydown', updatePosition);
         document.addEventListener('keyup', updatePosition);
@@ -67,8 +68,9 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
                 value={value}
                 key={`input-field`}
                 ref={inputRef}
+                autoFocus={true}
                 className="input-field"
-                onFocus={() => setState({ hasFocus: true })}
+                onFocus={tokenInputFocus}
                 onBlur={() => setState({ hasFocus: false })}
                 onChange={event => {
                     const position = inputRef.current!.selectionStart;
@@ -79,3 +81,38 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
         </>
     );
 });
+
+export const TransactionInputArea = () => {
+    const [active, setActive] = useState(false);
+    useEffect(() => {
+        if (active) tokenInputFocus();
+    }, [active]);
+    return (
+        <div
+            className={classnames('transaction-input-area', 'heading-1', { active })}
+            onClick={() => setActive(true)}
+        >
+            {!active && (
+                <>
+                    <Logo />
+                    <SearchIcon onClick={() => setActive(true)} />
+                </>
+            )}
+            {active && (
+                <>
+                    <SearchIconSvg style={{ marginRight: 29 }} />
+                    <TokenInput />
+                    <CancelIcon
+                        onClick={e => {
+                            console.log('ola');
+                            setActive(false);
+                            inputStore.getState().reset();
+                            e.stopPropagation();
+                        }}
+                        style={{ marginLeft: 29 }}
+                    />
+                </>
+            )}
+        </div>
+    );
+};

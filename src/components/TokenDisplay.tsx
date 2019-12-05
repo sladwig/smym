@@ -13,4 +13,5 @@ export const TokenDisplay = ({}: IProps) => {
     );
 };
 
-const tokenInputFocus = () => setState({ hasFocus: true });
+export const tokenInputFocus = () => setState({ hasFocus: true });
+export const tokenInputBlur = () => setState({ hasFocus: false });

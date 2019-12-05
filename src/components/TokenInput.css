@@ -1,11 +1,8 @@
 .token-input {
-    border: 1px solid gold;
     display: flex;
     flex-direction: row;
-    height: 20px;
-}
-.token-input, .token-input input {
-    font-size: 20px;
+    height: 46px;
+    flex: 1 0 auto;
 }
 .display {
     border: 1px solid blue;
@@ -15,17 +12,11 @@
     flex-grow: 1;
 }
 .input-field {
-    /* border: 1px solid red; */
-    /* border-right: 0px solid transparent; */
-    /* border-left: 0px solid transparent; */
-    /* text-align: left; */
-    /* padding: 0 .125em; */
-
-      position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  clip: rect(1px,1px,1px,1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
 }
 .input-field:focus {
     outline: 0px solid transparent;
@@ -42,11 +33,9 @@
     position: relative;
 }
 .caret {
-    /* content: ' '; */
-  /* display: inline-block; */
-  position: absolute;
-  width: 1px;
-  height: 100%;
-  background: #000;
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: #000;
 }
-.caret.hidden, .caret[hidden]  { display: none }
+.caret.hidden  { display: none }
