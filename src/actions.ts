@@ -1,5 +1,6 @@
 import { emit } from './hooks/useEvents';
 import { eventNames } from 'cluster';
+import { setState } from './components/TokenInput';
 
 export enum Do {
     'tokenInputFocusUpdate' = 'token-input-focus/update',
@@ -23,8 +24,8 @@ const le = <T extends keyof EP>(eventName: T) => {
 };
 
 export const tokenInputHasFocus = le(Do.tokenInputFocusUpdate);
-export const tokenInputFocus = tokenInputHasFocus(true);
-export const tokenInputBlur = tokenInputHasFocus(false);
+export const tokenInputFocus = () => setState({ hasFocus: true });
+// export const tokenInputBlur = () => setState({ hasFocus: true });
 
-export const valueUpdate = e(Do.valueUpdate);
-export const positionUpdate = e(Do.positionUpdate);
+export const valueUpdate = le(Do.valueUpdate);
+export const positionUpdate = le(Do.positionUpdate);
