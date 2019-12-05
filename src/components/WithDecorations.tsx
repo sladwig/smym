@@ -1,45 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './WithDecorations.css';
-import { ClickPositionEmitter } from './ClickPositionEmitter';
 import { useInterval } from '../hooks/useInterval';
 import classnames from 'classnames';
-import { ActionDecorator } from './ActionDecorator';
-import { useTokenInputHasFocus, usePosition, useValue } from '../listeners';
+import { tokenize } from '../services/parser';
+import { WordPresenter } from './WordPresenter';
+import { useInputStore } from './TokenInput';
 
-interface IProps {}
+interface IProps {
+    // value: string;
+    // position: number;
+}
 
-export const WithDecorations = ({}: IProps) => {
-    const hasFocus = useTokenInputHasFocus();
-    const value = useValue();
-    const position = usePosition();
+export const WithDecorations = () => {
+    const [value, position] = useInputStore(state => [state.value, state.position]);
 
     const characters = addCaretAtPosition(asChars(value), position);
+    console.log('character', characters);
     const isEmpty = !value.length;
 
     const words = asWords(characters);
 
     const result = words.map((word: any) => {
-        return (
-            <ActionDecorator>
-                {word.characters
-                    .map((char: any) => {
-                        if (char.type === 'char') {
-                            return (
-                                <ClickPositionEmitter
-                                    value={char.value}
-                                    startPosition={char.position}
-                                    onClick={position => console.log(position)}
-                                />
-                            );
-                        }
-                        if (char.type === 'caret' && hasFocus) {
-                            return <Caret />;
-                        }
-                        return null;
-                    })
-                    .join(<span>&nbsp;</span>)}
-            </ActionDecorator>
-        );
+        console.log('the word', word);
+        return <WordPresenter word={word} key={`word-${word.position}`} />;
     });
     return result;
 };
@@ -51,26 +34,33 @@ export const asChars = (aString: string) => {
 };
 
 export const asWords = (chars: any[]) => {
+    let wordCount = 0;
     return chars.reduce(
         (result, char, index) => {
+            const currentWord = result[result.length - 1];
             switch (char.type) {
                 case 'char':
-                    const currentWord = result[result.length - 1];
                     currentWord.value += char.value;
+                    currentWord.type = 'word';
+                    currentWord.characters.push(char);
+                    currentWord.tokenized = tokenize(currentWord.value);
+                    break;
+                case 'caret':
                     currentWord.characters.push(char);
                     break;
                 case 'white':
+                    result.push(char);
                     result.push({
-                        type: 'word',
+                        type: 'emptyword',
                         value: '',
                         characters: [],
-                        position: result.length,
+                        position: wordCount++,
                     });
                     break;
             }
             return result;
         },
-        [{ type: 'word', value: '', characters: [], position: 0 }],
+        [{ type: 'emptyword', value: '', characters: [], position: wordCount++ }],
     );
 };
 
@@ -80,10 +70,23 @@ export const addCaretAtPosition = (anArray: any[], position: number = anArray.le
     return clone;
 };
 
-const Caret = () => {
+export const Caret = () => {
+    const hasFocus = useInputStore(s => s.hasFocus);
     const [hidden, setHidden] = useState(false);
-    // const caretRef = useRef<HTMLSpanElement>(null);
-    useInterval(() => setHidden(() => !hidden), 500);
 
-    return <span className={classnames('caret', { hidden })}> </span>;
+    const blink = useCallback(() => {
+        console.log('called');
+        setHidden(hid => !hid);
+    }, []);
+    useInterval(blink, hasFocus ? 500 : null);
+
+    if (!hasFocus) {
+        if (hidden) setHidden(false);
+        return null;
+    }
+    return (
+        <span className="caret-holder">
+            <span className={classnames('caret', { hidden })}></span>
+        </span>
+    );
 };

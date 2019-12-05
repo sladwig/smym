@@ -1,74 +1,81 @@
-import React, { useRef, useState, CSSProperties, useEffect, useMemo, useCallback } from 'react';
+import React, { useRef, CSSProperties, useMemo, useCallback, useState, useEffect } from 'react';
 import './TokenInput.css';
-import classnames from 'classnames';
-import { text } from '../services/texter';
 import { observer } from 'mobx-react-lite';
-import { WithDecorations } from './WithDecorations';
-import { withCurrent } from '../helper';
 import { TokenDisplay } from './TokenDisplay';
-import { valueUpdate, tokenInputFocus, tokenInputBlur, Do } from '../actions';
-import { useOn } from '../hooks/useEvents';
-import { usePosition, useValue } from '../listeners';
+import create from 'zustand';
 
-type Transformer<T> = (_: T) => any;
+const [useInputStore, inputStore] = create(set => ({
+    value: '',
+    position: 0,
+    hasFocus: false,
+    external: false,
+}));
+
+const { setState } = inputStore;
+export { useInputStore, inputStore, setState };
 
 interface IProps {
     placeholder?: string;
-    style?: CSSProperties;
-    className?: string;
-    autofocus?: boolean;
-    transformer?: Transformer<any>[];
 }
-export const TokenInput = observer(
-    ({ placeholder, style = {}, className, autofocus, transformer = [] }: IProps) => {
-        const inputRef = useRef<HTMLInputElement>(null);
+const external = false;
+export const TokenInput = observer(({ placeholder }: IProps) => {
+    const inputRef = useRef<HTMLInputElement>(null);
 
-        // position update
-        const initalizeCaretFromStore = useCallback((pos: number) => {
-            inputRef.current!.setSelectionRange(position, position);
-        }, []);
+    const [value, position, hasFocus, externalUpdate] = useInputStore(s => [
+        s.value,
+        s.position,
+        s.hasFocus,
+        s.external,
+    ]);
 
-        useOn(Do.positionUpdate, initalizeCaretFromStore);
-        const position = usePosition();
-        const value = useValue();
+    // position update
+    const initalizeCaretFromStore = useCallback((pos: number) => {
+        inputRef.current!.setSelectionRange(pos, pos);
+    }, []);
 
-        // probably will move away
-        const cm = useMemo(() => text(value), [value]);
-        const { splited, focus, caret } = cm;
+    useEffect(() => {
+        const updatePosition = () => {
+            const position = inputRef.current!.selectionStart;
+            // console.log('keypresseeeeee', position);
+            if (position) setState({ position, external });
+        };
+        document.addEventListener('keydown', updatePosition);
+        document.addEventListener('keyup', updatePosition);
+        return () => {
+            document.removeEventListener('keydown', updatePosition);
+            document.removeEventListener('keyup', updatePosition);
+        };
+    }, []);
 
-        console.log('render', splited, focus, caret, position, value);
+    useEffect(() => {
+        if (hasFocus) {
+            inputRef.current!.focus();
+        }
+    }, [hasFocus]);
 
-        return (
-            <>
-                <TokenDisplay />
-                <br></br>
-                <br></br>
-                <input
-                    type="text"
-                    value={value}
-                    key={`input-field`}
-                    ref={inputRef}
-                    className="input-field"
-                    onFocus={tokenInputFocus}
-                    onBlur={tokenInputBlur}
-                    onKeyPress={event => {
-                        const pos = inputRef.current!.selectionStart;
-                        const posEnd = inputRef.current!.selectionEnd;
-                        console.log('onkeypress current pos', pos, posEnd);
+    useEffect(() => {
+        if (hasFocus && externalUpdate) {
+            initalizeCaretFromStore(position);
+        }
+    }, [hasFocus, externalUpdate, position]);
 
-                        cm.set({ value: inputRef.current!.value, position: pos });
-                        // if (pos !== undefined && pos !== null) cm.moveTo(pos);
-                    }}
-                    onChange={event => {
-                        const pos = inputRef.current!.selectionStart;
-                        const posEnd = inputRef.current!.selectionEnd;
-                        console.log('onchange current pos', pos, posEnd);
-                        cm.set({ value: event.target.value, position: pos });
-                        valueUpdate(event.target.value);
-                        // if (pos !== undefined && pos !== null) cm.moveTo(pos);
-                    }}
-                />
-            </>
-        );
-    },
-);
+    return (
+        <>
+            <TokenDisplay />
+            <input
+                type="text"
+                value={value}
+                key={`input-field`}
+                ref={inputRef}
+                className="input-field"
+                onFocus={() => setState({ hasFocus: true })}
+                onBlur={() => setState({ hasFocus: false })}
+                onChange={event => {
+                    const position = inputRef.current!.selectionStart;
+                    console.log('onchange current pos', event.target.value);
+                    setState({ value: event.target.value, position, external });
+                }}
+            />
+        </>
+    );
+});

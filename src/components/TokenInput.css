@@ -9,17 +9,23 @@
 }
 .display {
     border: 1px solid blue;
-cursor: text;
+    cursor: text;
 }
 .post-display {
     flex-grow: 1;
 }
 .input-field {
-    border: 1px solid red;
-    border-right: 0px solid transparent;
-    border-left: 0px solid transparent;
-    text-align: left;
-    padding: 0 .125em;
+    /* border: 1px solid red; */
+    /* border-right: 0px solid transparent; */
+    /* border-left: 0px solid transparent; */
+    /* text-align: left; */
+    /* padding: 0 .125em; */
+
+      position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px,1px,1px,1px);
 }
 .input-field:focus {
     outline: 0px solid transparent;
@@ -32,12 +38,15 @@ cursor: text;
 
 }
 
-
+.caret-holder {
+    position: relative;
+}
 .caret {
-  display: inline-block;
+    /* content: ' '; */
+  /* display: inline-block; */
   position: absolute;
   width: 1px;
-  height: 20px;
+  height: 100%;
   background: #000;
 }
 .caret.hidden, .caret[hidden]  { display: none }

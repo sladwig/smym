@@ -4,6 +4,7 @@ import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
 
 interface IProps {
     children: ReactElement;
+    word: any;
 }
 
 export const ActionDecorator = ({ children }: IProps) => {
