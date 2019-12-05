@@ -1,5 +1,4 @@
-import React from 'react';
-import { observer } from 'mobx-react-lite';
+import React, { useMemo } from 'react';
 
 interface Props {
     result: any;
@@ -9,6 +8,8 @@ interface Props {
 }
 
 function DevDetails({ result, hasUser, shouldSlack, setShouldSlack }: Props) {
+    const isDev = useMemo(() => window.localStorage.getItem('isDev'), []);
+    if (!isDev) return null;
     return (
         <div style={style}>
             {JSON.stringify(result)}
@@ -24,4 +25,4 @@ const style = {
     color: 'rgba(0, 0, 0, 0.3)',
 };
 
-export default observer(DevDetails);
+export default DevDetails;

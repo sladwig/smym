@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { useLocalStoreBackedFormInput } from './hooks/useFormInput';
 import { store } from './store/Store';
@@ -13,6 +13,14 @@ import { TransactionInputArea, useInputStore, inputStore } from './components/To
 
 function App() {
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
+    useEffect(() => {
+        if (apiToken) return;
+        const token = new URLSearchParams(window.location.search).get('apitoken');
+        if (!token) return;
+        setApiToken(token);
+        window.history.pushState('', '', window.location.origin);
+    }, [apiToken]);
+
     useUpdatedUserList(apiToken);
     const [shouldSlack, setShouldSlack] = useState(false);
     const value = useInputStore(s => s.value);
