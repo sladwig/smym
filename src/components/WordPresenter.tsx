@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, ReactElement } from 'react';
 import './WordPresenter.css';
-import { Token } from '../services/tokens';
+import { Token, TokenType } from '../services/tokens';
 import { Caret } from './WithDecorations';
 import { PositionEmitter } from './ClickPositionEmitter';
 
@@ -40,7 +40,7 @@ export const WordPresenter = ({ word }: IWordProps) => {
 const display = (toDisplay: { type: displayable }) => {
     const map = {
         emptyword: (word: EmptyWordT) => (
-            <WordDisplay word={word} key={`${word.type}-${word.position}`} />
+            <EmptyWordDisplay word={word} key={`${word.type}-${word.position}`} />
         ),
         word: (word: WordT) => <WordDisplay word={word} key={`${word.type}-${word.position}`} />,
         white: (char: WhiteCharacterT) => <WhiteDisplay key={`${char.type}-${char.position}`} />,
@@ -53,8 +53,17 @@ const display = (toDisplay: { type: displayable }) => {
     return component(toDisplay as any);
 };
 
-const WordDisplay = ({ word }: IWordProps) => {
+const EmptyWordDisplay = ({ word }: { word: EmptyWordT }) => {
     return <>{word.characters.map(display)}</>;
+};
+
+const WordDisplay = ({ word }: { word: WordT }) => {
+    const TokenDisplay = tokenDisplay(word);
+    return (
+        <TokenDisplay>
+            <>{word.characters.map(display)}</>
+        </TokenDisplay>
+    );
 };
 
 const CharDisplay = ({ char }: { char: CharCharacterT }) => {
@@ -64,3 +73,33 @@ const CharDisplay = ({ char }: { char: CharCharacterT }) => {
 const CaretDisplay = () => <Caret />;
 const WhiteDisplay = () => <span>&nbsp;</span>;
 const NullDisplay = () => null;
+
+const tokenDisplay = (word: WordT) => {
+    const map = {
+        [TokenType.desc]: DescTokenDisplay,
+        [TokenType.minus]: MinusTokenDisplay,
+        [TokenType.name]: NameTokenDisplay,
+        [TokenType.paid]: PaidTokenDisplay,
+        [TokenType.value]: ValueTokenDisplay,
+    };
+    const TokenDisplay =
+        map[word.tokenized.type] ||
+        (({ children }: { children: ReactElement }) => <div>{children}</div>);
+    return TokenDisplay; //>{display(word)}</TokenDisplay>;
+};
+
+const DescTokenDisplay = ({ children }: { children: ReactElement }) => {
+    return <div style={{ color: 'green' }}>{children}</div>;
+};
+const MinusTokenDisplay = ({ children }: { children: ReactElement }) => {
+    return <div style={{ color: 'red' }}>{children}</div>;
+};
+const NameTokenDisplay = ({ children }: { children: ReactElement }) => {
+    return <div style={{ color: 'blue' }}>{children}</div>;
+};
+const PaidTokenDisplay = ({ children }: { children: ReactElement }) => {
+    return <div style={{ color: 'gold' }}>{children}</div>;
+};
+const ValueTokenDisplay = ({ children }: { children: ReactElement }) => {
+    return <div style={{ color: 'yellow' }}>{children}</div>;
+};
