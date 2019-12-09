@@ -1,10 +1,12 @@
 import { types, SnapshotOrInstance, Instance } from 'mobx-state-tree';
 import { User, IUser } from './User';
 import { createPersistenStore } from './createPersistenStore';
+import { Place, color } from './Place';
 
 export const Store = types
     .model('Store', {
         users: types.map(User),
+        places: types.map(Place),
     })
     .actions(self => ({
         addUser(user: SnapshotOrInstance<typeof User>) {
@@ -30,6 +32,11 @@ export const Store = types
     .actions(self => ({
         hasUser(userName: string): boolean {
             return !!self.usersByName[userName];
+        },
+        getColorFor(place: string) {
+            if (self.places.has(place)) return self.places.get(place)!.color;
+            self.places.put({ name: place, color: color() });
+            return self.places.get(place)!.color;
         },
     }));
 

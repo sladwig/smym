@@ -2,14 +2,14 @@ import { ITransaction } from '../store/Transaction';
 import React from 'react';
 import './transaction.css';
 import { Icon } from './Icon';
-import randomcolor from 'randomcolor';
+import { store } from '../store/Store';
 
 interface IProps {
     transaction: ITransaction;
 }
 
 export const Transaction = ({ transaction }: IProps) => {
-    const backgroundColor = randomcolor({ hue: hues[Math.ceil(Math.random() * hues.length)] });
+    const backgroundColor = store.getColorFor(transaction.description);
     return (
         <div className="transaction">
             <Icon name="calendar" noHover={true} />
@@ -28,4 +28,3 @@ export const Transaction = ({ transaction }: IProps) => {
 };
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
-const hues = ['melon', 'light-salmon', 'really-light-blue', 'bright-cyan'];
