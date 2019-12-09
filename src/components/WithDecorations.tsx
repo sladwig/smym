@@ -80,13 +80,10 @@ export const Caret = () => {
     }, []);
     useInterval(blink, hasFocus ? 500 : null);
 
-    if (!hasFocus) {
-        if (hidden) setHidden(false);
-        return null;
-    }
+    if (!hasFocus && !hidden) setHidden(true);
     return (
         <span className="caret-holder">
-            <span className={classnames('caret', { hidden })}></span>
+            <span className={classnames('caret', { hidden })} />
         </span>
     );
 };

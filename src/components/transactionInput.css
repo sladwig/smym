@@ -34,14 +34,3 @@
 .transaction-input-area.active {
     box-shadow: 0 4px 52px 0 rgba(159, 159, 159, 0.14);
 }
-.transaction-display {
-    /* overflow: hidden; */
-    border: 1px solid blue;
-}
-.tranaction-postdisplay {
-     border: 1px solid blue;
-     flex-grow: 1;
-}
-.transaction-input:focus {
-    outline: 0px solid transparent;
-}

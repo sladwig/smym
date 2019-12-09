@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement } from 'react';
+import React, { ReactNode, ReactElement, useCallback } from 'react';
 import './WordPresenter.css';
 import {
     Token,
@@ -15,6 +15,7 @@ import { store } from '../store/Store';
 import { Avatar } from './User';
 import classnames from 'classnames';
 import { usePrevious } from '../hooks/usePrevious';
+import { IUser } from '../store/User';
 
 export type EmptyWordT = {
     type: 'emptyword';
@@ -22,11 +23,11 @@ export type EmptyWordT = {
     characters: AnyCharacterT[];
     position: number;
 };
-export type WordT = {
+export type WordT<T = Token> = {
     type: 'word';
     value: string;
     characters: AnyCharacterT[];
-    tokenized: Token;
+    tokenized: T;
     position: number;
 };
 export type AnyWordT = EmptyWordT | WordT;
@@ -40,7 +41,17 @@ interface IWordProps {
     word: AnyWordT;
 }
 
-type displayable = 'emptyword' | 'word' | 'white' | 'caret' | 'char';
+type displayable =
+    | 'emptyword'
+    | 'word'
+    | 'white'
+    | 'caret'
+    | 'char'
+    | TokenType.desc
+    | TokenType.minus
+    | TokenType.name
+    | TokenType.paid
+    | TokenType.value;
 
 /// types above
 // functions
@@ -48,20 +59,37 @@ type displayable = 'emptyword' | 'word' | 'white' | 'caret' | 'char';
 export const WordPresenter = ({ word }: IWordProps) => {
     return display(word);
 };
+const isWord = (to: { type: displayable }): to is WordT => to.type === 'word';
 
 const display = (toDisplay: { type: displayable }) => {
     const map = {
         emptyword: (word: EmptyWordT) => (
-            <EmptyWordDisplay word={word} key={`${word.type}-${word.position}`} />
+            <EmptyWordDisplay word={word} key={`emptyword-${word.position}`} />
         ),
-        word: (word: WordT) => <WordDisplay word={word} key={`${word.type}-${word.position}`} />,
-        white: (char: WhiteCharacterT) => <WhiteDisplay key={`${char.type}-${char.position}`} />,
-        caret: (char: CaretCharacterT) => <CaretDisplay key={`caret`} />,
+        word: (word: WordT) => <WordDisplay word={word} key={`word-${word.position}`} />,
+        white: (char: WhiteCharacterT) => <WhiteDisplay key={`white-${char.position}`} />,
+        caret: (char: CaretCharacterT) => <Caret key={`caret`} />,
         char: (char: CharCharacterT) => (
             <CharDisplay char={char} key={`${char.type}-${char.position}`} />
         ),
+        [TokenType.desc]: (word: WordT<descriptionToken>) => (
+            <DescTokenDisplay key={`desc-${word.position}`} word={word} />
+        ),
+        [TokenType.minus]: (word: WordT<minusToken>) => (
+            <MinusTokenDisplay key={`minus-${word.position}`} word={word} />
+        ),
+        [TokenType.name]: (word: WordT<nameToken>) => (
+            <NameTokenDisplay key={`name-${word.position}`} word={word} />
+        ),
+        [TokenType.paid]: (word: WordT<paidToken>) => (
+            <PaidTokenDisplay key={`paid-${word.position}`} word={word} />
+        ),
+        [TokenType.value]: (word: WordT<valueToken>) => (
+            <ValueTokenDisplay key={`value-${word.position}`} word={word} />
+        ),
     };
-    const component = map[toDisplay.type] || ((a: any) => <NullDisplay />);
+    const mapper = isWord(toDisplay) ? toDisplay.tokenized.type : toDisplay.type;
+    const component = map[mapper] || ((a: any) => <NullDisplay />);
     return component(toDisplay as any);
 };
 
@@ -70,88 +98,75 @@ const EmptyWordDisplay = ({ word }: { word: EmptyWordT }) => {
 };
 
 const WordDisplay = ({ word }: { word: WordT }) => {
-    const TokenDisplay = tokenDisplay(word);
-    return <TokenDisplay word={word} />;
+    return <>{word.characters.map(display)}</>;
 };
 
 const CharDisplay = ({ char }: { char: CharCharacterT }) => {
     return <PositionEmitter position={char.position}>{char.value}</PositionEmitter>;
 };
 
-const CaretDisplay = () => <Caret />;
 const WhiteDisplay = () => <span>&nbsp;</span>;
 const NullDisplay = () => null;
 
-const tokenDisplay = (word: WordT) => {
-    const map = {
-        [TokenType.desc]: DescTokenDisplay,
-        [TokenType.minus]: MinusTokenDisplay,
-        [TokenType.name]: NameTokenDisplay,
-        [TokenType.paid]: PaidTokenDisplay,
-        [TokenType.value]: ValueTokenDisplay,
-    };
-    const TokenDisplay = map[word.tokenized.type] || NullTokenDisplay;
-    return TokenDisplay;
-};
-
-interface TD {
-    word: WordT;
-    // children: ReactElement;
+interface TD<T = Token> {
+    word: WordT<T>;
 }
 
-const DescTokenDisplay = ({ word }: TD) => {
+const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
     return (
-        <div style={{ color: 'green' }}>
+        <div className="action-decorator" style={{ color: 'green' }}>
             <>{word.characters.map(display)}</>
         </div>
     );
 };
-const MinusTokenDisplay = ({ word }: TD) => {
+const MinusTokenDisplay = ({ word }: TD<minusToken>) => {
     return (
         <div style={{ color: 'red' }}>
             <>{word.characters.map(display)}</>
         </div>
     );
 };
-const isNameToken = (token: Token): token is nameToken => {
-    return token.type === 'name';
-};
-const NameTokenDisplay = ({ word }: TD) => {
+const NameTokenDisplay = ({ word }: TD<nameToken>) => {
     const token = word.tokenized;
-    if (!isNameToken(token)) return null;
-    return <WithNameToken {...{ token, word }} />;
-};
-const WithNameToken = ({ word, token }: { word: WordT; token: nameToken }) => {
     const userName = token.name;
     const user = store.usersByName[userName];
     const prev = usePrevious(!!user);
+
     return (
-        <div className="row-flex">
+        <>
+            {word.characters.map(char => {
+                if (char.type === 'char' && char.value === '@')
+                    return <AtChar key="char-@" {...{ user, prev }} />;
+
+                return display(char);
+            })}
+        </>
+    );
+};
+
+const AtChar = ({ user, prev }: { user: IUser; prev: boolean }) => {
+    return (
+        <>
             {!user && <span className={classnames({ 'scale-in-center': prev !== !!user })}>@</span>}
             {user && (
-                <span className="scale-in-center">
+                <span className={classnames({ 'scale-in-center': prev !== !!user })}>
                     <Avatar src={user.avatar} smaller={true} />
                 </span>
             )}
-            {word.characters.slice(1).map(display)}
-        </div>
+        </>
     );
 };
-const PaidTokenDisplay = ({ word }: TD) => {
+const PaidTokenDisplay = ({ word }: TD<paidToken>) => {
     return (
         <div style={{ color: 'gold' }}>
             <>{word.characters.map(display)}</>
         </div>
     );
 };
-const ValueTokenDisplay = ({ word }: TD) => {
+const ValueTokenDisplay = ({ word }: TD<valueToken>) => {
     return (
         <div style={{ color: 'yellow' }}>
             <>{word.characters.map(display)}</>
         </div>
     );
-};
-
-const NullTokenDisplay = ({ word }: TD) => {
-    return;
 };

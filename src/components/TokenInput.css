@@ -1,6 +1,7 @@
 .token-input {
     display: flex;
     flex-direction: row;
+    align-items: center;
     height: 46px;
     flex: 1 0 auto;
 }
@@ -31,6 +32,8 @@
 
 .caret-holder {
     position: relative;
+    left:-1px;
+    height: 100%;
 }
 .caret {
     position: absolute;
