@@ -1,8 +1,9 @@
 import { types, Instance } from 'mobx-state-tree';
 import randomcolor from 'randomcolor';
+import { random } from '../helper';
 
 const hues = ['melon', 'light-salmon', 'really-light-blue', 'bright-cyan'];
-export const color = () => randomcolor({ hue: hues[Math.ceil(Math.random() * hues.length)] });
+export const color = (hue = random(hues)) => randomcolor({ hue });
 
 export const Place = types
     .model('Place', {
