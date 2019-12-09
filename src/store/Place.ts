@@ -15,4 +15,4 @@ export const Place = types
         },
     }));
 
-export type IUser = Instance<typeof Place>;
+export interface IPlace extends Instance<typeof Place> {}

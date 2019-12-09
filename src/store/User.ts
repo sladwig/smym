@@ -33,4 +33,4 @@ export const User = types
         },
     }));
 
-export type IUser = Instance<typeof User>;
+export interface IUser extends Instance<typeof User> {}

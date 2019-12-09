@@ -21,8 +21,8 @@ export const Store = types
         get usersList(): IUser[] {
             return Array.from(self.users.values());
         },
-        get usersByName() {
-            const users: { [index: string]: IUser } = {};
+        get usersByName(): StringIndex<IUser> {
+            const users: StringIndex<IUser> = {};
             this.usersList.forEach(user => {
                 if (user.name) users[user.name] = user;
             });
@@ -40,6 +40,6 @@ export const Store = types
         },
     }));
 
-export type IStore = Instance<typeof Store>;
+export interface IStore extends Instance<typeof Store> {}
 
 export const store = createPersistenStore(Store, {}, 'stored');
