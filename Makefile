@@ -14,4 +14,4 @@ test: node-modules
 node-modules: .make.node-modules
 .make.node-modules: package.json
 	yarn install
-	touch .make.node-modules
+	touch $@
