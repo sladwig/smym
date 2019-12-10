@@ -1,3 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ActionDecorator renders 1`] = `<div />`;
+exports[`ActionDecorator renders 1`] = `
+<div>
+  <span
+    class="action-decorator"
+  >
+    <svg>
+      cross-icon.svg
+    </svg>
+  </span>
+</div>
+`;

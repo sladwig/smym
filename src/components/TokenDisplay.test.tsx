@@ -3,14 +3,6 @@ import React from 'react';
 import { TokenDisplay } from './TokenDisplay';
 import unbindAll from 'nanoevents/unbind-all';
 
-const mockOn = (eventName: keyof EP) => {
-    const callbackMock = jest.fn();
-    emitter.on(eventName, callbackMock);
-    return callbackMock;
-};
-
-afterAll(() => unbindAll(emitter));
-
 describe('TokenDisplay', () => {
     test('renders', () => {
         const { container } = render(<TokenDisplay />);
@@ -18,7 +10,6 @@ describe('TokenDisplay', () => {
     });
 
     test('emits event input/focus onClick', () => {
-        const cb = mockOn(Do.tokenInputFocusUpdate);
         const { container } = render(<TokenDisplay />);
 
         fireEvent.click(container.firstChild as HTMLInputElement);

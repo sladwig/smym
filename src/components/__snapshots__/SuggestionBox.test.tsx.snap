@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SuggestionBox renders 1`] = `
+<div>
+  <div
+    class="suggestion-box "
+  >
+    <div>
+      a suggestion
+    </div>
+  </div>
+</div>
+`;

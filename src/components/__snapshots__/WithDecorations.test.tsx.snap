@@ -3,12 +3,11 @@
 exports[`WithDecorations renders 1`] = `
 <div>
   <span
-    class="action-decorator"
+    class="caret-holder"
   >
-    
-    <svg>
-      cross-icon.svg
-    </svg>
+    <span
+      class="caret hidden"
+    />
   </span>
 </div>
 `;

@@ -5,18 +5,18 @@ exports[`TokenInput renders 1`] = `
   <div
     class="token-input"
   >
-    <div
-      class="display pre-display"
-    />
-    <div
-      class="input-field"
-      contenteditable="true"
-      spellcheck="false"
-      tabindex="0"
-    />
-    <div
-      class="display post-display"
-    />
+    <span
+      class="caret-holder"
+    >
+      <span
+        class="caret hidden"
+      />
+    </span>
   </div>
+  <input
+    class="input-field"
+    type="text"
+    value=""
+  />
 </div>
 `;
