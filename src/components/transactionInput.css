@@ -19,8 +19,34 @@
 .rectangle-icon-wrapper:hover {
     background-color: var(--pale-grey);
 }
+
+.top-wrapper {
+    position: fixed;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-shadow: 0 1px 0 0 var(--pale-grey);
+    transition: all 200ms ease-out;
+    z-index: 20;
+    background-color: #ffffff;
+}
+.top-wrapper.active {
+    box-shadow: 0 4px 52px 0 rgba(159, 159, 159, 0.14);
+}
+.top-wrapper.active.suggestion {
+    box-shadow: 0 36px 60px 0 rgba(74, 80, 87, 0.13);
+    border-bottom-left-radius: 42px;
+    border-bottom-right-radius: 42px;
+}
+
 .transaction-input-area{
+    top: 0;
     height: 104px;
+    max-height: 104px;
+    flex: 0 0 auto;
     width: 100%;
     padding-left:62px;
     padding-right:62px;
@@ -28,9 +54,13 @@
     flex-direction: row;
     justify-content:space-between;
     align-items: center;
-     box-shadow: 0 1px 0 0 var(--pale-grey);
     background-color: #ffffff;
 }
-.transaction-input-area.active {
-    box-shadow: 0 4px 52px 0 rgba(159, 159, 159, 0.14);
+
+.suggestion-box {
+    display: flex;
+    flex-direction: column;
+    max-height: 90px;
+    flex: 0 0 auto;
 }
+

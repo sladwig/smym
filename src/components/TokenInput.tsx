@@ -6,6 +6,7 @@ import create from 'zustand';
 import classnames from 'classnames';
 import { Logo, SearchIcon, CancelIcon } from './TransactionInput';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
+import { SuggestionBox } from './SuggestionBox';
 
 const initialValue = { value: '', position: 0, hasFocus: false, external: false };
 const [useInputStore, inputStore] = create(set => ({
@@ -84,35 +85,43 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
 
 export const TransactionInputArea = () => {
     const [active, setActive] = useState(false);
+    const value = useInputStore(s => s.value);
     useEffect(() => {
         if (active) tokenInputFocus();
     }, [active]);
+    const height = value ? 194 : 104;
     return (
         <div
-            className={classnames('transaction-input-area', 'heading-1', { active })}
-            onClick={() => setActive(true)}
+            className={classnames('top-wrapper', { active, suggestion: !!value })}
+            style={{ height }}
         >
-            {!active && (
-                <>
-                    <Logo />
-                    <SearchIcon onClick={() => setActive(true)} />
-                </>
-            )}
-            {active && (
-                <>
-                    <SearchIconSvg style={{ marginRight: 29 }} />
-                    <TokenInput />
-                    <CancelIcon
-                        onClick={e => {
-                            console.log('ola');
-                            setActive(false);
-                            inputStore.getState().reset();
-                            e.stopPropagation();
-                        }}
-                        style={{ marginLeft: 29 }}
-                    />
-                </>
-            )}
+            <div
+                className={classnames('transaction-input-area', 'heading-1')}
+                onClick={() => setActive(true)}
+            >
+                {!active && (
+                    <>
+                        <Logo />
+                        <SearchIcon onClick={() => setActive(true)} />
+                    </>
+                )}
+                {active && (
+                    <>
+                        <SearchIconSvg style={{ marginRight: 29 }} />
+                        <TokenInput />
+                        <CancelIcon
+                            onClick={e => {
+                                console.log('ola');
+                                setActive(false);
+                                inputStore.getState().reset();
+                                e.stopPropagation();
+                            }}
+                            style={{ marginLeft: 29 }}
+                        />
+                    </>
+                )}
+            </div>
+            {active && value && <SuggestionBox />}
         </div>
     );
 };
