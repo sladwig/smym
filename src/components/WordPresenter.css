@@ -1,5 +1,9 @@
-.word-presenter {
-
+.paid-token {
+    font-size: 24px;
+    font-weight: 500;
+   border-radius: 32px;
+   background-color: #f6f7fb;
+   padding: 14px 19px;
 }
 
 
@@ -8,3 +12,4 @@
     flex-direction: row;
     align-items: center;
 }
+

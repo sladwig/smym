@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, useCallback } from 'react';
+import React, { useState } from 'react';
 import './WordPresenter.css';
 import {
     Token,
@@ -16,6 +16,8 @@ import { Avatar } from './User';
 import classnames from 'classnames';
 import { usePrevious } from '../hooks/usePrevious';
 import { IUser } from '../store/User';
+import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
+import { useSpring, animated, config } from 'react-spring';
 
 export type EmptyWordT = {
     type: 'emptyword';
@@ -72,9 +74,12 @@ const display = (toDisplay: { type: displayable }) => {
         char: (char: CharCharacterT) => (
             <CharDisplay char={char} key={`${char.type}-${char.position}`} />
         ),
-        [TokenType.desc]: (word: WordT<descriptionToken>) => (
-            <DescTokenDisplay key={`desc-${word.position}`} word={word} />
-        ),
+        [TokenType.desc]: (word: WordT<descriptionToken>) => {
+            if ('paid'.startsWith(word.value)) {
+                return <PaidTokenDisplay word={word as any} key={`paid-${word.position}`} />;
+            }
+            return <DescTokenDisplay key={`desc-${word.position}`} word={word} />;
+        },
         [TokenType.minus]: (word: WordT<minusToken>) => (
             <MinusTokenDisplay key={`minus-${word.position}`} word={word} />
         ),
@@ -157,12 +162,54 @@ const AtChar = ({ user, prev }: { user: IUser; prev: boolean }) => {
     );
 };
 const PaidTokenDisplay = ({ word }: TD<paidToken>) => {
+    const state = word.value.length;
+    const { x } = useSpring({
+        from: { x: 1 },
+        x: state,
+        config: { ...config.stiff, clamp: true },
+    });
+
     return (
-        <div style={{ color: 'gold' }}>
+        <animated.div
+            className="paid-token"
+            style={{
+                opacity: x.interpolate({ range: [1, 4], output: [0.3, 1] }),
+                borderRadius: x.interpolate({
+                    range: [1, 4],
+                    output: [0, 32],
+                }),
+                fontSize: x.interpolate({
+                    range: [1, 4],
+                    output: [36, 24],
+                }),
+                paddingTop: x.interpolate({
+                    range: [1, 4],
+                    output: [0, 14],
+                }),
+                paddingBottom: x.interpolate({
+                    range: [1, 4],
+                    output: [0, 14],
+                }),
+                paddingLeft: x.interpolate({
+                    range: [1, 4],
+                    output: [0, 19],
+                }),
+                paddingRight: x.interpolate({
+                    range: [1, 4],
+                    output: [0, 19],
+                }),
+            }}
+        >
             <>{word.characters.map(display)}</>
-        </div>
+            {state === 4 && (
+                <span style={{ paddingLeft: 5 }}>
+                    <CrossSvg />
+                </span>
+            )}
+        </animated.div>
     );
 };
+
 const ValueTokenDisplay = ({ word }: TD<valueToken>) => {
     return (
         <div style={{ color: 'yellow' }}>
