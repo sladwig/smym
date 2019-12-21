@@ -17,6 +17,7 @@
         "react": "^16.9.0",
         "react-dom": "^16.9.0",
         "react-fast-compare": "^2.0.4",
+        "react-spring": "^9.0.0-beta.34",
         "react-transition-group": "^4.1.1",
         "typescript": "^3.7.0-beta",
         "zustand": "^2.2.1"
