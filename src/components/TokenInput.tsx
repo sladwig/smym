@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import './TokenInput.css';
 import { observer } from 'mobx-react-lite';
 import { TokenDisplay, tokenInputFocus } from './TokenDisplay';
@@ -61,6 +61,7 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
         }
     }, [hasFocus, externalUpdate, position]);
 
+    const isDev = useMemo(() => window.localStorage.getItem('isDev'), []);
     return (
         <>
             <TokenDisplay />
@@ -70,7 +71,7 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
                 key={`input-field`}
                 ref={inputRef}
                 autoFocus={true}
-                className="input-field"
+                className={classnames('input-field', { isDev })}
                 onFocus={tokenInputFocus}
                 onBlur={() => setState({ hasFocus: false })}
                 onChange={event => {
