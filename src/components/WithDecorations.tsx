@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import { tokenize } from '../services/parser';
 import { WordPresenter } from './WordPresenter';
 import { useInputStore } from './TokenInput';
+import { addCaretAt } from '../utils/caret';
 
 interface IProps {
     // value: string;
@@ -14,7 +15,7 @@ interface IProps {
 export const WithDecorations = () => {
     const [value, position] = useInputStore(state => [state.value, state.position]);
 
-    const characters = addCaretAtPosition(asChars(value), position);
+    const characters = addCaretAt(asChars(value), position);
     console.log('character', characters);
     const isEmpty = !value.length;
 
@@ -62,12 +63,6 @@ export const asWords = (chars: any[]) => {
         },
         [{ type: 'emptyword', value: '', characters: [], position: wordCount++ }],
     );
-};
-
-export const addCaretAtPosition = (anArray: any[], position: number = anArray.length) => {
-    const clone = anArray.slice();
-    clone.splice(position, 0, { type: 'caret' });
-    return clone;
 };
 
 export const Caret = () => {
