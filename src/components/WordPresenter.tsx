@@ -1,4 +1,4 @@
-import React, { useCallback, CSSProperties } from 'react';
+import React, { useCallback, CSSProperties, useMemo } from 'react';
 import './WordPresenter.css';
 import {
     Token,
@@ -18,6 +18,7 @@ import { usePrevious } from '../hooks/usePrevious';
 import { IUser } from '../store/User';
 import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
 import { useSpring, animated, config, useTransition } from 'react-spring';
+import { color as newColor } from '../store/Place';
 
 export type EmptyWordT = {
     type: 'emptyword';
@@ -125,10 +126,35 @@ interface TD<T = Token> {
 }
 
 const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
+    const bgColor = useMemo(() => newColor(), []);
+    const { x, color, backgroundColor, fontWeight } = useSpring({
+        from: { x: 0 },
+        to: { x: 1, color: 'white', backgroundColor: bgColor, fontWeight: 500 },
+        config: { ...config.stiff, clamp: true },
+    });
+
+    const to = useCallback((output: number[]) => ({ range: [0, 1], output }), []);
     return (
-        <div className="action-decorator" style={{ color: 'green' }}>
+        <animated.div
+            className="description-token-display"
+            style={{
+                opacity: x.interpolate(to([0.3, 1])),
+                borderRadius: x.interpolate(to([0, 32])),
+                fontSize: x.interpolate(to([36, 24])),
+                paddingTop: x.interpolate(to([0, 14])),
+                paddingBottom: x.interpolate(to([0, 14])),
+                paddingLeft: x.interpolate(to([0, 19])),
+                paddingRight: x.interpolate(to([0, 19])),
+                color,
+                backgroundColor,
+                fontWeight,
+            }}
+        >
             <>{word.characters.map(display)}</>
-        </div>
+            <span style={{ marginLeft: 20, fill: 'white' }}>
+                <CrossSvg />
+            </span>
+        </animated.div>
     );
 };
 const NameTokenDisplay = ({ word }: TD<nameToken>) => {
