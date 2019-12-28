@@ -4,9 +4,10 @@ import { observer } from 'mobx-react-lite';
 import { TokenDisplay, tokenInputFocus } from './TokenDisplay';
 import create from 'zustand';
 import classnames from 'classnames';
-import { Logo, SearchIcon, CancelIcon } from './TransactionInput';
+import { SearchIcon, CancelIcon } from './TransactionInput';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
 import { SuggestionBox } from './SuggestionBox';
+import { MovingEye } from './MovingEye';
 
 const initialValue = { value: '', position: 0, hasFocus: false, external: false };
 const [useInputStore, inputStore] = create(set => ({
@@ -102,7 +103,7 @@ export const TransactionInputArea = () => {
             >
                 {!active && (
                     <>
-                        <Logo />
+                        <MovingEye />
                         <SearchIcon onClick={() => setActive(true)} />
                     </>
                 )}

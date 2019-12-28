@@ -2,7 +2,6 @@ import React, { ChangeEvent, useState, FormEvent, useRef, useEffect, CSSProperti
 import './transactionInput.css';
 import classnames from 'classnames';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
-import { ReactComponent as LogoSvg } from '../images/smym-logo.svg';
 import { ReactComponent as CancelSvg } from '../images/cross-icon.svg';
 
 interface IProp {
@@ -97,7 +96,6 @@ export const TransactionInput = ({ onChange, onSubmit, value, setValue }: IProp)
             >
                 {!active && (
                     <>
-                        <Logo />
                         <SearchIcon onClick={() => setActive(true)} />
                     </>
                 )}
@@ -131,15 +129,6 @@ export const TransactionInput = ({ onChange, onSubmit, value, setValue }: IProp)
     );
 };
 
-export const Logo = ({
-    onClick,
-}: {
-    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
-}) => (
-    <div className="logo" {...{ onClick }}>
-        <LogoSvg />
-    </div>
-);
 export const SearchIcon = ({
     onClick,
 }: {
