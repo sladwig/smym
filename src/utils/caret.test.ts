@@ -1,4 +1,4 @@
-import { addCaretAt, getCaretOf, withCaretOfOn } from './caret';
+import { addCaretAt, getCaretOf, withCaretOfOn, hasCaret } from './caret';
 
 describe('addCaretAtPosition', () => {
     test('works', () => {
@@ -59,6 +59,30 @@ describe('getCaretOf', () => {
             { type: 'char', value: '4', position: 6 },
         ];
         expect(getCaretOf(original)).toEqual(-1);
+    });
+});
+
+describe('hasCaret', () => {
+    test('works', () => {
+        const original = [
+            { type: 'char', value: '2', position: 0 },
+            { type: 'char', value: '4', position: 1 },
+            { type: 'caret' },
+            { type: 'char', value: ',', position: 5 },
+            { type: 'char', value: '2', position: 2 },
+            { type: 'char', value: '4', position: 6 },
+        ];
+        expect(hasCaret(original)).toBeTrue();
+    });
+    test('returns -1 if none', () => {
+        const original = [
+            { type: 'char', value: '2', position: 0 },
+            { type: 'char', value: '4', position: 1 },
+            { type: 'char', value: ',', position: 5 },
+            { type: 'char', value: '2', position: 2 },
+            { type: 'char', value: '4', position: 6 },
+        ];
+        expect(hasCaret(original)).toBeFalse();
     });
 });
 
