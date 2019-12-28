@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, CSSProperties } from 'react';
 import './WordPresenter.css';
 import {
     Token,
@@ -17,7 +17,7 @@ import classnames from 'classnames';
 import { usePrevious } from '../hooks/usePrevious';
 import { IUser } from '../store/User';
 import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
-import { useSpring, animated, config } from 'react-spring';
+import { useSpring, animated, config, useTransition } from 'react-spring';
 
 export type EmptyWordT = {
     type: 'emptyword';
@@ -35,15 +35,18 @@ export type WordT<T = Token> = {
 export type AnyWordT = EmptyWordT | WordT;
 
 export type CharCharacterT = { type: 'char'; value: string; position: number };
+export const isChar = (char: { type: string }): char is CharCharacterT => char.type === 'char';
 export type WhiteCharacterT = { type: 'white'; value: ' '; position: number };
 export type CaretCharacterT = { type: 'caret' };
+export const isCaret = (char: { type: string }): char is CaretCharacterT => char.type === 'caret';
+
 export type AnyCharacterT = CharCharacterT | WhiteCharacterT | CaretCharacterT;
 
 interface IWordProps {
     word: AnyWordT;
 }
 
-type displayable =
+export type displayable =
     | 'emptyword'
     | 'word'
     | 'white'
@@ -81,7 +84,11 @@ const display = (toDisplay: { type: displayable }) => {
             return <DescTokenDisplay key={`desc-${word.position}`} word={word} />;
         },
         [TokenType.minus]: (word: WordT<minusToken>) => (
-            <MinusTokenDisplay key={`minus-${word.position}`} word={word} />
+            <ValueTokenDisplay
+                key={`value-${word.position}`}
+                word={word}
+                style={{ color: 'red' }}
+            />
         ),
         [TokenType.name]: (word: WordT<nameToken>) => (
             <NameTokenDisplay key={`name-${word.position}`} word={word} />
@@ -124,13 +131,6 @@ const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
         </div>
     );
 };
-const MinusTokenDisplay = ({ word }: TD<minusToken>) => {
-    return (
-        <div style={{ color: 'red' }}>
-            <>{word.characters.map(display)}</>
-        </div>
-    );
-};
 const NameTokenDisplay = ({ word }: TD<nameToken>) => {
     const token = word.tokenized;
     const userName = token.name;
@@ -140,9 +140,9 @@ const NameTokenDisplay = ({ word }: TD<nameToken>) => {
     return (
         <>
             {word.characters.map(char => {
-                if (char.type === 'char' && char.value === '@')
+                if (char.type === 'char' && char.value === '@') {
                     return <AtChar key="char-@" {...{ user, prev }} />;
-
+                }
                 return display(char);
             })}
         </>
@@ -210,10 +210,59 @@ const PaidTokenDisplay = ({ word }: TD<paidToken>) => {
     );
 };
 
-const ValueTokenDisplay = ({ word }: TD<valueToken>) => {
+const transitionOptions = {
+    initial: { transform: 'translateY(-40px)', opacity: 0 },
+    enter: { transform: 'translateY(0)', opacity: 1 },
+    trail: 24,
+    duration: 50,
+    unique: true,
+    expires: 0,
+    key: (item: { key: number }) => `fixed-${item.key}`,
+};
+
+const ValueTokenDisplay = ({
+    word,
+    style,
+}: TD<valueToken | minusToken> & { style?: CSSProperties }) => {
+    const onlyChars = word.characters.filter(isChar);
+
+    let firstPosition = onlyChars[0].position;
+    let lastPosition = onlyChars[onlyChars.length - 1].position;
+
+    const fixed: Array<CharCharacterT & { key: number }> = [
+        { type: 'char', value: '.', position: lastPosition++, key: 0 },
+        { type: 'char', value: '0', position: lastPosition++, key: 1 },
+        { type: 'char', value: '0', position: lastPosition++, key: 2 },
+    ];
+
+    const commaSplittedValues = word.value.split(/\,|\./);
+    const fixRestPosition = 1 < commaSplittedValues.length ? commaSplittedValues[1].length + 1 : 0;
+
+    const transitionEuro = useTransition(
+        { type: 'char', value: '€', position: firstPosition, key: 4 } as CharCharacterT & {
+            key: number;
+        },
+        transitionOptions,
+    );
+
+    const transition = useTransition(fixed.slice(fixRestPosition), {
+        ...transitionOptions,
+        enter: { transform: 'translateY(0)', opacity: 0.6 },
+    });
+    const toAnimatedDiv = useCallback(
+        (style: {}, item: CharCharacterT & { key: number }) => (
+            <animated.div key={`fix-${item.key}`} style={style}>
+                {display(item)}
+            </animated.div>
+        ),
+        [],
+    );
+
     return (
-        <div style={{ color: 'yellow' }}>
-            <>{word.characters.map(display)}</>
+        <div className="row-flex value-token" style={style}>
+            {transitionEuro(toAnimatedDiv)}
+            {word.characters.map(display)}
+            {transition(toAnimatedDiv)}
         </div>
     );
 };

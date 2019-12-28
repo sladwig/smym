@@ -11,5 +11,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 100%;
 }
 
+.value-token {
+    transition: color 120ms ease-in-out ;
+}
