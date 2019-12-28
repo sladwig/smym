@@ -23,8 +23,9 @@
     outline: 0px solid transparent;
 }
 .input-field.isDev {
-    left: 50%;
-    bottom: 0;
+    right: 0;
+    top: 0;
+    opacity: 0.5;
     height: 25px;
     width: 300px;
     clip: unset;
