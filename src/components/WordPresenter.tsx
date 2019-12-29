@@ -102,12 +102,13 @@ const display = (toDisplay: { type: displayable }) => {
         [TokenType.value]: (word: WordT<valueToken>) => (
             <ValueTokenDisplay key={`value-${word.position}`} word={word} />
         ),
+        null: (a: any) => <NullDisplay />,
     };
     const mapper = isWord(toDisplay)
         ? toDisplay.tokenized.type
         : toDisplay
         ? toDisplay.type
-        : undefined;
+        : 'null';
     const component = map[mapper] || ((a: any) => <NullDisplay />);
     return component(toDisplay as any);
 };
@@ -153,13 +154,13 @@ const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
         <animated.div
             className="description-token-display"
             style={{
-                opacity: x.interpolate(to([0.3, 1])),
-                borderRadius: x.interpolate(to([0, 32])),
-                fontSize: x.interpolate(to([36, 24])),
-                paddingTop: x.interpolate(to([0, 14])),
-                paddingBottom: x.interpolate(to([0, 14])),
-                paddingLeft: x.interpolate(to([0, 19])),
-                paddingRight: x.interpolate(to([0, 19])),
+                opacity: x.to(to([0.3, 1])),
+                borderRadius: x.to(to([0, 32])),
+                fontSize: x.to(to([36, 24])),
+                paddingTop: x.to(to([0, 14])),
+                paddingBottom: x.to(to([0, 14])),
+                paddingLeft: x.to(to([0, 19])),
+                paddingRight: x.to(to([0, 19])),
                 color,
                 backgroundColor,
                 fontWeight,

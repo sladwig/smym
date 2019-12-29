@@ -18,11 +18,8 @@ const [useInputStore, inputStore] = create(set => ({
 const { setState } = inputStore;
 export { useInputStore, inputStore, setState };
 
-interface IProps {
-    placeholder?: string;
-}
 const external = false;
-export const TokenInput = observer(({ placeholder }: IProps) => {
+export const TokenInput = observer(() => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [value, position, hasFocus, externalUpdate] = useInputStore(s => [
