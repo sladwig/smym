@@ -5,17 +5,12 @@ import { WordPresenter } from './WordPresenter';
 import { useInputStore } from './TokenInput';
 import { addCaretAt } from '../utils/caret';
 
-interface IProps {
-    // value: string;
-    // position: number;
-}
-
 export const WithDecorations = () => {
     const [value, position] = useInputStore(state => [state.value, state.position]);
 
     const characters = addCaretAt(asChars(value), position);
     console.log('character', characters);
-    const isEmpty = !value.length;
+    // const isEmpty = !value.length;
 
     const words = asWords(characters);
 
@@ -35,7 +30,7 @@ export const asChars = (aString: string) => {
 export const asWords = (chars: any[]) => {
     let wordCount = 0;
     return chars.reduce(
-        (result, char, index) => {
+        (result, char) => {
             const currentWord = result[result.length - 1];
             switch (char.type) {
                 case 'char':

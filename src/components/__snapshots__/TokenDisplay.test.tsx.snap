@@ -6,8 +6,16 @@ exports[`TokenDisplay renders 1`] = `
 <div>
   <div
     class="token-input"
-  />
+  >
+    <span
+      class="caret-holder"
+    >
+      <span
+        class="caret hidden"
+      />
+    </span>
+  </div>
 </div>
 `;
 
-exports[`TokenDisplay should render caret on focus when value is empty 1`] = `""`;
+exports[`TokenDisplay should render caret on focus when value is empty 1`] = `"<span class=\\"caret-holder\\"><span class=\\"caret hidden\\"></span></span>"`;

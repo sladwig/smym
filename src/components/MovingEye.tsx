@@ -13,12 +13,12 @@ export const MovingEye = ({}: IProps) => {
     }));
 
     // cx="21.5" cy="19.5"
-    const cx = x.interpolate({
+    const cx = x.to({
         range: [0, percent(logoRef.current.offsetLeft || 50), 100],
         // output: [16.5, 19, 21.5],
         output: [17.5, 19, 20.5],
     });
-    const cy = y.interpolate({
+    const cy = y.to({
         range: [0, percent(logoRef.current.offsetTop || 50), 100],
         // output: [18.5, 19.5, 21.5],
         output: [19, 19.5, 21],
@@ -34,7 +34,7 @@ export const MovingEye = ({}: IProps) => {
     return (
         <div className="logo" ref={logoRef}>
             <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">
-                <g fill="none" fill-rule="evenodd">
+                <g fill="none" fillRule="evenodd">
                     <circle cx="19" cy="19" r="19" fill="#262F5E" />
                     <path
                         fill="#FFF"

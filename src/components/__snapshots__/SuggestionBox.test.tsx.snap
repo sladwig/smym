@@ -3,7 +3,7 @@
 exports[`SuggestionBox renders 1`] = `
 <div>
   <div
-    class="suggestion-box "
+    class="suggestion-box"
   >
     <div>
       a suggestion
