@@ -6,7 +6,7 @@ import create from 'zustand';
 import classnames from 'classnames';
 import { SearchIcon, CancelIcon } from './TransactionInput';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
-import { SuggestionBox } from './SuggestionBox';
+import { SuggestionBox, useSuggestionStore } from './SuggestionBox';
 import { MovingEye } from './MovingEye';
 
 const initialValue = { value: '', position: 0, hasFocus: false, external: false };
@@ -87,16 +87,15 @@ export const TokenInput = observer(({ placeholder }: IProps) => {
 
 export const TransactionInputArea = () => {
     const [active, setActive] = useState(false);
-    const value = useInputStore(s => s.value);
     useEffect(() => {
         if (active) tokenInputFocus();
     }, [active]);
-    const height = value ? 194 : 104;
+
+    const mode = useSuggestionStore(state => state.mode);
+    const suggestion = mode !== 'none';
+    const height = suggestion ? 194 : 104;
     return (
-        <div
-            className={classnames('top-wrapper', { active, suggestion: !!value })}
-            style={{ height }}
-        >
+        <div className={classnames('top-wrapper', { active, suggestion })} style={{ height }}>
             <div
                 className={classnames('transaction-input-area', 'heading-1')}
                 onClick={() => setActive(true)}
@@ -123,7 +122,7 @@ export const TransactionInputArea = () => {
                     </>
                 )}
             </div>
-            {active && value && <SuggestionBox />}
+            <SuggestionBox />
         </div>
     );
 };

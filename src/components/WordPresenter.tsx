@@ -1,4 +1,4 @@
-import React, { useCallback, CSSProperties, useMemo } from 'react';
+import React, { useCallback, CSSProperties, useMemo, useEffect } from 'react';
 import './WordPresenter.css';
 import {
     Token,
@@ -19,6 +19,8 @@ import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
 import { useSpring, animated, config, useTransition } from 'react-spring';
 import { color as newColor } from '../store/Place';
 import { Caret } from './Caret';
+import { suggestionStore, useSuggestionStore } from './SuggestionBox';
+import { hasCaret } from '../utils/caret';
 
 export type EmptyWordT = {
     type: 'emptyword';
@@ -136,6 +138,15 @@ const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
         to: { x: 1, color: 'white', backgroundColor: bgColor, fontWeight: 500 },
         config: { ...config.stiff, clamp: true },
     });
+
+    // maybe move this into a hook
+    const reset = useSuggestionStore(state => state.reset);
+    const isActive = hasCaret(word.characters);
+    useEffect(() => {
+        if (isActive) suggestionStore.setState({ mode: 'places', value: word.value });
+        if (!isActive) reset();
+        return () => reset();
+    }, [isActive, reset]);
 
     const to = useCallback((output: number[]) => ({ range: [0, 1], output }), []);
     return (
