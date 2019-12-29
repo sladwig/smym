@@ -1,7 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import './WithDecorations.css';
-import { useInterval } from '../hooks/useInterval';
-import classnames from 'classnames';
 import { tokenize } from '../services/parser';
 import { WordPresenter } from './WordPresenter';
 import { useInputStore } from './TokenInput';
@@ -62,23 +60,5 @@ export const asWords = (chars: any[]) => {
             return result;
         },
         [{ type: 'emptyword', value: '', characters: [], position: wordCount++ }],
-    );
-};
-
-export const Caret = () => {
-    const hasFocus = useInputStore(s => s.hasFocus);
-    const [hidden, setHidden] = useState(false);
-
-    const blink = useCallback(() => {
-        console.log('called');
-        setHidden(hid => !hid);
-    }, []);
-    useInterval(blink, hasFocus ? 500 : null);
-
-    if (!hasFocus && !hidden) setHidden(true);
-    return (
-        <span className="caret-holder">
-            <span className={classnames('caret', { hidden })} />
-        </span>
     );
 };

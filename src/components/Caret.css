@@ -1,0 +1,17 @@
+.caret-holder {
+    position: relative;
+    left:-1px;
+    height: 100%;
+}
+.caret {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background: #000;
+}
+.caret.hidden  { display: none }
+
+.description-token-display .caret {
+    background: white;
+    transition: background 120ms ease-in-out;
+}

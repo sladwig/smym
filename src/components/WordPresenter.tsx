@@ -9,7 +9,6 @@ import {
     paidToken,
     valueToken,
 } from '../services/tokens';
-import { Caret } from './WithDecorations';
 import { PositionEmitter } from './ClickPositionEmitter';
 import { store } from '../store/Store';
 import { Avatar } from './User';
@@ -19,6 +18,7 @@ import { IUser } from '../store/User';
 import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
 import { useSpring, animated, config, useTransition } from 'react-spring';
 import { color as newColor } from '../store/Place';
+import { Caret } from './Caret';
 
 export type EmptyWordT = {
     type: 'emptyword';
@@ -211,7 +211,7 @@ const PaidTokenDisplay = ({ word }: TD<paidToken>) => {
         >
             <>{word.characters.map(display)}</>
             {state === 4 && (
-                <span style={{ paddingLeft: 5 }}>
+                <span style={{ marginLeft: 15 }}>
                     <CrossSvg />
                 </span>
             )}

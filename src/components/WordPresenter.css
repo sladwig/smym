@@ -17,8 +17,3 @@
 .value-token {
     transition: color 120ms ease-in-out ;
 }
-
-.description-token-display .caret {
-    background: white;
-    transition: background 120ms ease-in-out;
-}

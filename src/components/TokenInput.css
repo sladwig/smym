@@ -38,16 +38,3 @@
     padding: 0 .125em;
 
 }
-
-.caret-holder {
-    position: relative;
-    left:-1px;
-    height: 100%;
-}
-.caret {
-    position: absolute;
-    width: 1px;
-    height: 100%;
-    background: #000;
-}
-.caret.hidden  { display: none }

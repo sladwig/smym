@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Caret renders 1`] = `
+<div>
+  <span
+    class="caret-holder"
+  >
+    <span
+      class="caret hidden"
+    />
+  </span>
+</div>
+`;
