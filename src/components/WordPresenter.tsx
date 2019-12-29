@@ -101,7 +101,11 @@ const display = (toDisplay: { type: displayable }) => {
             <ValueTokenDisplay key={`value-${word.position}`} word={word} />
         ),
     };
-    const mapper = isWord(toDisplay) ? toDisplay.tokenized.type : toDisplay.type;
+    const mapper = isWord(toDisplay)
+        ? toDisplay.tokenized.type
+        : toDisplay
+        ? toDisplay.type
+        : undefined;
     const component = map[mapper] || ((a: any) => <NullDisplay />);
     return component(toDisplay as any);
 };

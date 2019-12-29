@@ -1,4 +1,5 @@
 import { addCaretAt, getCaretOf, withCaretOfOn, hasCaret } from './caret';
+import { AnyCharacterT } from '../components/WordPresenter';
 
 describe('addCaretAtPosition', () => {
     test('works', () => {
@@ -88,7 +89,7 @@ describe('hasCaret', () => {
 
 describe('withCaretOfOn', () => {
     test('works', () => {
-        const original = [
+        const original: AnyCharacterT[] = [
             { type: 'char', value: '2', position: 0 },
             { type: 'char', value: '4', position: 1 },
             { type: 'caret' },
@@ -96,7 +97,7 @@ describe('withCaretOfOn', () => {
             { type: 'char', value: '2', position: 2 },
             { type: 'char', value: '4', position: 6 },
         ];
-        const somethingElse = [
+        const somethingElse: AnyCharacterT[] = [
             { type: 'char', value: '4', position: 0 },
             { type: 'char', value: '2', position: 1 },
             { type: 'char', value: ',', position: 5 },

@@ -31,12 +31,25 @@ describe('asWords', () => {
                     { type: 'char', value: 'b', position: 1 },
                 ],
                 position: 0,
+                tokenized: {
+                    description: 'ab',
+                    type: 'desc',
+                },
+            },
+            {
+                position: 2,
+                type: 'white',
+                value: ' ',
             },
             {
                 type: 'word',
                 value: 'g',
                 characters: [{ type: 'char', value: 'g', position: 3 }],
                 position: 1,
+                tokenized: {
+                    description: 'g',
+                    type: 'desc',
+                },
             },
         ]);
     });

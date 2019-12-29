@@ -4,7 +4,7 @@ import { WordPresenter } from './WordPresenter';
 
 describe('WordPresenter', () => {
     test('renders', () => {
-        const { container } = render(<WordPresenter />);
+        const { container } = render(<WordPresenter word={{ type: 'bogus' } as AnyWordT} />);
         expect(container).toMatchSnapshot();
     });
 });
