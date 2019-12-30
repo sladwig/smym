@@ -36,7 +36,7 @@
 .top-wrapper.active {
     box-shadow: 0 4px 52px 0 rgba(159, 159, 159, 0.14);
 }
-.top-wrapper.active.suggestion {
+.top-wrapper.active.has-suggestion {
     box-shadow: 0 36px 60px 0 rgba(74, 80, 87, 0.13);
     border-bottom-left-radius: 42px;
     border-bottom-right-radius: 42px;
@@ -55,12 +55,5 @@
     justify-content:space-between;
     align-items: center;
     background-color: #ffffff;
-}
-
-.suggestion-box {
-    display: flex;
-    flex-direction: column;
-    max-height: 90px;
-    flex: 0 0 auto;
 }
 

@@ -89,10 +89,15 @@ export const TransactionInputArea = () => {
     }, [active]);
 
     const mode = useSuggestionStore(state => state.mode);
+    const length = useSuggestionStore(state => state.length);
     const suggestion = mode !== 'none';
-    const height = suggestion ? 194 : 104;
+
+    const height = suggestion ? 104 + 90 * (length ? length + 1 : 0) : 104;
     return (
-        <div className={classnames('top-wrapper', { active, suggestion })} style={{ height }}>
+        <div
+            className={classnames('top-wrapper', { active, 'has-suggestion': suggestion })}
+            style={{ height }}
+        >
             <div
                 className={classnames('transaction-input-area', 'heading-1')}
                 onClick={() => setActive(true)}

@@ -147,7 +147,7 @@ const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
         if (isActive) suggestionStore.setState({ mode: 'places', value: word.value });
         if (!isActive) reset();
         return () => reset();
-    }, [isActive, reset]);
+    }, [isActive, reset, word.value]);
 
     const to = useCallback((output: number[]) => ({ range: [0, 1], output }), []);
     return (

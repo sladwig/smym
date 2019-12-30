@@ -1,0 +1,27 @@
+.suggestion-box {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    width: 100%;
+    padding-left: 106px;
+}
+
+.suggestion {
+    height: 90px;
+    display: flex;
+    align-items: center;
+}
+
+.suggestion.active {
+    background-color: var(--pale-grey);
+}
+
+.place-suggestion {
+    color: white;
+    border-radius: 32px;
+    font-size: 24px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 19px;
+    padding-right: 19px;
+}

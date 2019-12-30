@@ -1,7 +1,7 @@
 import { types, SnapshotOrInstance, Instance } from 'mobx-state-tree';
 import { User, IUser } from './User';
 import { createPersistenStore } from './createPersistenStore';
-import { Place, color } from './Place';
+import { Place, color, IPlace } from './Place';
 
 export const Store = types
     .model('Store', {
@@ -20,6 +20,9 @@ export const Store = types
     .views(self => ({
         get usersList(): IUser[] {
             return Array.from(self.users.values());
+        },
+        get placesList(): IPlace[] {
+            return Array.from(self.places.values());
         },
         get usersByName(): StringIndex<IUser> {
             const users: StringIndex<IUser> = {};
@@ -42,4 +45,4 @@ export const Store = types
 
 export interface IStore extends Instance<typeof Store> {}
 
-export const store = createPersistenStore(Store, {}, 'stored');
+export const store: IStore = createPersistenStore(Store, {}, 'stored');
