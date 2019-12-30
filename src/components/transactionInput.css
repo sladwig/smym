@@ -1,7 +1,6 @@
 .logo {
-    /* align-self: flex-start;
-    justify-self: flex-start; */
-    /* background-color: blue; */
+    display: flex;
+    /* justify-content: center; */
 }
 .rectangle-icon-wrapper {
     width: 44px;

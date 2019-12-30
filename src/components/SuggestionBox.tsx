@@ -4,6 +4,7 @@ import { store } from '../store/Store';
 import fuzzysearch from 'fuzzysearch';
 import './SuggestionBox.css';
 import { IPlace } from '../store/Place';
+import { ReactComponent as EnterSvg } from '../images/enter-icon.svg';
 
 interface IProps {}
 
@@ -23,8 +24,20 @@ const suggestionFor = (mode: SuggestionMode, searchTerm: string) => {
     const filteredSuggestions = [...store.placesList].filter(p => fuzzysearch(searchTerm, p.name));
 
     suggestionStore.setState({ length: filteredSuggestions.length });
+    if (filteredSuggestions.length === 0) return null;
 
-    return <div className="suggestion-box">{filteredSuggestions.map(Suggestion)}</div>;
+    return (
+        <div className="suggestion-box">
+            {filteredSuggestions.map(Suggestion)}
+            <div className="suggestion suggestion-info">
+                Press{' '}
+                <div className="rectangle-icon-wrapper" style={{ marginLeft: 15, marginRight: 15 }}>
+                    <EnterSvg />
+                </div>{' '}
+                to select action
+            </div>
+        </div>
+    );
 };
 
 const Suggestion = ({ name, color: backgroundColor }: IPlace) => (

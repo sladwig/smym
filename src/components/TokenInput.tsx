@@ -90,7 +90,7 @@ export const TransactionInputArea = () => {
 
     const mode = useSuggestionStore(state => state.mode);
     const length = useSuggestionStore(state => state.length);
-    const suggestion = mode !== 'none';
+    const suggestion = mode !== 'none' && 0 < length;
 
     const height = suggestion ? 104 + 90 * (length ? length + 1 : 0) : 104;
     return (
