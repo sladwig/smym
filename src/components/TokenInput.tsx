@@ -86,6 +86,25 @@ export const TransactionInputArea = () => {
         if (active) tokenInputFocus();
     }, [active]);
 
+    const activate = useCallback(() => setActive(true), [setActive]);
+    const deactivate = useCallback(() => setActive(false), [setActive]);
+    const activateOrDeactivate = useCallback(
+        (e: KeyboardEvent) => {
+            activate();
+            if (e.key.toLowerCase() !== 'escape') return;
+            deactivate();
+            inputStore.getState().reset();
+        },
+        [activate, deactivate],
+    );
+
+    useEffect(() => {
+        document.addEventListener('keydown', activateOrDeactivate);
+        return () => {
+            document.removeEventListener('keydown', activateOrDeactivate);
+        };
+    }, []);
+
     const mode = useSuggestionStore(state => state.mode);
     const length = useSuggestionStore(state => state.length);
     const suggestion = mode !== 'none' && 0 < length;
