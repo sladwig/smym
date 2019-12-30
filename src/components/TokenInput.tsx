@@ -8,6 +8,7 @@ import { SearchIcon, CancelIcon } from './TransactionInput';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
 import { SuggestionBox, useSuggestionStore } from './SuggestionBox';
 import { MovingEye } from './MovingEye';
+import shallow from 'zustand/shallow';
 
 const initialValue = { value: '', position: 0, hasFocus: false, external: false };
 const [useInputStore, inputStore] = create(set => ({
@@ -22,12 +23,10 @@ const external = false;
 export const TokenInput = observer(() => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const [value, position, hasFocus, externalUpdate] = useInputStore(s => [
-        s.value,
-        s.position,
-        s.hasFocus,
-        s.external,
-    ]);
+    const [value, position, hasFocus, externalUpdate] = useInputStore(
+        s => [s.value, s.position, s.hasFocus, s.external],
+        shallow,
+    );
 
     // position update
     const initalizeCaretFromStore = useCallback((pos: number) => {
@@ -74,7 +73,6 @@ export const TokenInput = observer(() => {
                 onBlur={() => setState({ hasFocus: false })}
                 onChange={event => {
                     const position = inputRef.current!.selectionStart;
-                    console.log('onchange current pos', event.target.value);
                     setState({ value: event.target.value, position, external });
                 }}
             />
