@@ -10,6 +10,7 @@
     height: 90px;
     display: flex;
     align-items: center;
+    transition: background-color 125ms ease-in-out;
 }
 
 .suggestion.active {
