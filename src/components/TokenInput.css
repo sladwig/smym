@@ -32,6 +32,18 @@
 
 }
 
+.show-container {
+    flex-grow: 1;
+    margin-left: 16px;
+}
+
+.show-me-your-money {
+    background-size: contain;
+    background-image: url(/images/show-me-your-money.png);
+    width: 197px;
+    height: 13px;
+}
+
 .display {
     border-right: 0px solid transparent;
     border-left: 0px solid transparent;

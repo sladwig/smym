@@ -105,6 +105,9 @@ export const TransactionInputArea = () => {
                 {!active && (
                     <>
                         <MovingEye />
+                        <div className="show-container">
+                            <div className="show-me-your-money"></div>
+                        </div>
                         <SearchIcon onClick={() => setActive(true)} />
                     </>
                 )}
@@ -114,7 +117,6 @@ export const TransactionInputArea = () => {
                         <TokenInput />
                         <CancelIcon
                             onClick={e => {
-                                console.log('ola');
                                 setActive(false);
                                 inputStore.getState().reset();
                                 e.stopPropagation();
