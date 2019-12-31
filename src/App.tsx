@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
-import { useLocalStoreBackedFormInput } from './hooks/useFormInput';
 import { store } from './store/Store';
 import { UserList } from './components/UserList';
 import { observer } from 'mobx-react-lite';
@@ -15,10 +14,11 @@ import create from 'zustand';
 import { TransactionInputArea } from './components/TransactionInputArea';
 import { suggestionStore } from './zustand/SuggestionStore';
 import { useInputStore, inputStore } from './zustand/InputStore';
+import { useStateInLocalStorage } from './hooks/useStateInLocalStorage';
+import { resultStore } from './zustand/ResultStore';
 
 function App() {
-    // TODO: use a simpler hook
-    const [apiToken, setApiToken] = useLocalStoreBackedFormInput('apiToken', '');
+    const [apiToken, setApiToken] = useStateInLocalStorage('apiToken', '');
     const createTransactionRef = useRef<() => void>(() => {});
 
     useEffect(() => {
@@ -74,10 +74,3 @@ function App() {
 }
 
 export default observer(App);
-
-const initialValue = { isComplete: false };
-const [useResultStore, resultStore] = create(set => ({
-    ...initialValue,
-    reset: () => set(initialValue),
-}));
-export { useResultStore, resultStore };

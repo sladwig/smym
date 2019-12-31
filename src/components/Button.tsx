@@ -2,7 +2,7 @@ import React, { FunctionComponent, ReactNode } from 'react';
 import './button.css';
 import classnames from 'classnames';
 import { Icon, CheckIcon, CancelIcon } from './Icon';
-import { useResultStore } from '../App';
+import { useResultStore } from '../zustand/ResultStore';
 
 interface IProps {
     onClick?: (event: React.MouseEvent) => void;

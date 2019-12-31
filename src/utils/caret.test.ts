@@ -1,5 +1,5 @@
 import { addCaretAt, getCaretOf, withCaretOfOn, hasCaret } from './caret';
-import { AnyCharacterT } from '../components/Presenter';
+import { AnyCharacterT } from '../components/displays/types';
 
 describe('addCaretAtPosition', () => {
     test('works', () => {
