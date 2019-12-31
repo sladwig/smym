@@ -1,5 +1,6 @@
 import { tokenize, split, reduce } from './parser';
 import { Token } from './tokens';
+import { store } from '../store/Store';
 
 export interface ValueObject {
     name: string;
@@ -14,7 +15,9 @@ export interface AnalyzeResult {
 
 export const analyze = (str: string): AnalyzeResult => {
     const tokens = split(str.trim()).map(tokenize);
-    return reduce(tokens);
+    const result = reduce(tokens);
+    result.isComplete = result.isComplete ? store.hasUser(result.value.name) : result.isComplete;
+    return result;
 };
 
 export const isName = (str: string) => str.startsWith('@');

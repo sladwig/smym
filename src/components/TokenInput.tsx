@@ -1,15 +1,16 @@
 import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import './TokenInput.css';
-import { observer } from 'mobx-react-lite';
 import { TokenDisplay, tokenInputFocus } from './TokenDisplay';
 import create from 'zustand';
 import classnames from 'classnames';
-import { SearchIcon, CancelIcon } from './TransactionInput';
+import { SearchIcon, CancelIcon, CheckIcon } from './TransactionInput';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
 import { SuggestionBox, useSuggestionStore } from './SuggestionBox';
 import { MovingEye } from './MovingEye';
 import shallow from 'zustand/shallow';
 import { useHasInLocalStorage } from '../hooks/useLocalStorage';
+import { useResultStore } from '../App';
+import { Callback } from 'keyboardjs';
 
 const initialValue = { value: '', position: 0, hasFocus: false, external: false };
 const [useInputStore, inputStore] = create(set => ({
@@ -21,7 +22,7 @@ const { setState } = inputStore;
 export { useInputStore, inputStore, setState };
 
 const external = false;
-export const TokenInput = observer(() => {
+export const TokenInput = () => {
     const inputRef = useRef<HTMLInputElement>(null);
 
     const [value, position, hasFocus, externalUpdate] = useInputStore(
@@ -79,9 +80,12 @@ export const TokenInput = observer(() => {
             />
         </>
     );
-});
+};
 
-export const TransactionInputArea = () => {
+interface InputAreaProps {
+    create: Callback;
+}
+export const TransactionInputArea = ({ create }: InputAreaProps) => {
     const hasApiToken = useHasInLocalStorage('apiToken');
     const [active, setActive] = useState(false);
     useEffect(() => {
@@ -133,18 +137,36 @@ export const TransactionInputArea = () => {
                     <>
                         <SearchIconSvg style={{ marginRight: 29 }} />
                         <TokenInput />
-                        <CancelIcon
-                            onClick={e => {
+                        <SubmitCancelButton
+                            onSubmit={e => {
+                                create();
                                 deactivate();
                                 inputStore.getState().reset();
                                 e.stopPropagation();
                             }}
-                            style={{ marginLeft: 29 }}
+                            onCancel={e => {
+                                deactivate();
+                                inputStore.getState().reset();
+                                e.stopPropagation();
+                            }}
                         />
                     </>
                 )}
             </div>
             <SuggestionBox />
         </div>
+    );
+};
+
+interface SubmitCancelProps {
+    onSubmit: (e: React.MouseEvent) => void;
+    onCancel: (e: React.MouseEvent) => void;
+}
+const SubmitCancelButton = ({ onSubmit, onCancel }: SubmitCancelProps) => {
+    const complete = useResultStore(state => state.isComplete);
+    return complete ? (
+        <CheckIcon onClick={onSubmit} style={{ marginLeft: 29 }} />
+    ) : (
+        <CancelIcon onClick={onCancel} style={{ marginLeft: 29 }} />
     );
 };

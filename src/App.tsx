@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import { useLocalStoreBackedFormInput } from './hooks/useFormInput';
 import { store } from './store/Store';
@@ -8,11 +8,12 @@ import { useUpdatedUserList } from './hooks/useUpdatedUserList';
 import { analyze } from './services/nlp';
 import { inform } from './services/inform';
 import fuzzysearch from 'fuzzysearch';
-import key, { KeyEvent, Callback } from 'keyboardjs';
+import key, { Callback } from 'keyboardjs';
 import DevDetails from './components/DevDetails';
 import { TransactionInputArea, useInputStore, inputStore } from './components/TokenInput';
 import { suggestionStore } from './components/SuggestionBox';
 import { AddToSlackOverlay } from './components/AddToSlackOverlay';
+import create from 'zustand';
 
 function App() {
     // TODO: use a simpler hook
@@ -27,25 +28,22 @@ function App() {
         window.history.pushState('', '', window.location.origin);
     }, [apiToken]);
 
+    const create = useCallback(() => {
+        const { active } = suggestionStore.getState();
+        if (0 <= active) return;
+
+        createTransactionRef.current();
+    }, []) as Callback;
     useEffect(() => {
-        const create = ((e: KeyEvent) => {
-            e.preventDefault();
-            const { active } = suggestionStore.getState();
-            if (0 <= active) return;
-
-            createTransactionRef.current();
-        }) as Callback;
-
         key.bind('enter', create);
         return () => key.unbind('enter', create);
-    }, []);
+    }, [create]);
 
     useUpdatedUserList(apiToken);
     const [shouldSlack, setShouldSlack] = useState(false);
     const value = useInputStore(s => s.value);
 
     const result = analyze(value);
-    const hasUser = store.hasUser(result.value.name);
 
     const filteredUserList = [...store.usersList].filter(u =>
         fuzzysearch(result.value.name, `${u.name} ${u.real_name}`),
@@ -60,14 +58,25 @@ function App() {
         inputStore.getState().reset();
     };
 
+    useEffect(() => {
+        resultStore.setState({ isComplete: result.isComplete });
+    }, [result.isComplete]);
+
     return (
         <div className="App">
-            <TransactionInputArea />
+            <TransactionInputArea create={create} />
             <UserList users={filteredUserList} />
-            <DevDetails {...{ shouldSlack, setShouldSlack, hasUser, result }} />
+            <DevDetails {...{ shouldSlack, setShouldSlack, result, hasUser: result.isComplete }} />
             {!apiToken && <AddToSlackOverlay />}
         </div>
     );
 }
 
 export default observer(App);
+
+const initialValue = { isComplete: false };
+const [useResultStore, resultStore] = create(set => ({
+    ...initialValue,
+    reset: () => set(initialValue),
+}));
+export { useResultStore, resultStore };

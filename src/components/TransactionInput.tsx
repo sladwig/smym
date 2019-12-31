@@ -3,6 +3,7 @@ import './transactionInput.css';
 import classnames from 'classnames';
 import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
 import { ReactComponent as CancelSvg } from '../images/cross-icon.svg';
+import { ReactComponent as CheckSvg } from '../images/check-icon.svg';
 
 interface IProp {
     value: string;
@@ -147,5 +148,18 @@ export const CancelIcon = ({
 }) => (
     <div className="rectangle-icon-wrapper" {...{ onClick, style }}>
         <CancelSvg />
+    </div>
+);
+export const CheckIcon = ({
+    onClick,
+    style,
+    classNames,
+}: {
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
+    style: CSSProperties;
+    classNames?: string;
+}) => (
+    <div className={classnames('rectangle-icon-wrapper', classNames)} {...{ onClick, style }}>
+        <CheckSvg />
     </div>
 );
