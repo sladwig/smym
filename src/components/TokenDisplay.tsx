@@ -4,8 +4,7 @@ import { WithDecorations } from './WithDecorations';
 import classnames from 'classnames';
 import { setState } from './TokenInput';
 
-interface IProps {}
-export const TokenDisplay = ({}: IProps) => {
+export const TokenDisplay = () => {
     return (
         <div onClick={tokenInputFocus} className={classnames('token-input')}>
             <WithDecorations />

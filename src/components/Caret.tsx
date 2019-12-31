@@ -10,7 +10,7 @@ export const Caret = () => {
 
     const blink = useCallback(() => {
         setHidden(hid => !hid);
-    }, [hidden]);
+    }, []);
     useInterval(blink, hasFocus ? 500 : null);
 
     if (!hasFocus && !hidden) setHidden(true);

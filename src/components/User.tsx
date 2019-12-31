@@ -59,6 +59,6 @@ interface AvatarProps {
 }
 export const Avatar = ({ src, onClick, smaller = false }: AvatarProps) => (
     <div className={classnames('avatar-area', { smaller })} onClick={onClick}>
-        <img className="avatar" src={src} />
+        <img className="avatar" alt="avatar" src={src} />
     </div>
 );

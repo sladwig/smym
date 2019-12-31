@@ -58,7 +58,7 @@ export const TokenInput = () => {
         if (hasFocus && externalUpdate) {
             initalizeCaretFromStore(position);
         }
-    }, [hasFocus, externalUpdate, position]);
+    }, [hasFocus, externalUpdate, position, initalizeCaretFromStore]);
 
     const isDev = useMemo(() => window.localStorage.getItem('isDev'), []);
     return (
@@ -111,7 +111,7 @@ export const TransactionInputArea = ({ create }: InputAreaProps) => {
         return () => {
             document.removeEventListener('keydown', activateOrDeactivate);
         };
-    }, []);
+    }, [activateOrDeactivate]);
 
     const mode = useSuggestionStore(state => state.mode);
     const length = useSuggestionStore(state => state.length);

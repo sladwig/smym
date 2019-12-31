@@ -9,9 +9,7 @@ import classnames from 'classnames';
 import { inputStore } from './TokenInput';
 import { replaceWordAt } from '../utils/word';
 
-interface IProps {}
-
-export const SuggestionBox = ({}: IProps) => {
+export const SuggestionBox = () => {
     const mode = useSuggestionStore(state => state.mode);
     const value = useSuggestionStore(state => state.value);
 

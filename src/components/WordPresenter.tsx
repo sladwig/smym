@@ -260,7 +260,7 @@ const ValueTokenDisplay = ({
         { type: 'char', value: '0', position: lastPosition++, key: 2 },
     ];
 
-    const commaSplittedValues = word.value.split(/\,|\./);
+    const commaSplittedValues = word.value.split(/,|\./);
     const fixRestPosition = 1 < commaSplittedValues.length ? commaSplittedValues[1].length + 1 : 0;
 
     const transitionEuro = useTransition(

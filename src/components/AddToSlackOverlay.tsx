@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AddToSlackOverlay.css';
 
-export const AddToSlackOverlay = ({}) => {
+export const AddToSlackOverlay = () => {
     const [show, set] = useState(false);
     return (
         <div className="add-to-slack-overlay">

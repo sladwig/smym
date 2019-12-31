@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useSpring, animated } from 'react-spring';
 
-interface IProps {}
-
 const percent = (value: number) => (value * 100) / window.innerWidth;
 
-export const MovingEye = ({}: IProps) => {
+export const MovingEye = () => {
     const logoRef = useRef<HTMLDivElement>(((<div></div>) as unknown) as HTMLDivElement);
     const [{ x, y }, set] = useSpring(() => ({
         x: 100,
@@ -30,7 +28,8 @@ export const MovingEye = ({}: IProps) => {
         };
         document.addEventListener('mousemove', handeMouseMove);
         return () => document.removeEventListener('mousemove', handeMouseMove);
-    }, []);
+    }, [set]);
+
     return (
         <div className="logo" ref={logoRef}>
             <svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38">

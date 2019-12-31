@@ -26,7 +26,7 @@ function App() {
         if (!token) return;
         setApiToken(token);
         window.history.pushState('', '', window.location.origin);
-    }, [apiToken]);
+    }, [apiToken, setApiToken]);
 
     const create = useCallback(() => {
         const { active } = suggestionStore.getState();
