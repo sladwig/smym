@@ -6,6 +6,8 @@ import './SuggestionBox.css';
 import { ReactComponent as EnterSvg } from '../images/enter-icon.svg';
 import key, { KeyEvent, Callback } from 'keyboardjs';
 import classnames from 'classnames';
+import { inputStore } from './TokenInput';
+import { replaceWordAt } from '../utils/word';
 
 interface IProps {}
 
@@ -26,6 +28,16 @@ export const SuggestionBox = ({}: IProps) => {
 
         const tab = ((e: KeyEvent) => {
             e.preventDefault();
+            const { active, suggestions } = suggestionStore.getState();
+            if (active < 0) return;
+
+            const { value, position } = inputStore.getState();
+            const [newValue, newPosition] = replaceWordAt(
+                value,
+                position,
+                suggestions[active].name,
+            );
+            inputStore.setState({ value: newValue, position: newPosition, external: true });
         }) as Callback;
 
         key.bind('up', up);
@@ -41,15 +53,21 @@ export const SuggestionBox = ({}: IProps) => {
     return suggestionFor(mode, value);
 };
 
+// paid
 type SuggestionMode = 'none' | 'places';
 
 const suggestionFor = (mode: SuggestionMode, searchTerm: string) => {
     if (mode === 'none') return null;
     if (mode !== 'places') return null;
 
-    const filteredSuggestions = [...store.placesList].filter(p => fuzzysearch(searchTerm, p.name));
+    const filteredSuggestions = [...store.placesList]
+        .filter(p => fuzzysearch(searchTerm, p.name))
+        .map(p => ({ name: p.name, color: p.color }));
 
-    suggestionStore.setState({ length: filteredSuggestions.length });
+    suggestionStore.setState({
+        length: filteredSuggestions.length,
+        suggestions: filteredSuggestions,
+    });
     if (filteredSuggestions.length === 0) return null;
 
     return (
@@ -90,14 +108,12 @@ const Suggestion = ({ text, backgroundColor, index }: SuggestionProps) => {
     );
 };
 
+const initValues = { mode: 'none', value: '', length: 0, active: -1, suggestions: [] };
 const [useSuggestionStore, suggestionStore] = create(set => ({
-    mode: 'none',
-    value: '',
-    length: 0,
-    active: -1,
+    ...initValues,
     up: () => set(state => ({ active: state.active <= 0 ? state.length - 1 : state.active - 1 })),
     down: () => set(state => ({ active: (state.active + 1) % state.length })),
-    reset: () => set({ mode: 'none', value: '', active: -1 }),
+    reset: () => set(initValues),
 }));
 
 export { useSuggestionStore, suggestionStore };
