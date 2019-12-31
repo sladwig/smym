@@ -44,3 +44,21 @@
     height: 16px;
     border-radius: 8px;
 }
+
+.rectangle-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background-color: var(--whiteish);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    fill:  var(--deep-sky-blue);
+    transition: background-color 100ms ease-out;
+    flex-shrink: 0;
+}
+
+.rectangle-icon-wrapper:hover {
+    background-color: var(--pale-grey);
+}

@@ -1,7 +1,8 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import './button.css';
 import classnames from 'classnames';
-import { Icon } from './Icon';
+import { Icon, CheckIcon, CancelIcon } from './Icon';
+import { useResultStore } from '../App';
 
 interface IProps {
     onClick?: (event: React.MouseEvent) => void;
@@ -40,3 +41,16 @@ export const PaidButton: Button = (props: any) => (
     </Button>
 );
 export const UnpaidButton: Button = (props: any) => <Button text="Mark Paid" {...props} />;
+
+interface SubmitCancelProps {
+    onSubmit: (e: React.MouseEvent) => void;
+    onCancel: (e: React.MouseEvent) => void;
+}
+export const SubmitCancelButton = ({ onSubmit, onCancel }: SubmitCancelProps) => {
+    const complete = useResultStore(state => state.isComplete);
+    return complete ? (
+        <CheckIcon onClick={onSubmit} style={{ marginLeft: 29 }} />
+    ) : (
+        <CancelIcon onClick={onCancel} style={{ marginLeft: 29 }} />
+    );
+};

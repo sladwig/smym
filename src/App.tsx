@@ -10,10 +10,11 @@ import { inform } from './services/inform';
 import fuzzysearch from 'fuzzysearch';
 import key, { Callback } from 'keyboardjs';
 import DevDetails from './components/DevDetails';
-import { TransactionInputArea, useInputStore, inputStore } from './components/TokenInput';
+import { useInputStore, inputStore } from './components/TokenInput';
 import { suggestionStore } from './components/SuggestionBox';
 import { AddToSlackOverlay } from './components/AddToSlackOverlay';
 import create from 'zustand';
+import { TransactionInputArea } from './components/TransactionInputArea';
 
 function App() {
     // TODO: use a simpler hook

@@ -2,20 +2,23 @@ import React, { MouseEvent, CSSProperties } from 'react';
 import './icon.css';
 import classnames from 'classnames';
 
-import { ReactComponent as calendarSvg } from '../images/calendar-icon.svg';
-import { ReactComponent as checkSvg } from '../images/check-icon.svg';
-import { ReactComponent as crossSvg } from '../images/cross-icon.svg';
-import { ReactComponent as enterSvg } from '../images/enter-icon.svg';
-import { ReactComponent as openSvg } from '../images/open-icon.svg';
-import { ReactComponent as searchSvg } from '../images/search-icon.svg';
+import { ReactComponent as CalendarSvg } from '../images/calendar-icon.svg';
+import { ReactComponent as CheckSvg } from '../images/check-icon.svg';
+import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
+import { ReactComponent as EnterSvg } from '../images/enter-icon.svg';
+import { ReactComponent as OpenSvg } from '../images/open-icon.svg';
+import { ReactComponent as SearchSvg } from '../images/search-icon.svg';
+import { ReactComponent as CancelSvg } from '../images/cross-icon.svg';
+
+export { CalendarSvg, CheckSvg, CrossSvg, EnterSvg, OpenSvg, SearchSvg, CancelSvg };
 
 const svgs = {
-    calendar: calendarSvg,
-    check: checkSvg,
-    cross: crossSvg,
-    enter: enterSvg,
-    open: openSvg,
-    search: searchSvg,
+    calendar: CalendarSvg,
+    check: CheckSvg,
+    cross: CrossSvg,
+    enter: EnterSvg,
+    open: OpenSvg,
+    search: SearchSvg,
 };
 
 interface IProps {
@@ -66,3 +69,39 @@ export const Icon = ({
         </span>
     );
 };
+
+export const SearchIcon = ({
+    onClick,
+}: {
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
+}) => (
+    <div className="rectangle-icon-wrapper" {...{ onClick }}>
+        <SearchSvg />
+    </div>
+);
+
+export const CancelIcon = ({
+    onClick,
+    style,
+}: {
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
+    style: CSSProperties;
+}) => (
+    <div className="rectangle-icon-wrapper" {...{ onClick, style }}>
+        <CancelSvg />
+    </div>
+);
+
+export const CheckIcon = ({
+    onClick,
+    style,
+    classNames,
+}: {
+    onClick?: (event: React.MouseEvent<HTMLDivElement>) => any;
+    style: CSSProperties;
+    classNames?: string;
+}) => (
+    <div className={classnames('rectangle-icon-wrapper', classNames)} {...{ onClick, style }}>
+        <CheckSvg />
+    </div>
+);
