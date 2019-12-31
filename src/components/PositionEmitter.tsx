@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import './PositionEmitter.css';
-import { setState } from './TokenInput';
+import { inputStore } from '../zustand/InputStore';
 
 interface IPositionEmitterProps {
     position?: number;
@@ -25,4 +25,5 @@ export const PositionEmitter = ({
     );
 };
 
-const updatePosition = (position: number) => () => setState({ position, external: true });
+const updatePosition = (position: number) => () =>
+    inputStore.setState({ position, external: true });

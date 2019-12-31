@@ -4,10 +4,10 @@ import fuzzysearch from 'fuzzysearch';
 import './SuggestionBox.css';
 import { ReactComponent as EnterSvg } from '../images/enter-icon.svg';
 import key, { KeyEvent, Callback } from 'keyboardjs';
-import { inputStore } from './TokenInput';
 import { replaceWordAt } from '../utils/word';
 import { useSuggestionStore, suggestionStore } from '../zustand/SuggestionStore';
 import { Suggestion } from './Suggestion';
+import { inputStore } from '../zustand/InputStore';
 
 export const SuggestionBox = () => {
     const mode = useSuggestionStore(state => state.mode);

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import './Caret.css';
 import classnames from 'classnames';
-import { useInputStore } from './TokenInput';
+import { useInputStore } from '../zustand/InputStore';
 import { useInterval } from '../hooks/useInterval';
 
 export const Caret = () => {

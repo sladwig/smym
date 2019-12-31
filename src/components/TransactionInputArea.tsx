@@ -3,14 +3,16 @@ import './TransactionInputArea.css';
 import { Callback } from 'keyboardjs';
 import { useHasInLocalStorage } from '../hooks/useLocalStorage';
 import { tokenInputFocus } from './TokenDisplay';
-import { inputStore, TokenInput } from './TokenInput';
+import { TokenInput } from './TokenInput';
 import { SuggestionBox } from './SuggestionBox';
 import { MovingEye } from './MovingEye';
 import classnames from 'classnames';
 import { SearchIcon, SearchSvg } from './Icon';
 import { SubmitCancelButton } from './Button';
 import { useSuggestionStore } from '../zustand/SuggestionStore';
+import { inputStore } from '../zustand/InputStore';
 
+const { reset } = inputStore.getState();
 interface InputAreaProps {
     create: Callback;
 }
@@ -30,7 +32,7 @@ export const TransactionInputArea = ({ create }: InputAreaProps) => {
             activate();
             if (e.key.toLowerCase() !== 'escape') return;
             deactivate();
-            inputStore.getState().reset();
+            reset();
         },
         [activate, deactivate],
     );
@@ -70,12 +72,12 @@ export const TransactionInputArea = ({ create }: InputAreaProps) => {
                             onSubmit={e => {
                                 create();
                                 deactivate();
-                                inputStore.getState().reset();
+                                reset();
                                 e.stopPropagation();
                             }}
                             onCancel={e => {
                                 deactivate();
-                                inputStore.getState().reset();
+                                reset();
                                 e.stopPropagation();
                             }}
                         />

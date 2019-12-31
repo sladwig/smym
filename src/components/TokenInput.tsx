@@ -1,19 +1,11 @@
 import React, { useRef, useCallback, useEffect, useMemo } from 'react';
 import './TokenInput.css';
 import { TokenDisplay, tokenInputFocus } from './TokenDisplay';
-import create from 'zustand';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
-
-const initialValue = { value: '', position: 0, hasFocus: false, external: false };
-const [useInputStore, inputStore] = create(set => ({
-    ...initialValue,
-    reset: () => set(initialValue),
-}));
+import { useInputStore, inputStore } from '../zustand/InputStore';
 
 const { setState } = inputStore;
-export { useInputStore, inputStore, setState };
-
 const external = false;
 export const TokenInput = () => {
     const inputRef = useRef<HTMLInputElement>(null);

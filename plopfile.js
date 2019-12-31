@@ -38,6 +38,37 @@ module.exports = function(plop) {
         ],
     });
 
+    plop.setGenerator('display', {
+        description: 'add a display',
+        prompts: [
+            {
+                type: 'input',
+                name: 'name',
+                message: 'display name:',
+            },
+        ],
+        actions: [
+            {
+                type: 'add',
+                path: 'src/components/displays/{{properCase name}}.tsx',
+                templateFile: 'generators/component.hbs',
+                skipIfExists: true,
+            },
+            {
+                type: 'add',
+                path: 'src/components/displays/{{properCase name}}.test.tsx',
+                templateFile: 'generators/component.test.hbs',
+                skipIfExists: true,
+            },
+            {
+                type: 'add',
+                path: 'src/components/displays/{{properCase name}}.css',
+                templateFile: 'generators/component.css.hbs',
+                skipIfExists: true,
+            },
+        ],
+    });
+
     plop.setGenerator('hook', {
         description: 'add a hook',
         prompts: [

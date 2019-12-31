@@ -2,7 +2,7 @@ import React from 'react';
 import './WithDecorations.css';
 import { tokenize } from '../services/parser';
 import { WordPresenter } from './WordPresenter';
-import { useInputStore } from './TokenInput';
+import { useInputStore } from '../zustand/InputStore';
 import { addCaretAt } from '../utils/caret';
 
 export const WithDecorations = () => {
