@@ -157,7 +157,6 @@ describe('TokenInput', () => {
         fireEvent.keyDown(inputField, { key: 'b' });
         fireEvent.keyUp(inputField, { key: 'b' });
 
-        console.log(inputField.textContent);
         debug(inputField);
         expect(inputField.innerHTML).toEqual('ab');
     });

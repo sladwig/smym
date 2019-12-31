@@ -54,12 +54,10 @@ export const TransactionInput = ({ onChange, onSubmit, value, setValue }: IProp)
     const onInputKeyUp = (event: React.KeyboardEvent) => {
         if (!inputRef.current) return;
         if (!event) return;
-        console.log(displayRef.current!.childNodes);
 
         if (event.key === 'Backspace' && !inputRef.current.textContent) {
             const [last, ...rest] = inputValue.split(' ').reverse();
             const restString = rest.reverse().join(' ');
-            console.log('splits', restString, 'last', last);
             setInputValue(restString);
             inputRef!.current!.textContent = last || null;
 
@@ -78,16 +76,12 @@ export const TransactionInput = ({ onChange, onSubmit, value, setValue }: IProp)
         if (event.key === 'Enter') {
             // onSubmit();
             if (onSubmit) onSubmit();
-            console.log('enter pressed');
             return false;
         }
         if (event.key.includes('Arrow')) {
-            console.log('position');
         }
     };
-    const onInputChange = (event: React.KeyboardEvent) => {
-        console.log('onInputChange', event);
-    };
+    const onInputChange = (event: React.KeyboardEvent) => {};
 
     return (
         <form onSubmit={onSubmit}>

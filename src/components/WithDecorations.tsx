@@ -9,13 +9,11 @@ export const WithDecorations = () => {
     const [value, position] = useInputStore(state => [state.value, state.position]);
 
     const characters = addCaretAt(asChars(value), position);
-    console.log('character', characters);
     // const isEmpty = !value.length;
 
     const words = asWords(characters);
 
     const result = words.map((word: any) => {
-        console.log('the word', word);
         return <WordPresenter word={word} key={`word-${word.position}`} />;
     });
     return result;

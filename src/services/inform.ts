@@ -11,6 +11,5 @@ export const inform = (apiToken: string, user: IUser, shouldSlack: boolean) => {
     } else {
         message = `Paid up! - Your balance is ${user.balance.toFixed(2)}`;
     }
-    console.log(message);
     if (shouldSlack) slack(apiToken).sendUserMessage(user.id, message);
 };

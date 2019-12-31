@@ -9,12 +9,10 @@ export const Caret = () => {
     const [hidden, setHidden] = useState(false);
 
     const blink = useCallback(() => {
-        console.log('called');
         setHidden(hid => !hid);
     }, [hidden]);
     useInterval(blink, hasFocus ? 500 : null);
 
-    // console.log('caret here', hasFocus, hidden);
     if (!hasFocus && !hidden) setHidden(true);
     return (
         <span className="caret-holder">
