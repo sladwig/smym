@@ -16,7 +16,7 @@ export const AddToSlackOverlay = ({}) => {
                     srcSet="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x"
                 />
             </div>
-            <div>&nbsp;{show && "doesn't work yet"}</div>
+            <div>&nbsp;{show && 'not working yet'}</div>
         </div>
     );
 };
