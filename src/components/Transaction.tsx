@@ -14,7 +14,7 @@ export const Transaction = ({ transaction }: IProps) => {
         <div className="transaction">
             <Icon name="calendar" noHover={true} />
             <span className="transaction-date">
-                {transaction.date.getDay()} {months[transaction.date.getMonth()]}
+                {transaction.date.getDate()} {months[transaction.date.getMonth()]}
             </span>
             {transaction.description && (
                 <span className="transaction-description" style={{ backgroundColor }}>
