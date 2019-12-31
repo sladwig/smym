@@ -15,12 +15,12 @@ import { Avatar } from './User';
 import classnames from 'classnames';
 import { usePrevious } from '../hooks/usePrevious';
 import { IUser } from '../store/User';
-import { ReactComponent as CrossSvg } from '../images/cross-icon.svg';
 import { useSpring, animated, config, useTransition } from 'react-spring';
 import { color as newColor } from '../store/Place';
 import { Caret } from './Caret';
-import { suggestionStore, useSuggestionStore } from './SuggestionBox';
 import { hasCaret } from '../utils/caret';
+import { useSuggestionStore, suggestionStore } from '../zustand/SuggestionStore';
+import { CrossSvg } from './Icon';
 
 export type EmptyWordT = {
     type: 'emptyword';

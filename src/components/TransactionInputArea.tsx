@@ -4,11 +4,12 @@ import { Callback } from 'keyboardjs';
 import { useHasInLocalStorage } from '../hooks/useLocalStorage';
 import { tokenInputFocus } from './TokenDisplay';
 import { inputStore, TokenInput } from './TokenInput';
-import { useSuggestionStore, SuggestionBox } from './SuggestionBox';
+import { SuggestionBox } from './SuggestionBox';
 import { MovingEye } from './MovingEye';
 import classnames from 'classnames';
 import { SearchIcon, SearchSvg } from './Icon';
 import { SubmitCancelButton } from './Button';
+import { useSuggestionStore } from '../zustand/SuggestionStore';
 
 interface InputAreaProps {
     create: Callback;

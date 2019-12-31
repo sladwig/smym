@@ -1,0 +1,39 @@
+.suggestion {
+    padding-left: 111px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    transition: background-color 125ms ease-in-out;
+}
+
+.suggestion.active {
+    background-color: var(--pale-grey);
+}
+
+.place-suggestion {
+    color: white;
+    border-radius: 32px;
+    font-size: 24px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 19px;
+    padding-right: 19px;
+    animation: suggestion-appear 0.25s cubic-bezier(0.230, 1.000, 0.320, 1.000) ;
+}
+
+.suggestion-info {
+    border-top: 1px solid var(--pale-grey);
+    animation: suggestion-appear 0.45s cubic-bezier(0.230, 1.000, 0.320, 1.000) ;
+}
+
+
+@keyframes suggestion-appear {
+  0% {
+    transform: scale(0.3) translateY(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) translateY(0px);
+    opacity: 1;
+  }
+}

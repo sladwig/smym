@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { create } from 'zustand';
 import { store } from '../store/Store';
 import fuzzysearch from 'fuzzysearch';
 import './SuggestionBox.css';
 import { ReactComponent as EnterSvg } from '../images/enter-icon.svg';
 import key, { KeyEvent, Callback } from 'keyboardjs';
-import classnames from 'classnames';
 import { inputStore } from './TokenInput';
 import { replaceWordAt } from '../utils/word';
+import { useSuggestionStore, suggestionStore } from '../zustand/SuggestionStore';
+import { Suggestion } from './Suggestion';
 
 export const SuggestionBox = () => {
     const mode = useSuggestionStore(state => state.mode);
@@ -90,30 +90,3 @@ const suggestionFor = (mode: SuggestionMode, searchTerm: string) => {
         </div>
     );
 };
-
-interface SuggestionProps {
-    text: string;
-    backgroundColor: string;
-    index: number;
-}
-const Suggestion = ({ text, backgroundColor, index }: SuggestionProps) => {
-    const activeIndex = useSuggestionStore(state => state.active);
-    const active = index === activeIndex;
-    return (
-        <div className={classnames('suggestion', { active })}>
-            <div className="place-suggestion" style={{ backgroundColor }}>
-                {text}
-            </div>
-        </div>
-    );
-};
-
-const initValues = { mode: 'none', value: '', length: 0, active: -1, suggestions: [] };
-const [useSuggestionStore, suggestionStore] = create(set => ({
-    ...initValues,
-    up: () => set(state => ({ active: state.active <= 0 ? state.length - 1 : state.active - 1 })),
-    down: () => set(state => ({ active: (state.active + 1) % state.length })),
-    reset: () => set(initValues),
-}));
-
-export { useSuggestionStore, suggestionStore };
