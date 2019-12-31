@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import { useLocalStoreBackedFormInput } from './hooks/useFormInput';
 import { store } from './store/Store';
@@ -8,11 +8,15 @@ import { useUpdatedUserList } from './hooks/useUpdatedUserList';
 import { analyze } from './services/nlp';
 import { inform } from './services/inform';
 import fuzzysearch from 'fuzzysearch';
+import key, { KeyEvent, Callback } from 'keyboardjs';
 import DevDetails from './components/DevDetails';
 import { TransactionInputArea, useInputStore, inputStore } from './components/TokenInput';
+import { suggestionStore } from './components/SuggestionBox';
 
 function App() {
     const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
+    const createTransactionRef = useRef<() => void>(() => {});
+
     useEffect(() => {
         if (apiToken) return;
         const token = new URLSearchParams(window.location.search).get('apitoken');
@@ -20,6 +24,19 @@ function App() {
         setApiToken(token);
         window.history.pushState('', '', window.location.origin);
     }, [apiToken]);
+
+    useEffect(() => {
+        const create = ((e: KeyEvent) => {
+            e.preventDefault();
+            const { active } = suggestionStore.getState();
+            if (0 <= active) return;
+
+            createTransactionRef.current();
+        }) as Callback;
+
+        key.bind('enter', create);
+        return () => key.unbind('enter', create);
+    }, []);
 
     useUpdatedUserList(apiToken);
     const [shouldSlack, setShouldSlack] = useState(false);
@@ -32,9 +49,7 @@ function App() {
         fuzzysearch(result.value.name, `${u.name} ${u.real_name}`),
     );
 
-    const createTransaction = (event?: React.FormEvent<HTMLFormElement>) => {
-        if (event) event.preventDefault();
-
+    createTransactionRef.current = () => {
         if (result.value.name === undefined) return;
 
         const user = store.usersByName[result.value.name];
@@ -42,6 +57,7 @@ function App() {
         inform(apiToken, user, shouldSlack);
         inputStore.getState().reset();
     };
+
     return (
         <div className="App">
             <TransactionInputArea />
