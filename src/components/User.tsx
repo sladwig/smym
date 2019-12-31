@@ -5,6 +5,7 @@ import { TransactionList } from './TranactionList';
 import { Icon } from './Icon';
 import { PaidButton, UnpaidButton } from './Button';
 import classnames from 'classnames';
+import { observer } from 'mobx-react-lite';
 
 interface IProps {
     user: IUser;
@@ -12,7 +13,7 @@ interface IProps {
 }
 const transactionHeight = 102;
 
-export const User = ({ user, expand }: IProps) => {
+export const User = observer(({ user, expand }: IProps) => {
     const [showMore, setShowMore] = useState(expand);
     useEffect(() => setShowMore(expand), [expand]);
 
@@ -31,7 +32,11 @@ export const User = ({ user, expand }: IProps) => {
                     <div className="balance" style={{ marginRight: 26 }}>
                         {user.balance.toFixed(2)}
                     </div>
-                    {user.balance === 0 ? <PaidButton /> : <UnpaidButton />}
+                    {user.balance === 0 ? (
+                        <PaidButton />
+                    ) : (
+                        <UnpaidButton onClick={() => user.resetTransactions()} />
+                    )}
                     <Icon
                         name="open"
                         transparent={true}
@@ -46,7 +51,7 @@ export const User = ({ user, expand }: IProps) => {
             </div>
         </div>
     );
-};
+});
 interface AvatarProps {
     src?: string;
     onClick?: () => any;
