@@ -43,10 +43,12 @@ export const SuggestionBox = ({}: IProps) => {
         key.bind('up', up);
         key.bind('down', down);
         key.bind('tab', tab);
+        key.bind('enter', tab);
         return () => {
             key.unbind('up', up);
             key.unbind('down', down);
             key.unbind('tab', tab);
+            key.unbind('enter', tab);
         };
     }, []);
 

@@ -52,7 +52,7 @@ function App() {
     );
 
     createTransactionRef.current = () => {
-        if (result.value.name === undefined) return;
+        if (!result.isComplete) return;
 
         const user = store.usersByName[result.value.name];
         user.addTransaction(result.value.value as number, result.value.description as string);

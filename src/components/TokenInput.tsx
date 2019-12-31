@@ -82,7 +82,7 @@ export const TokenInput = observer(() => {
 });
 
 export const TransactionInputArea = () => {
-    const hasApiToken = useHasInLocalStorage('apitoken');
+    const hasApiToken = useHasInLocalStorage('apiToken');
     const [active, setActive] = useState(false);
     useEffect(() => {
         if (active) tokenInputFocus();
