@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { PositionEmitter } from './ClickPositionEmitter';
+import { PositionEmitter } from './PositionEmitter';
 
 describe('PositionEmitter', () => {
     test('renders', () => {

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import './ClickPositionEmitter.css';
+import './PositionEmitter.css';
 import { setState } from './TokenInput';
 
 interface IPositionEmitterProps {

@@ -9,7 +9,7 @@ import {
     paidToken,
     valueToken,
 } from '../services/tokens';
-import { PositionEmitter } from './ClickPositionEmitter';
+import { PositionEmitter } from './PositionEmitter';
 import { store } from '../store/Store';
 import { Avatar } from './User';
 import classnames from 'classnames';
