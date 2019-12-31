@@ -1,0 +1,15 @@
+.add-to-slack-overlay {
+    left: 50%;
+    margin: 0 62px;
+    padding: 64px;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--whiteish);
+}
+.welcome {
+    margin-bottom: 32px;
+    margin-top: 32px;
+}

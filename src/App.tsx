@@ -12,9 +12,11 @@ import key, { KeyEvent, Callback } from 'keyboardjs';
 import DevDetails from './components/DevDetails';
 import { TransactionInputArea, useInputStore, inputStore } from './components/TokenInput';
 import { suggestionStore } from './components/SuggestionBox';
+import { AddToSlackOverlay } from './components/AddToSlackOverlay';
 
 function App() {
-    const [apiToken, setApiToken, ApiInput] = useLocalStoreBackedFormInput('apiToken', '');
+    // TODO: use a simpler hook
+    const [apiToken, setApiToken] = useLocalStoreBackedFormInput('apiToken', '');
     const createTransactionRef = useRef<() => void>(() => {});
 
     useEffect(() => {
@@ -62,8 +64,8 @@ function App() {
         <div className="App">
             <TransactionInputArea />
             <UserList users={filteredUserList} />
-            {!apiToken && <ApiInput />}
             <DevDetails {...{ shouldSlack, setShouldSlack, hasUser, result }} />
+            {!apiToken && <AddToSlackOverlay />}
         </div>
     );
 }
