@@ -40,7 +40,7 @@ function App() {
     }, [create]);
 
     useUpdatedUserList(apiToken);
-    const [shouldSlack, setShouldSlack] = useState(false);
+    const [shouldSlack, setShouldSlack] = useState(true);
     const value = useInputStore(s => s.value);
 
     const result = analyze(value);
