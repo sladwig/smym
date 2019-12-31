@@ -9,6 +9,7 @@ import { ReactComponent as SearchIconSvg } from '../images/search-icon.svg';
 import { SuggestionBox, useSuggestionStore } from './SuggestionBox';
 import { MovingEye } from './MovingEye';
 import shallow from 'zustand/shallow';
+import { useHasInLocalStorage } from '../hooks/useLocalStorage';
 
 const initialValue = { value: '', position: 0, hasFocus: false, external: false };
 const [useInputStore, inputStore] = create(set => ({
@@ -81,12 +82,15 @@ export const TokenInput = observer(() => {
 });
 
 export const TransactionInputArea = () => {
+    const hasApiToken = useHasInLocalStorage('apitoken');
     const [active, setActive] = useState(false);
     useEffect(() => {
         if (active) tokenInputFocus();
     }, [active]);
 
-    const activate = useCallback(() => setActive(true), [setActive]);
+    const activate = useCallback(() => {
+        if (hasApiToken) setActive(true);
+    }, [setActive, hasApiToken]);
     const deactivate = useCallback(() => setActive(false), [setActive]);
     const activateOrDeactivate = useCallback(
         (e: KeyboardEvent) => {
@@ -115,17 +119,14 @@ export const TransactionInputArea = () => {
             className={classnames('top-wrapper', { active, 'has-suggestion': suggestion })}
             style={{ height }}
         >
-            <div
-                className={classnames('transaction-input-area', 'heading-1')}
-                onClick={() => setActive(true)}
-            >
+            <div className={classnames('transaction-input-area', 'heading-1')} onClick={activate}>
                 {!active && (
                     <>
                         <MovingEye />
                         <div className="show-container">
                             <div className="show-me-your-money"></div>
                         </div>
-                        <SearchIcon onClick={() => setActive(true)} />
+                        {hasApiToken && <SearchIcon onClick={activate} />}
                     </>
                 )}
                 {active && (
@@ -134,7 +135,7 @@ export const TransactionInputArea = () => {
                         <TokenInput />
                         <CancelIcon
                             onClick={e => {
-                                setActive(false);
+                                deactivate();
                                 inputStore.getState().reset();
                                 e.stopPropagation();
                             }}
