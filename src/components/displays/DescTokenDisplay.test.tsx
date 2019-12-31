@@ -4,7 +4,7 @@ import { DescTokenDisplay } from './DescTokenDisplay';
 
 describe('DescTokenDisplay', () => {
     test('renders', () => {
-        const { container } = render(<DescTokenDisplay />);
+        const { container } = render(<DescTokenDisplay word={{ characters: [], value: '' }} />);
         expect(container).toMatchSnapshot();
     });
 });

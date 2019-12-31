@@ -1,3 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AtChar renders 1`] = `<div />`;
+exports[`AtChar renders 1`] = `
+<div>
+  <span
+    class="scale-in-center"
+  >
+    @
+  </span>
+</div>
+`;

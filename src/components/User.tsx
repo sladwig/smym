@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IUser } from '../store/User';
-import './user.css';
+import './User.css';
 import { TransactionList } from './TranactionList';
 import { Icon } from './Icon';
 import { PaidButton, UnpaidButton } from './Button';

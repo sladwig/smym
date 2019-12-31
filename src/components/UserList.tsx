@@ -1,7 +1,7 @@
 import React from 'react';
 import { IUser } from '../store/User';
 import { User } from './User';
-import './userList.css';
+import './UserList.css';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 interface IProps {
     users: IUser[];

@@ -1,5 +1,5 @@
 import React, { MouseEvent, CSSProperties } from 'react';
-import './icon.css';
+import './Icon.css';
 import classnames from 'classnames';
 
 import { ReactComponent as CalendarSvg } from '../images/calendar-icon.svg';

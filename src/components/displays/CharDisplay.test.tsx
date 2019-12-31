@@ -4,7 +4,7 @@ import { CharDisplay } from './CharDisplay';
 
 describe('CharDisplay', () => {
     test('renders', () => {
-        const { container } = render(<CharDisplay />);
+        const { container } = render(<CharDisplay char={{ position: 1, value: '' }} />);
         expect(container).toMatchSnapshot();
     });
 });

@@ -1,5 +1,4 @@
 import React from 'react';
-import './TokenDisplay.css';
 import { WithDecorations } from './WithDecorations';
 import classnames from 'classnames';
 import { inputStore } from '../zustand/InputStore';

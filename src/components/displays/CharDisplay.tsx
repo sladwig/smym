@@ -1,7 +1,6 @@
 import React from 'react';
 import { PositionEmitter } from '../PositionEmitter';
-import { CharCharacterT } from './types';
 
-export const CharDisplay = ({ char }: { char: CharCharacterT }) => {
+export const CharDisplay = ({ char }: { char: { position: number; value: string } }) => {
     return <PositionEmitter position={char.position}>{char.value}</PositionEmitter>;
 };

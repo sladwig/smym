@@ -1,14 +1,17 @@
 import React, { useMemo, useEffect, useCallback } from 'react';
-import { descriptionToken } from '../../services/tokens';
 import { useSpring, animated, config } from 'react-spring';
 import { useSuggestionStore, suggestionStore } from '../../zustand/SuggestionStore';
 import { hasCaret } from '../../utils/caret';
 import { display } from './display';
 import { CrossSvg } from '../Icon';
 import { color as newColor } from '../../store/Place';
-import { TD } from './types';
+import { AnyCharacterT } from './types';
 
-export const DescTokenDisplay = ({ word }: TD<descriptionToken>) => {
+export const DescTokenDisplay = ({
+    word,
+}: {
+    word: { characters: AnyCharacterT[]; value: string };
+}) => {
     const bgColor = useMemo(() => newColor(), []);
     const { x, color, backgroundColor, fontWeight } = useSpring({
         from: { x: 0 },

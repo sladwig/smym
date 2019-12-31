@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from 'react';
-import './button.css';
+import './Button.css';
 import classnames from 'classnames';
 import { Icon, CheckIcon, CancelIcon } from './Icon';
 import { useResultStore } from '../zustand/ResultStore';

@@ -1,6 +1,6 @@
 import { ITransaction } from '../store/Transaction';
 import React from 'react';
-import './transaction.css';
+import './Transaction.css';
 import { Icon } from './Icon';
 import { store } from '../store/Store';
 
