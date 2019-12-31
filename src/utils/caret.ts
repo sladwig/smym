@@ -1,4 +1,4 @@
-import { isCaret, AnyCharacterT, isChar } from '../components/WordPresenter';
+import { isCaret, AnyCharacterT, isChar } from '../components/displays/types';
 
 export const addCaretAt = (anArray: any[], position: number) => {
     const clone = anArray.slice();

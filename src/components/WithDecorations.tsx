@@ -1,7 +1,7 @@
 import React from 'react';
 import './WithDecorations.css';
 import { tokenize } from '../services/parser';
-import { WordPresenter } from './WordPresenter';
+import { Presenter } from './Presenter';
 import { useInputStore } from '../zustand/InputStore';
 import { addCaretAt } from '../utils/caret';
 
@@ -13,7 +13,7 @@ export const WithDecorations = () => {
     const words = asWords(characters);
 
     const result = words.map((word: any) => {
-        return <WordPresenter word={word} key={`word-${word.position}`} />;
+        return <Presenter word={word} key={`word-${word.position}`} />;
     });
     return result;
 };
