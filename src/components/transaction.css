@@ -17,12 +17,8 @@
 .transaction-description {
     color: #ffffff;
     padding: 9px;
-
     text-align: left;
     border-radius: 11px;
-
-
-    /* height: 11px; */
     font-family: 'Gotham Pro Bold';
     font-size: 12px;
     font-weight: 500;

@@ -14,9 +14,9 @@ import { inputStore } from '../zustand/InputStore';
 
 const { reset } = inputStore.getState();
 interface InputAreaProps {
-    create: Callback;
+    create?: Callback;
 }
-export const TransactionInputArea = ({ create }: InputAreaProps) => {
+export const TransactionInputArea = ({ create = () => {} }: InputAreaProps) => {
     const hasApiToken = useHasInLocalStorage('apiToken');
     const [active, setActive] = useState(false);
     useEffect(() => {

@@ -9,7 +9,6 @@ export const WithDecorations = () => {
     const [value, position] = useInputStore(state => [state.value, state.position]);
 
     const characters = addCaretAt(asChars(value), position);
-    // const isEmpty = !value.length;
 
     const words = asWords(characters);
 
