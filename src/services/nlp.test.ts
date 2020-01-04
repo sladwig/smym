@@ -66,11 +66,9 @@ describe('helpers', () => {
         expect(isDescription('@abc')).toBe(false);
     });
 });
-const splitTest = (toBeAnalysed: string, testFunction: (splits: string[]) => any) =>
-    test(toBeAnalysed, () => testFunction(toBeAnalysed.split(' ')));
 
 const analyzeTest = (toBeAnalysed: string, testFunction: (splits: AnalyzeResult) => any) =>
-    test(toBeAnalysed, () => testFunction(analyze(toBeAnalysed)));
+    test(toBeAnalysed, () => testFunction(analyze(toBeAnalysed, () => true)));
 
 describe('valid', () => {
     analyzeTest('@stefanl marw 3.99', result => {

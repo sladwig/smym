@@ -4,7 +4,7 @@ import { WordDisplay } from './WordDisplay';
 
 describe('WordDisplay', () => {
     test('renders', () => {
-        const { container } = render(<WordDisplay />);
+        const { container } = render(<WordDisplay word={{ characters: [] }} />);
         expect(container).toMatchSnapshot();
     });
 });

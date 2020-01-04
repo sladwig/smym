@@ -4,7 +4,9 @@ import { NameTokenDisplay } from './NameTokenDisplay';
 
 describe('NameTokenDisplay', () => {
     test('renders', () => {
-        const { container } = render(<NameTokenDisplay />);
+        const { container } = render(
+            <NameTokenDisplay word={{ tokenized: { name: '' }, characters: [] }} />,
+        );
         expect(container).toMatchSnapshot();
     });
 });

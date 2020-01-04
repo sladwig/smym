@@ -1,12 +1,15 @@
 import React, { useCallback } from 'react';
 import './PaidTokenDisplay.css';
-import { paidToken } from '../../services/tokens';
 import { useSpring, animated, config } from 'react-spring';
 import { display } from './display';
 import { CrossSvg } from '../Icon';
-import { TD } from './types';
+import { AnyCharacterT } from './types';
 
-export const PaidTokenDisplay = ({ word }: TD<paidToken>) => {
+export const PaidTokenDisplay = ({
+    word,
+}: {
+    word: { value: string; characters: AnyCharacterT[] };
+}) => {
     const state = word.value.length;
     const { x } = useSpring({
         from: { x: 1 },

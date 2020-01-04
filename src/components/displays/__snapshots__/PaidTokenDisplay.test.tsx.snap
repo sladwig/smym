@@ -1,3 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PaidTokenDisplay renders 1`] = `<div />`;
+exports[`PaidTokenDisplay renders 1`] = `
+<div>
+  <div
+    class="paid-token"
+    style="opacity: 0.3; border-radius: 0; font-size: 36px; padding: 0px 0px 0px 0px;"
+  />
+</div>
+`;

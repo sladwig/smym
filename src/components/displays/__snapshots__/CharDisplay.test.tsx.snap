@@ -1,3 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CharDisplay renders 1`] = `<div />`;
+exports[`CharDisplay renders 1`] = `
+<div>
+  <span
+    class="position-emitter"
+  >
+    
+    <span
+      class="position-area-overlay"
+    >
+      <span
+        class="position-area"
+      />
+      <span
+        class="position-area"
+      />
+    </span>
+  </span>
+</div>
+`;

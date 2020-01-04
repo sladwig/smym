@@ -1,3 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Suggestion renders 1`] = `<div />`;
+exports[`Suggestion renders 1`] = `
+<div>
+  <div
+    class="suggestion"
+  >
+    <div
+      class="place-suggestion"
+    />
+  </div>
+</div>
+`;

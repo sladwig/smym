@@ -1,6 +1,6 @@
 import React, { CSSProperties, useCallback } from 'react';
 import { valueToken, minusToken } from '../../services/tokens';
-import { isChar, CharCharacterT, TD } from './types';
+import { isChar, CharCharacterT, TD, AnyCharacterT } from './types';
 import { useTransition, animated } from 'react-spring';
 import { display } from './display';
 
@@ -17,11 +17,14 @@ const transitionOptions = {
 export const ValueTokenDisplay = ({
     word,
     style,
-}: TD<valueToken | minusToken> & { style?: CSSProperties }) => {
+}: {
+    word: { characters: AnyCharacterT[]; value: string };
+    style?: CSSProperties;
+}) => {
     const onlyChars = word.characters.filter(isChar);
 
-    let firstPosition = onlyChars[0].position;
-    let lastPosition = onlyChars[onlyChars.length - 1].position;
+    let firstPosition = onlyChars.length > 0 ? onlyChars[0].position : 0;
+    let lastPosition = onlyChars.length > 0 ? onlyChars[onlyChars.length - 1].position : 0;
 
     const fixed: Array<CharCharacterT & { key: number }> = [
         { type: 'char', value: '.', position: lastPosition++, key: 0 },

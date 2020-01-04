@@ -4,7 +4,7 @@ import { PaidTokenDisplay } from './PaidTokenDisplay';
 
 describe('PaidTokenDisplay', () => {
     test('renders', () => {
-        const { container } = render(<PaidTokenDisplay />);
+        const { container } = render(<PaidTokenDisplay word={{ value: '', characters: [] }} />);
         expect(container).toMatchSnapshot();
     });
 });

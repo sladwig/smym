@@ -1,3 +1,86 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ValueTokenDisplay renders 1`] = `<div />`;
+exports[`ValueTokenDisplay renders 1`] = `
+<div>
+  <div
+    class="row-flex value-token"
+  >
+    <div
+      style="transform: translateY(-40px); opacity: 0;"
+    >
+      <span
+        class="position-emitter"
+      >
+        €
+        <span
+          class="position-area-overlay"
+        >
+          <span
+            class="position-area"
+          />
+          <span
+            class="position-area"
+          />
+        </span>
+      </span>
+    </div>
+    <div
+      style="transform: translateY(-40px); opacity: 0;"
+    >
+      <span
+        class="position-emitter"
+      >
+        .
+        <span
+          class="position-area-overlay"
+        >
+          <span
+            class="position-area"
+          />
+          <span
+            class="position-area"
+          />
+        </span>
+      </span>
+    </div>
+    <div
+      style="transform: translateY(-40px); opacity: 0;"
+    >
+      <span
+        class="position-emitter"
+      >
+        0
+        <span
+          class="position-area-overlay"
+        >
+          <span
+            class="position-area"
+          />
+          <span
+            class="position-area"
+          />
+        </span>
+      </span>
+    </div>
+    <div
+      style="transform: translateY(-40px); opacity: 0;"
+    >
+      <span
+        class="position-emitter"
+      >
+        0
+        <span
+          class="position-area-overlay"
+        >
+          <span
+            class="position-area"
+          />
+          <span
+            class="position-area"
+          />
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;

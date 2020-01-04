@@ -4,7 +4,7 @@ import { ValueTokenDisplay } from './ValueTokenDisplay';
 
 describe('ValueTokenDisplay', () => {
     test('renders', () => {
-        const { container } = render(<ValueTokenDisplay />);
+        const { container } = render(<ValueTokenDisplay word={{ characters: [], value: '' }} />);
         expect(container).toMatchSnapshot();
     });
 });

@@ -13,10 +13,13 @@ export interface AnalyzeResult {
     tokens: Token[];
 }
 
-export const analyze = (str: string): AnalyzeResult => {
+export const analyze = (
+    str: string,
+    hasUser: (name: string) => boolean = store.hasUser,
+): AnalyzeResult => {
     const tokens = split(str.trim()).map(tokenize);
     const result = reduce(tokens);
-    result.isComplete = result.isComplete ? store.hasUser(result.value.name) : result.isComplete;
+    result.isComplete = result.isComplete ? hasUser(result.value.name) : result.isComplete;
     return result;
 };
 

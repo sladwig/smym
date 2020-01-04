@@ -1,3 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DescTokenDisplay renders 1`] = `<div />`;
+exports[`DescTokenDisplay renders 1`] = `
+<div>
+  <div
+    class="description-token-display"
+    style="opacity: 0.3; border-radius: 0; font-size: 36px; padding: 0px 0px 0px 0px; color: rgb(255, 255, 255); background-color: rgb(255, 255, 255); font-weight: 500;"
+  >
+    <span
+      style="margin-left: 20px; fill: white;"
+    >
+      <svg>
+        cross-icon.svg
+      </svg>
+    </span>
+  </div>
+</div>
+`;
