@@ -1,6 +1,5 @@
 import React, { CSSProperties, useCallback } from 'react';
-import { valueToken, minusToken } from '../../services/tokens';
-import { isChar, CharCharacterT, TD, AnyCharacterT } from './types';
+import { isChar, CharCharacterT, AnyCharacterT } from './types';
 import { useTransition, animated } from 'react-spring';
 import { display } from './display';
 

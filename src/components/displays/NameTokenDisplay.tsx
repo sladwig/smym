@@ -1,6 +1,5 @@
 import React from 'react';
-import { TD, AnyCharacterT } from './types';
-import { nameToken } from '../../services/tokens';
+import { AnyCharacterT } from './types';
 import { store } from '../../store/Store';
 import { usePrevious } from '../../hooks/usePrevious';
 import { display } from './display';

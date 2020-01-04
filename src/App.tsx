@@ -10,7 +10,6 @@ import fuzzysearch from 'fuzzysearch';
 import key, { Callback } from 'keyboardjs';
 import DevDetails from './components/DevDetails';
 import { AddToSlackOverlay } from './components/AddToSlackOverlay';
-import create from 'zustand';
 import { TransactionInputArea } from './components/TransactionInputArea';
 import { suggestionStore } from './zustand/SuggestionStore';
 import { useInputStore, inputStore } from './zustand/InputStore';
