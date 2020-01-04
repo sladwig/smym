@@ -22,13 +22,13 @@ export const PaidTokenDisplay = ({
         <animated.div
             className="paid-token"
             style={{
-                opacity: x.interpolate(to([0.3, 1])),
-                borderRadius: x.interpolate(to([0, 32])),
-                fontSize: x.interpolate(to([36, 24])),
-                paddingTop: x.interpolate(to([0, 14])),
-                paddingBottom: x.interpolate(to([0, 14])),
-                paddingLeft: x.interpolate(to([0, 19])),
-                paddingRight: x.interpolate(to([0, 19])),
+                opacity: x.to(to([0.3, 1])),
+                borderRadius: x.to(to([0, 32])),
+                fontSize: x.to(to([36, 24])),
+                paddingTop: x.to(to([0, 14])),
+                paddingBottom: x.to(to([0, 14])),
+                paddingLeft: x.to(to([0, 19])),
+                paddingRight: x.to(to([0, 19])),
             }}
         >
             <>{word.characters.map(display)}</>
